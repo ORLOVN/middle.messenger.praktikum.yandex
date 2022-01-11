@@ -41,4 +41,3 @@ if (path === '') {
     } else {
         const module = new Error404('plug_in_place');
 }
-

@@ -13,3 +13,4 @@ constructor(tag) {
     this.chatPane = new ChatPane('chat-pane');
 }
 }
+

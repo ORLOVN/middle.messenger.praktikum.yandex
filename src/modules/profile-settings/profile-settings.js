@@ -20,3 +20,4 @@ export class ProfileSettings extends CompClass {
         document.location.href="./chats";
     }
 }
+
