@@ -1,34 +1,36 @@
-Yandex practicum sprint no 1
-Прототипы экранов находятся по ссылке https://www.figma.com/file/zM210yks893au6dEYgdMRP/messanger-app
+#Приложение Мессенджер
+
+###Общая информация
+Приложение выполнено по заданию Yandex practicum (sprint no 1)\
+
+Прототипы экранов находятся по ссылке https://www.figma.com/file/zM210yks893au6dEYgdMRP/messanger-app \
 Проект развернут на Netlify по ссылке https://friendly-haibt-bebf56.netlify.app
 
-!!!!!Обратите внимание, папка dist должна содержать _redirects для Netlify. Поэтому в .gitignore добавлено исключение !/dist/_redirects
-Если файла _redirects нет в dist, скопируйте его из root.
+*!!!!!Обратите внимание, папка dist должна содержать _redirects для Netlify. Поэтому в .gitignore добавлено исключение !/dist/_redirects.
+Если файла _redirects нет в dist, скопируйте его из root.*
 
-Скрипты запуска:
-
-npm run:    Значение                            Описание
-"start"     "node server.js",                   Стартует сервер на 3000 порту
-"dev"       "parcel src/index.html",            Собирает проект в папку dist (для разработки, включены такие фитчи как горячее обновление)
-"build"     "parcel build src/index.html"       Собирает проект в папку dist (для продакшина)
+###Скрипты запуска (с помощью npm run):
+ * "start" (значение "node server.js")- стартует сервер на 3000 порту\
+ * "dev" (значение "parcel src/index.html")- собирает проект в папку dist (для разработки)\
+ * "build" (значение "parcel build src/index.html") - собирает проект в папку dist (для продакшина)
 
 
 
-Описание проекта
+###Описание проекта
 Проект будет представлять собой мессенджер, наподобие telegram. В рамках первого спринта пока созданы прототипы экранов.
 Некоторые прототипы имеют формы, к которым уже прописана валидация. Также имеются ссылки, с помощью которых можно переключаться
 между страницами. 
 
-Список доступных страниц:
+####Список доступных страниц:
 
-Вход            https://friendly-haibt-bebf56.netlify.app/signin
-Регистрация     https://friendly-haibt-bebf56.netlify.app/signup
-Чаты            https://friendly-haibt-bebf56.netlify.app/chats
-Профиль         https://friendly-haibt-bebf56.netlify.app/profile          
+* Вход https://friendly-haibt-bebf56.netlify.app/signin
+* Регистрация https://friendly-haibt-bebf56.netlify.app/signup
+* Чаты https://friendly-haibt-bebf56.netlify.app/chats
+* Профиль https://friendly-haibt-bebf56.netlify.app/profile
+* Страница 404 https://friendly-haibt-bebf56.netlify.app/any (появляется по любой непредусмотренной ссылке)
+* Страница 500    https://friendly-haibt-bebf56.netlify.app/?path=changepsw
 
-Страница 404    https://friendly-haibt-bebf56.netlify.app/any (появляется по любой непредусмотренной ссылке например)
-Страница 500    https://friendly-haibt-bebf56.netlify.app/?path=changepsw
-
+####Подключение зависимостей 
 Шаблонизатор подключен в src/core.js. Там представлен класс CompClass, который является родителем классов для всех страниц. 
 CompClass автоматически подключает шаблон, шаблонизирует (при помощи Handlerbars) и парсит в html. 
 Также он подключает все элементы HTML с id, начинающиеся с app-, к объекту для удобной навигации.
