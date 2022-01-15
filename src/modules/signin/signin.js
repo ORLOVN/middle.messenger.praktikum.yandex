@@ -1,5 +1,6 @@
-import {CompClass, validTools} from "/src/core.js";
-import {tmpl} from "./signin.tmpl.js";
+import {CompClass} from "/src/core";
+import * as validTools from "/src/utils/validtools"
+import {tmpl} from "./signin.tmpl";
 import styles from "./signin.css";
 
 export class SignIn extends CompClass {
@@ -18,8 +19,10 @@ export class SignIn extends CompClass {
     handleFormSubmit(event) {
         event.preventDefault() // Просим форму не отправлять данные самостоятельно
         let test = true;
-        test &= validTools.validate(this.loginLabel,validTools.badLogin(this.login.value));
-        test &= validTools.validate(this.passwordLabel,validTools.badPassword(this.password.value));
+        this.inputs.forEach(
+            (input) => {
+                test &= validTools.validate(input)
+            });
         if (test) {window.location.href = '/chats'}
     }
 

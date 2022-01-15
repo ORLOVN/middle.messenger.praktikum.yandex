@@ -1,6 +1,6 @@
 .signup__pane {
     display: grid;
-    grid-template-rows: 40px auto 1px;
+    grid-template-rows: 45px auto 1px;
     width: auto;
     height: auto;
     background: #1E2418;
@@ -11,21 +11,16 @@
 .signup__pane-name {
     margin-left: 25px;
     margin-top: 17px;
-    font-family: Roboto;
-    font-style: normal;
     font-weight: bold;
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 1.5rem;
+
 }
 
 .signup__signin-link {
     margin: auto;
     margin-top: 50px;
-    font-family: Roboto;
-    font-style: normal;
     font-weight: bold;
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 1.5rem;
 }
 .signup__signin-link a {
     text-decoration-line: none;
@@ -76,16 +71,13 @@
     font-style: normal;
     font-weight: normal;
     font-size: 1.2rem;
-    line-height: 15px;
+    color: aliceblue;
 
     height: 2.5rem;
     margin-bottom: 0;
-    border: none !important;
-    border-radius: 1.375rem;
-    background-color: transparent !important;
-    box-shadow: none !important;
-
-    color: aliceblue;
+    border: none;
+    background: none;
+    box-shadow: none;
 }
 
 .signup__input:focus{
@@ -93,12 +85,7 @@
 }
 
 .signup__input-wrap {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
     font-size: 1.2rem;
-    line-height: 15px;
-
     color: aliceblue;
     border-color: #4D4D4D;
     caret-color: #1E2418;
@@ -114,11 +101,8 @@
     background-color: #4D4D4D;
 }
 .signup__discription {
-    font-family: Roboto;
-    font-style: normal;
     font-weight: bold;
-    font-size: 13px;
-    line-height: 15px;
+    font-size: 0.8rem;
 }
 
 .signup__submit-button {
@@ -137,12 +121,10 @@
     height: 100%;
     border-radius: 5px;
     font-family: Roboto;
-    font-style: normal;
     font-weight: bold;
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 1.5rem;
     color: #FFFFFF;
-    border: none !important;
+    border: none;
 }
 
 .signup__submit-button button:hover {
