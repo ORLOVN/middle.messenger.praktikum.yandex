@@ -9,8 +9,8 @@
     height: fit-content;
     margin-left: 1vw;
 
-    background: #1E2418;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    background: var(--main-pane-bg-color);
+    box-shadow: var(--main-shadow-level1);
 }
 .profile-settings__back-button{
     display: flex;
@@ -22,13 +22,13 @@
     text-align: center;
     font-size: 6vh;
 
-    color: aliceblue;
+    color: var(--main-font-color);
     border-style: none;
-    background: #B1091D;
+    background: var(--main-accent-color);
     border-radius: 10px;
 }
 .profile-settings__back-button:hover {
-    background: #af626e;
+    background: var(--main-accent-hover-color);
 }
 .profile-settings__settings-pane{
 
@@ -46,7 +46,7 @@
 .profile-settings__avatar{
     width: 140px;
     height: 140px;
-    background: #939999;
+    background: var(--main-icon-color);
     border-radius: 15px;
 }
 
@@ -71,7 +71,7 @@
 .profile-settings__bottom-line {
     height: 1px;
     width: 100%;
-    background-color: #7A4D40;
+    background-color: var(--bottom-line-color);
     grid-column: 1 /span 2;
     grid-row: 2;
 }
@@ -89,7 +89,8 @@
     background: none;
     box-shadow: none;
 
-    color: aliceblue;
+    color: var(--main-font-color);
+    caret-color: var(--main-input-caret-color);
 }
 
 .profile-settings__input:focus{
@@ -101,35 +102,27 @@
     justify-self: end;
     justify-content: flex-end;
     align-items: flex-end;
-    border-color: #4D4D4D;
-    caret-color: #1E2418;
+
     background: none;
     width: fit-content;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 1.2rem;
-    line-height: 15px;
 }
 
 .profile-settings__input-wrap span {
-    margin-bottom: 2px;
+
 }
 
 .profile-settings__input-wrap:hover{
-    border-color: #939999;
-    background-color: #4D4D4D;
+    background-color: var(--main-focus-color);
 }
 
 .profile-settings__input-wrap:focus-within{
-    border-color: #939999;
-    background-color: #4D4D4D;
+    background-color: var(--main-focus-color);
 }
 
-.profile-settings__item-value{
-    color:#939999;
-    justify-self: end;
-}
 .profile-settings__buttons-pane{
     margin-top: 30px;
     margin-bottom: 30px;
@@ -144,11 +137,11 @@
 }
 
 .profile-settings__button a {
-    color: #B1091D;
+    color: var(--main-accent-color);
     text-decoration-line: none;
 }
 .profile-settings__button a:hover {
-    color: #b2505c;
+    color: var(--main-accent-hover-color);
     text-decoration-line: none;
 }
 

@@ -14,11 +14,11 @@ export const tmpl = `
             </span>
         </button>
     </div>
-    <div class="chatlist__list-pane">
+    <ul class="chatlist__list-pane">
 <!--     <div class="chatselector__bottomline"></div> -->
 <!-- chat list-pane-->
 {{#each chatlist}}
-        <div class="chatselector">
+        <li class="chatselector">
             <div class="chatselector__avatar-container">
               <div class="chatselector__avatar">
 
@@ -28,9 +28,9 @@ export const tmpl = `
                 <div class="chatselector__name">
                     {{this.name}}
                 </div>
-                <div class="chatselector__last-time">
+                <time class="chatselector__last-time">
                     {{this.time}}
-                </div> 
+                </time> 
                 <div class="chatselector__last-messege">
                     {{this.lastmessege}}
                 </div>          
@@ -40,10 +40,10 @@ export const tmpl = `
                         </div>
                 </div>
             </div>
-        </div>
+        </li>
 <!--    <div class="chatselector__bottom-line"></div> -->
 {{/each}} 
 <!--chat list-pane-->
-    </div>
+    </ul>
  </div>
 `
