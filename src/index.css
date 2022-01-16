@@ -1,5 +1,5 @@
 :root {
-    --csc:#1E2418;
+    --main-bg-color:#939999;
     --main-pane-bg-color: #1E2418;
     --main-focus-color: #4D4D4D;
     --main-link-color:#EAEAEA;
@@ -65,7 +65,7 @@ html, body {
 .overall-back {
     margin:0;
     height:100%;
-    background: #939999;
+    background: var(--main-bg-color);
     color: aliceblue;
 }
 
