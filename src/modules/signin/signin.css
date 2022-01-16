@@ -3,7 +3,7 @@
     grid-template-rows: 45px auto 10px;
     width: 733px;
     height: 129px;
-    background: var(--pane-bg-color);
+    background: var(--main-pane-bg-color);
     box-shadow: var(--main-shadow-level1);
     border-radius: 15px;
 }

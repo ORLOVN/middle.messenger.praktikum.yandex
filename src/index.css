@@ -20,7 +20,7 @@
     --from-input-font-color: var(--main-font-color);
     --from-input-caret-color:var(--main-input-caret-color);
     --form-input-bg-color: var(--main-pane-bg-color);
-    --from-input-bg-hover-color:var(--main-input-focus-color);
+    --from-input-bg-hover-color:var(--main-focus-color);
     --form-button-bg-color:var(--main-accent-color);
     --form-button-bg-hover-color:var(--main-accent-hover-color);
     --form-button-font-color:#FFFFFF;
