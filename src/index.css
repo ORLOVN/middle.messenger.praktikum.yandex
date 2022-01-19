@@ -1,0 +1,95 @@
+:root {
+    --main-bg-color:#939999;
+    --main-pane-bg-color: #1E2418;
+    --main-focus-color: #4D4D4D;
+    --main-link-color:#EAEAEA;
+    --main-link-hover-color:#FFFFFF;
+    --main-font-color:aliceblue;
+    --main-input-caret-color:#FFFFFF;
+    --main-icon-color: #939999;
+    --main-icon-hover-color: aliceblue;
+    --main-accent-color:#B1091D;
+    --main-accent-hover-color:#a1565e;
+
+
+    --main-shadow-level1: 0 4px 4px rgba(0, 0, 0, 0.25);
+    --main-shadow-level2: 0 6px 6px rgba(0, 0, 0, 0.25);
+
+    --bottom-line-color:#7A4D40;
+
+    --from-input-font-color: var(--main-font-color);
+    --from-input-caret-color:var(--main-input-caret-color);
+    --form-input-bg-color: var(--main-pane-bg-color);
+    --from-input-bg-hover-color:var(--main-focus-color);
+    --form-button-bg-color:var(--main-accent-color);
+    --form-button-bg-hover-color:var(--main-accent-hover-color);
+    --form-button-font-color:#FFFFFF;
+
+    --chat-blank-font-color: var(--main-font-color);
+
+    --chatlist-bg-color: var(--main-pane-bg-color);
+    --chatlist-search-bg-color:var(--main-focus-color);
+    --chatlist-search-caret-color:var(--main-input-caret-color);
+    --chatlist-search-font-color: var(--main-font-color);
+    --chatlist-icon-color: var(--main-icon-color);
+    --chatlist-icon-hover-color: var(--main-icon-hover-color);
+    --chatlist-selector-hover-color: var(--main-focus-color);
+    --chatlist-selector-font-color: var(--main-font-color);
+    --chatlist-avatar-color: var(--main-icon-color);
+    --chatlist-unread-color: var(--main-accent-color);
+
+
+    --chat-pane-header-bg-color: var(--main-focus-color);
+    --chat-pane-avartar-color: var(--main-icon-color);
+    --chat-pane-newmsg-bg-color: var(--main-focus-color);
+    --chat-pane-newmsg-bg-focus-color: var(--main-pane-bg-color);
+    --chat-pane-newmsg-font-color: var(--main-font-color);
+    --chat-pane-icon-color: var(--main-icon-color);
+    --chat-pane-icon-hover-color: var(--main-icon-hover-color);
+    --chat-pane-submit-color: var(--main-accent-color);
+    --chat-pane-submit-hover-color: var(--main-accent-hover-color);
+    --chat-pane-received-msg-bg-color: var(--main-pane-bg-color);
+    --chat-pane-sent-msg-bg-color: #798271;
+
+
+}
+
+html, body {
+    margin:0;
+    height:100%;
+    font-family: 'Roboto',sans-serif;
+    font-style: normal;
+
+}
+
+.overall-back {
+    margin:0;
+    height:100%;
+    background: var(--main-bg-color);
+    color: aliceblue;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
