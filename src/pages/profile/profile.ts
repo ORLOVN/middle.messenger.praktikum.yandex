@@ -208,4 +208,3 @@ export class Profile extends Block {
         console.log(`Element list item ${id} has been clicked`)
     }
 }
-
