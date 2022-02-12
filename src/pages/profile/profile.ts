@@ -17,8 +17,8 @@ export class Profile extends Block {
             eventsSelector: 'input',
             editing: false,
             events: {
-                blur: (event) => {
-                    mediator.emit('profile-input-blur', event.target.name, event.target.value);
+                blur: (event: Event) => {
+                    mediator.emit('profile-input-blur', event.target!.name, event.target!.value);
                 }
             }
         }
@@ -70,7 +70,7 @@ export class Profile extends Block {
             },
         ];
 
-        const profileInputs = listFromArray(profileProps,ProfileItem, commonProps);
+        const profileInputs = listFromArray(profileProps, ProfileItem, commonProps);
 
         const passwordInputs = listFromArray(passwordProps, ProfileItem, commonProps);
 
@@ -81,7 +81,7 @@ export class Profile extends Block {
                 events:{
                     click: () =>{
                         this.setProps({ editing:true });
-                        profileInputs.list.forEach((value) => {
+                        profileInputs.list.forEach((value: Block) => {
                             value.setProps({editing:true});
                         });
                     }
@@ -93,7 +93,7 @@ export class Profile extends Block {
                 events:{
                     click: () =>{
                         this.setProps({ editing:true, changingPassword:true });
-                        passwordInputs.list.forEach((value) => {
+                        passwordInputs.list.forEach((value: Block) => {
                             value.setProps({editing:true});
                         });
                     }
@@ -115,7 +115,7 @@ export class Profile extends Block {
                 events:{
                     click: () =>{
                         this.setProps({ editing:false, changingPassword:false });
-                        profileInputs.list.forEach((value) => {
+                        profileInputs.list.forEach((value: Block) => {
                             value.setProps({
                                 editing:false,
                                 validLabel:'',
@@ -123,7 +123,7 @@ export class Profile extends Block {
                             });
                         });
 
-                        passwordInputs.list.forEach((value) => {
+                        passwordInputs.list.forEach((value: Block) => {
                             value.setProps({
                                 editing:false,
                                 validLabel:'',
@@ -153,11 +153,11 @@ export class Profile extends Block {
             changingPassword: false,
             eventsSelector: 'form',
             events:{
-                submit: (event) => {
+                submit: (event: Event) => {
                     event.preventDefault();
-                    const inputs = event.target.querySelectorAll('input')
+                    const inputs = event.target!.querySelectorAll('input')
                     const values = {};
-                    inputs.forEach((input) => {
+                    inputs.forEach((input: any) => {
                         values[input.name] = input.value;
                     });
                     mediator.emit('profile-PUT', values)

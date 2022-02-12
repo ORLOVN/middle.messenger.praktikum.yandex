@@ -2,7 +2,6 @@ import EventBus from './EventBus';
 import {Nullable, Values} from './types';
 import { v4 as uuid} from 'uuid';
 import {TemplateCompile} from "./tmplfuncs";
-import ProfileItem from "../pages/profile/components/profile-item";
 
 interface BlockMeta<P = any> {
     props: P;

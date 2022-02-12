@@ -1,5 +1,8 @@
 import Mediator from '../utils/Mediator';
 import {validate} from "../utils/validtools";
+import {HTTPTransport, METHOD} from "../utils/HTTPTransport";
+
+const xhr = new HTTPTransport();
 
 const mediator = Mediator.getInstance();
 

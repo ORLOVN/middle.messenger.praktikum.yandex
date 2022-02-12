@@ -1,18 +1,18 @@
 const Handlebars = require("handlebars");
 
-Handlebars.registerHelper('statusAwaiting', function (value) {
+Handlebars.registerHelper('statusAwaiting', function (value: number) {
     return value === 1;
 });
 
-Handlebars.registerHelper('statusSent', function (value) {
+Handlebars.registerHelper('statusSent', function (value: number) {
     return value === 2;
 });
 
-Handlebars.registerHelper('statusReceived', function (value) {
+Handlebars.registerHelper('statusReceived', function (value: number) {
     return value === 3;
 });
 
-Handlebars.registerHelper('statusRead', function (value) {
+Handlebars.registerHelper('statusRead', function (value: number) {
     return value === 4;
 });
 
@@ -22,8 +22,8 @@ export function TemplateCompile(tmpl: string, tmplData: any) {
 }
 
 export function ReplaceTag(tag: string, NodeHTML: Node) {
-    if (document.querySelector(tag)) {
-        document.querySelector(tag).replaceWith(NodeHTML);
+    if (document!.querySelector(tag)) {
+        document!.querySelector(tag).replaceWith(NodeHTML);
     }
 }
 export function ParseStringHTML(stringHTML: string) {
