@@ -46,6 +46,7 @@ export class Signin extends Block {
         });
 
         const signupRef = new TextButton({
+            href: '/signup',
             content:'Нет аккаунта?',
             style: 'white'
         });
@@ -69,7 +70,7 @@ export class Signin extends Block {
             }
         });
 
-        mediator.on('signup-GET', (values: inputData,validResults?: inputData) => {
+        mediator.on('signin-GET', (values: inputData, validResults?: inputData) => {
 
             Object.entries(values).forEach(([name,value]) => {
                 inputList.list[inputList.nameList[name]].setProps({value: value});
@@ -85,7 +86,7 @@ export class Signin extends Block {
 
         });
 
-        mediator.on('signup-input-validated', (name: string, value: string, validResult: string) => {
+        mediator.on('signin-input-validated', (name: string, value: string, validResult: string) => {
             if (inputList.nameList[name] !== undefined) {
                 inputList.list[inputList.nameList[name]].setProps({value: value, validLabel: validResult});
             }

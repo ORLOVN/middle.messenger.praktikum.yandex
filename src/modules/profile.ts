@@ -7,7 +7,7 @@ mediator.on('profile-PUT', (values: Record<string, string>) => {
     let validResults = {};
     let ifProblem = false;
     Object.entries(values).forEach(([name,value]) => {
-        let aux = (name === 'repassword') ? values['password'] || '' : '';
+        let aux = (name === 'repassword') ? values['newpassword'] || '' : '';
         validResults[name] = validate (name, value, aux);
         ifProblem ||= !!validResults[name];
     });

@@ -18,7 +18,6 @@ export class Profile extends Block {
             editing: false,
             events: {
                 blur: (event) => {
-                    console.log('enter')
                     mediator.emit('profile-input-blur', event.target.name, event.target.value);
                 }
             }
@@ -155,7 +154,6 @@ export class Profile extends Block {
             eventsSelector: 'form',
             events:{
                 submit: (event) => {
-                    console.log(event);
                     event.preventDefault();
                     const inputs = event.target.querySelectorAll('input')
                     const values = {};
@@ -170,14 +168,24 @@ export class Profile extends Block {
         mediator.on('profile-GET', (values: inputData,validResults: inputData) => {
 
             Object.entries(values).forEach(([name,value]) => {
-                profileInputs.list[profileInputs.nameList[name]].setProps({editableValue: value})
+                if (profileInputs.nameList[name] !== undefined) {
+                    profileInputs.list[profileInputs.nameList[name]].setProps({editableValue: value})
+                }
+                if (passwordInputs.nameList[name] !== undefined) {
+                    passwordInputs.list[passwordInputs.nameList[name]].setProps({editableValue: value})
+                }
             })
 
             if (!validResults) {
                 return
             }
             Object.entries(validResults).forEach(([name,value]) => {
-                profileInputs.list[profileInputs.nameList[name]].setProps({validLabel: value})
+                if (profileInputs.nameList[name] !== undefined) {
+                    profileInputs.list[profileInputs.nameList[name]].setProps({validLabel: value})
+                }
+                if (passwordInputs.nameList[name] !== undefined) {
+                    passwordInputs.list[passwordInputs.nameList[name]].setProps({validLabel: value})
+                }
             })
         });
 

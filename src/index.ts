@@ -2,7 +2,7 @@ import Block from './utils/Block';
 import Chats from './pages/chats';
 import Signup from "./pages/signup";
 import Signin from "./pages/signin";
-import ProfileSettings from "./pages/profile";
+import Profile from "./pages/profile";
 
 function render(query: string, block: Block) {
     const root = document.querySelector(query);
@@ -14,27 +14,40 @@ function render(query: string, block: Block) {
     root.appendChild(block.getContent());
     return root;
 }
-/*
-const button = new Button({
-    text: 'Click me',
-    events: {
-        click: () => console.log('clicked')
-    }
-});*/
 
-// app — это class дива в корне DOM
-const page =  new Signup();
+let path = window.location.pathname;
+if (path) {
+    path = path.slice(1,path.length)
+}
 
+const queryDict: Record<string, string> = {};
+location.search.substr(1).split("&").forEach(
+    function(item) {
+        queryDict[item.split("=")[0]] = item.split("=")[1]
+    })
+
+path = path||queryDict.path||'';
+
+console.log(path)
+
+let page: Block;
+
+
+
+if (path === '') {
+     page = new Signin();
+} else if (path === 'signin') {
+     page = new Signin();
+} else if (path === 'signup') {
+     page = new Signup();
+} else if (path === 'profile') {
+     page = new Profile();
+} else if (path === 'chats') {
+     page = new Chats();
+} else if (path === 'err500') {
+     page = null;
+} else {
+     page = null;
+}
 
 render('.app', page);
-
-setTimeout(() => {
-    page.setProps({
-        'someText':'Text is changed'
-    });
-}, 5000);
-
-// Через секунду контент изменится сам, достаточно обновить пропсы
-
-
-//"parcel-plugin-handlerbars-precompile": "^1.0.2",

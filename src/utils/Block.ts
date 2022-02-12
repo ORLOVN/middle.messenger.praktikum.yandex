@@ -88,7 +88,6 @@ export default class Block<P = any> {
     _init() {
         this._createResources();
         //this._element = this._compile(this.render());
-        //this._getAttrOfTaggedStubs();
         this.init(this._meta.props);
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
@@ -157,8 +156,6 @@ export default class Block<P = any> {
             // не забываем сохранить новый корень
             this._element = element;
         }
-
-        this._replaceTaggedStubs();
 
         this._addEvents();
 
@@ -270,6 +267,7 @@ export default class Block<P = any> {
         Object.entries(this.children).forEach(([key ,child]) => {
 
             // здесь происходит замена заглушек в отпарсенном шаблоне на компоненты
+            // @ts-ignore
             const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
             if (stub) {
                 stub.replaceWith(child.getContent());
@@ -278,22 +276,23 @@ export default class Block<P = any> {
         });
 
         Object.entries(this.childrenLists).forEach(([key ,list]) => {
-
+            // @ts-ignore
             const stub = fragment.content.querySelector(`[data-id="${list.id}"]`);
 
             if (stub) {
                 const listFragment = this._createDocumentElement('template');
 
                 Object.values(list.list).forEach((child) => {
+                    // @ts-ignore
                     listFragment.content.appendChild(child.getContent());
 
                 });
-
+                // @ts-ignore
                 stub.replaceWith(listFragment.content);
             }
 
         });
-
+        // @ts-ignore
         return fragment.content.children[0];
     }
 

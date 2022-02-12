@@ -93,3 +93,33 @@ html, body {
     /* Support for IE. */
     font-feature-settings: 'liga';
 }
+
+.ref-pane {
+    display: block;
+    position: absolute;
+    width: auto;
+    top: 0;
+    left: 0;
+}
+
+
+.ref-pane a{
+    text-decoration-line: none;
+    cursor: pointer;
+    color: var(--main-link-color);
+}
+.ref-pane a:visited {
+    text-decoration-line: none;
+    color: var(--main-link-color);
+}
+
+.ref-pane a:hover {
+    text-decoration-line: none;
+    color: var(--main-link-hover-color);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+.ref-pane a:focus {
+    text-decoration-line: none;
+    color: var(--main-link-hover-color);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}

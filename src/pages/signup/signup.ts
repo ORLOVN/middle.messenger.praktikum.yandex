@@ -82,6 +82,7 @@ export class Signup extends Block {
         })
 
         const signinRef = new TextButton({
+            href: '/signin',
             content: 'Уже есть аккаунт?',
             style: 'white'
         });
