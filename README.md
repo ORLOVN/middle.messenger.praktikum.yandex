@@ -3,7 +3,7 @@
 ###Общая информация
 Приложение выполнено по заданию Yandex practicum (sprint no 2)\
 
-Проект развернут на Netlify по ссылке https://friendly-haibt-bebf56.netlify.app
+Проект развернут на Netlify по ссылке https://orlovn89.netlify.app/
 
 *!!!!!Обратите внимание, папка dist должна содержать _redirects для Netlify. Поэтому в .gitignore добавлено исключение !/dist/_redirects.
 Если файла _redirects нет в dist, скопируйте его из root.*
