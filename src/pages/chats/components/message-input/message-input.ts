@@ -8,7 +8,7 @@ export class MessageInput extends Block {
     constructor(props: {message?: string }) {
         const messageInput = new Input({
             events: {
-                keyup: (eventProp) => this._message = eventProp.target.value
+                keyup: (eventProp) => this._message = eventProp!.target!.value
             }
         });
 
@@ -17,7 +17,7 @@ export class MessageInput extends Block {
         this._message = '';
     }
 
-    keyupHandle(target){
+    keyupHandle(target: EventTarget){
         return
     }
 

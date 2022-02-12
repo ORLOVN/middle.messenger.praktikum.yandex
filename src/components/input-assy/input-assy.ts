@@ -1,7 +1,6 @@
 import Block from "../../utils/Block";
-import Input from "../input";
 
-export class InputAssy<P = any> extends Block {
+export class InputAssy extends Block {
 
     constructor(props: {
         name?: string,
@@ -11,8 +10,8 @@ export class InputAssy<P = any> extends Block {
         label?: string,
         validLabel?: string,
         events?: {
-            keyup?:(eventProp?) => void,
-            blur?:(eventProp?) => void
+            keyup?:(event?: Event) => void,
+            blur?:(event?: Event) => void
         }
     }) {
 

@@ -37,9 +37,13 @@ export class HTTPTransport {
             xhr.onerror = reject;
             xhr.ontimeout = reject;
 
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
             if (method === METHOD.GET || !data) {
                 xhr.send();
             } else {
+                console.log(data)
                 xhr.send(data);
             }
         });
