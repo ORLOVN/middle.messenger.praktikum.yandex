@@ -1,0 +1,67 @@
+.signup__pane {
+    display: grid;
+    grid-template-rows: 45px auto 1px;
+    width: auto;
+    height: auto;
+    background: var(--main-pane-bg-color);
+    box-shadow: var(--main-shadow-level1);
+    border-radius: 15px;
+}
+
+.signup__pane-name {
+    margin-left: 25px;
+    margin-top: 17px;
+    font-weight: bold;
+    font-size: 1.5rem;
+
+}
+.signup__signin-link {
+    margin: auto;
+    margin-top: 40px;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.signup__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.signup__back {
+    margin:0;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup__submit-button {
+    align-self: end;
+    grid-row: 1 / span 4;
+    grid-column: 3;
+    margin-right: 25px;
+    margin-bottom: 25px;
+    height: 40px;
+}
+
+.signup__submit-button button {
+    display: block;
+    background: var(--form-button-bg-color);
+    margin-left: auto;
+    height: 100%;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--form-button-font-color);
+    border: none;
+}
+
+.signup__submit-button button:hover {
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    background: var(--form-button-bg-hover-color);
+}
+.signup__submit-button button:focus {
+    background: var(--form-button-bg-hover-color);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}

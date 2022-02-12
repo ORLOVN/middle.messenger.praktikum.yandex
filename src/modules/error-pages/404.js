@@ -1,5 +1,5 @@
 import styles from "./error.css";
-import {CompClass} from "/src/core.js";
+import {CompClass} from "/src/utils/core";
 
 const tmpl = `
 <div class="error__back">

@@ -1,4 +1,4 @@
-import {CompClass} from "/src/core";
+import {CompClass} from "/src/utils/core";
 import * as validTools from "/src/utils/validtools"
 import {tmpl} from "./signin.tmpl";
 import styles from "./signin.css";

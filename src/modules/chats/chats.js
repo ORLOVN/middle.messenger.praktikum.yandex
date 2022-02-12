@@ -1,4 +1,4 @@
-import {CompClass} from "/src/core.js";
+import {CompClass} from "/src/utils/core.ts";
 import {tmpl} from "./chats.tmpl.js"
 
 import {ChatList} from "./components/chatlist/chatlist.js"

@@ -1,4 +1,4 @@
-import {CompClass} from "/src/core.js";
+import {CompClass} from "/src/utils/core";
 import * as validTools from "/src/utils/validtools"
 import {temp} from "./signup.tmpl.js";
 import styles from "./signup.css";
