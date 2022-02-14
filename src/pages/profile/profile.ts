@@ -18,7 +18,6 @@ export class Profile extends Block {
             editing: false,
             events: {
                 blur: (event: FocusEvent) => {
-                    console.log(typeof event.target)
                     mediator.emit(
                         'profile-input-blur',
                         (event.target! as HTMLInputElement).name,

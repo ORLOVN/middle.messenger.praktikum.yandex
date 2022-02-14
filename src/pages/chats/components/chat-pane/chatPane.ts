@@ -5,6 +5,8 @@ import MessageInput from "../message-input";
 import Button from "../../../../components/button";
 import dummydata from "./dummydata";
 import { v4 as uuid} from 'uuid';
+import {listFromArray} from "../../../../utils/blockTools";
+
 
 export class ChatPane extends Block {
     constructor() {
@@ -18,36 +20,23 @@ export class ChatPane extends Block {
             }
         });
 
-        super( {'messageInput':messageInput, 'sendingButton':sendingButton });
+        const commonProps = {
+            events: {
+                click: () => {
+                    console.log(`message clicked`);
+                }
+            }
+        };
 
-        this.completeData(dummydata);
+        const messageList = listFromArray(dummydata, Message, commonProps);
+
+        super( {messageList: messageList, messageInput: messageInput, sendingButton: sendingButton });
+
     }
 
     render():string {
 
         return tmpl;
 
-    }
-
-    completeData(messagesData: Array<{
-        id: string,
-        author: string,
-        text: string,
-        time: string,
-        status: number,
-    }>) {
-        const compName = `messages`
-        if (!this.childrenLists[compName]) {
-            this.childrenLists[compName] = {
-                id: uuid(),
-                list: [],
-            }
-        }
-        messagesData.forEach((value) => {
-            this.childrenLists[compName].list.push( new Message({
-                ...value
-            }));
-            this.childrenLists[compName].list[this.childrenLists[compName].list.length-1].dispatchComponentDidMount();
-        });
     }
 }

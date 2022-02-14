@@ -15,9 +15,12 @@ export class Signin extends Block {
 
         const commonProps = {
             events: {
-                blur: (event) => {
-                    console.log('start')
-                    mediator.emit('signin-input-blur', event.target.name, event.target.value);
+                blur: (event: FocusEvent) => {
+                    mediator.emit(
+                        'signin-input-blur',
+                        (event.target! as HTMLInputElement).name,
+                        (event.target! as HTMLInputElement).value
+                    );
                 }
             }
         }
@@ -59,11 +62,11 @@ export class Signin extends Block {
             'signupRef': signupRef,
             eventSelector: 'form',
             events:{
-                submit: (event) => {
+                submit: (event: Event) => {
                     event.preventDefault();
-                    const inputs = event.target.querySelectorAll('input')
-                    const values = {};
-                    inputs.forEach((input) => {
+                    const inputs = (event.target! as HTMLFormElement).querySelectorAll('input')
+                    const values: Record<string, string> = {};
+                    inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
                     mediator.emit('signin-POST', values)

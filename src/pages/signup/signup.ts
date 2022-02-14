@@ -11,14 +11,17 @@ const mediator = Mediator.getInstance();
 type inputData = Record<string, string>;
 
 export class Signup extends Block {
-    private readonly inputs: {string, InputAssembly}
     constructor() {
 
         const commonProps = {
             events: {
-                blur: (event) => {
+                blur: (event: FocusEvent) => {
                     console.log('start')
-                    mediator.emit('signup-input-blur', event.target.name, event.target.value);
+                    mediator.emit(
+                        'signup-input-blur',
+                        (event.target! as HTMLInputElement).name,
+                        (event.target! as HTMLInputElement).value
+                    );
                 }
             }
         }
@@ -96,11 +99,11 @@ export class Signup extends Block {
             submitButton: submitButton,
             eventsSelector: 'form',
             events:{
-                submit: (event) => {
+                submit: (event: Event) => {
                     event.preventDefault();
-                    const inputs = event.target.querySelectorAll('input')
-                    const values = {};
-                    inputs.forEach((input) => {
+                    const inputs = (event.target! as HTMLFormElement).querySelectorAll('input')
+                    const values : Record<string, string> = {};
+                    inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
                     mediator.emit('signup-PUT', values)

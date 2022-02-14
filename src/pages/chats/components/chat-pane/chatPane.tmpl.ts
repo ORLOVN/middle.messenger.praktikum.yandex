@@ -19,7 +19,7 @@ export default `
                 <div class="chat-pane__bottom-line">
                 </div>
                 <ul class="chat-pane__messages-section">                               
-                {{{messages}}}
+                {{{messageList}}}
                 </ul>                
             </div>
         </div>

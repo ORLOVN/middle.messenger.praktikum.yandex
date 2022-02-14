@@ -10,7 +10,7 @@ function render(query: string, block: Block) {
     if (!root) {
         throw new Error('Root not found')
     }
-    block.dispatchComponentDidMount();
+//    block.dispatchComponentDidMount();
     root.appendChild(block.getContent());
     return root;
 }
