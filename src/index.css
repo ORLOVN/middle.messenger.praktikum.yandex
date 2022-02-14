@@ -93,24 +93,24 @@ body {
   left: 0;
 }
 
-.ref-pane a {
+.ref-pane-link {
   text-decoration-line: none;
   cursor: pointer;
   color: var(--main-link-color);
 }
 
-.ref-pane a:visited {
+.ref-pane-link {
   text-decoration-line: none;
   color: var(--main-link-color);
 }
 
-.ref-pane a:hover {
+.ref-pane-link {
   text-decoration-line: none;
   color: var(--main-link-hover-color);
   text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
 }
 
-.ref-pane a:focus {
+.ref-pane-link {
   text-decoration-line: none;
   color: var(--main-link-hover-color);
   text-shadow: 0 4px 4px rgb(0 0 0 / 25%);

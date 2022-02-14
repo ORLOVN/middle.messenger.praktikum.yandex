@@ -104,15 +104,10 @@ export class Profile extends Block {
                     }
                 }
             }),
-            accept: new TextButton({
+            accept: new Button({
                 content: 'Принять',
                 style:'red',
-                events:{
-                    click: (event) =>{
-                        const form = event.target.closest('form');
-                        form.dispatchEvent(new Event('submit'));
-                    }
-                }
+                type:'submit',
             }),
             cancel: new TextButton({
                 content: 'Отмена',

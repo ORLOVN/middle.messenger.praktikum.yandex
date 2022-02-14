@@ -3,6 +3,7 @@ import Block from "../../utils/Block";
 export class Button extends Block {
     constructor(props: {
         content?: string,
+        style? :string,
         class?: string,
         type?: string,
         events?: {
@@ -15,7 +16,7 @@ export class Button extends Block {
 
     render():string {
         return `
-<button {{#if class}} class="{{class}}" {{/if}}  {{#if type}} type="{{type}}" {{/if}}>
+<button {{#if class}} class="{{class}}" {{/if}} {{#if style}}class="button_{{style}}" {{/if}}  {{#if type}} type="{{type}}" {{/if}}>
  {{{content}}} 
  </button>
 `;

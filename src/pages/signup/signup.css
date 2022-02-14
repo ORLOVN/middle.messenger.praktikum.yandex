@@ -44,25 +44,3 @@
   height: 40px;
 }
 
-.signup__submit-button button {
-  display: block;
-  background: var(--form-button-bg-color);
-  margin-left: auto;
-  height: 100%;
-  border-radius: 5px;
-  font-family: Roboto;
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: var(--form-button-font-color);
-  border: none;
-}
-
-.signup__submit-button button:hover {
-  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
-  background: var(--form-button-bg-hover-color);
-}
-
-.signup__submit-button button:focus {
-  background: var(--form-button-bg-hover-color);
-  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
-}

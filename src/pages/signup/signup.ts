@@ -74,6 +74,7 @@ export class Signup extends Block {
         const submitButton = new Button({
             content: 'Регистрация',
             type: 'submit',
+            style: 'red',
             events: {
                 click: () => {
                     //

@@ -39,6 +39,7 @@ export class Signin extends Block {
 
         const submitButton = new Button({
             content: 'Вход',
+            style: 'red',
             type: 'submit',
             events: {
                 click: () => console.log('profile button clicked')
