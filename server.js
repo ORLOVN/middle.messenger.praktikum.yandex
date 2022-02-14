@@ -12,7 +12,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__dirname, 'dist/index.html'), function (err) {
+        if (err) {
+            console.log(err);
+            res.send('file dist/index.html not found');
+
+        } else {
+            console.log('file dist/index.html not found');
+        }
+    });
 });
 
 
