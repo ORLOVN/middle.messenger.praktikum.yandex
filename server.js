@@ -32,6 +32,6 @@ app.post('/data-receiver', function (req, res) {
 
 
 app.listen(PORT, function () {
-    console.log(`Messenger app is listening on port: ${PORT}!`);
+    console.log(`Messenger app is listening on port:: ${PORT}!`);
 });
 
