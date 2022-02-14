@@ -18,7 +18,7 @@ app.get('/*', function (req, res) {
             res.send('file dist/index.html not found');
 
         } else {
-            console.log('file dist/index.html not found');
+            console.log('file dist/index.html has been provided');
         }
     });
 });
@@ -32,6 +32,6 @@ app.post('/data-receiver', function (req, res) {
 
 
 app.listen(PORT, function () {
-    console.log(`Messenger app is listening on port ${PORT}!`);
+    console.log(`Messenger app is listening on port: ${PORT}!`);
 });
 
