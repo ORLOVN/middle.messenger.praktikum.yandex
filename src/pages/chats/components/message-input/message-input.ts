@@ -17,7 +17,7 @@ export class MessageInput extends Block {
         this._message = '';
     }
 
-    keyupHandle(target: EventTarget){
+    keyupHandle(){
         return
     }
 

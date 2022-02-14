@@ -1,50 +1,50 @@
-.input-assy{
-    display: grid;
-    margin-left: 25px;
-    margin-right: 25px;
-    width: 250px;
-    grid-template-rows: 40px 1px 40px;
+.input-assy {
+  display: grid;
+  margin-left: 25px;
+  margin-right: 25px;
+  width: 250px;
+  grid-template-rows: 40px 1px 40px;
 }
 
-.input-assy__input{
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 1.2rem;
-    color: var(--from-input-font-color);
-
-    height: 2.5rem;
-    margin-bottom: 0;
-    border: none;
-    background: none;
-    box-shadow: none;
+.input-assy__input {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.2rem;
+  color: var(--from-input-font-color);
+  height: 2.5rem;
+  margin-bottom: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
 }
 
 .input-assy__wrap {
-    font-size: 1.2rem;
-    color: var(--from-input-font-color);
-    caret-color: var(--from-input-caret-color);
-    background-color: var(--form-input-bg-color);
-}
-.input-assy__wrap:hover{
-    background-color: var(--from-input-bg-hover-color);
+  font-size: 1.2rem;
+  color: var(--from-input-font-color);
+  caret-color: var(--from-input-caret-color);
+  background-color: var(--form-input-bg-color);
 }
 
-.input-assy__wrap:focus-within{
-    background-color: var(--from-input-bg-hover-color);
+.input-assy__wrap:hover {
+  background-color: var(--from-input-bg-hover-color);
+}
+
+.input-assy__wrap:focus-within {
+  background-color: var(--from-input-bg-hover-color);
 }
 
 .input-assy__bottom-line {
-    width:100%;
-    height:1px;
-    background-color: var(--bottom-line-color);
+  width: 100%;
+  height: 1px;
+  background-color: var(--bottom-line-color);
 }
 
 .input-assy__label {
-    font-size: 0.7rem;
+  font-size: 0.7rem;
 }
 
 .input-assy__label_red {
-    color: red;
-    font-size: 0.7rem;
+  color: red;
+  font-size: 0.7rem;
 }

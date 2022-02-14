@@ -17,8 +17,13 @@ export class Profile extends Block {
             eventsSelector: 'input',
             editing: false,
             events: {
-                blur: (event: Event) => {
-                    mediator.emit('profile-input-blur', event.target!.name, event.target!.value);
+                blur: (event: FocusEvent) => {
+                    console.log(typeof event.target)
+                    mediator.emit(
+                        'profile-input-blur',
+                        (event.target! as HTMLInputElement).name,
+                        (event.target! as HTMLInputElement).value
+                    );
                 }
             }
         }
@@ -155,9 +160,9 @@ export class Profile extends Block {
             events:{
                 submit: (event: Event) => {
                     event.preventDefault();
-                    const inputs = event.target!.querySelectorAll('input')
-                    const values = {};
-                    inputs.forEach((input: any) => {
+                    const inputs = (event.target! as HTMLFormElement).querySelectorAll('input')
+                    const values: Record<string, string> = {};
+                    inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
                     mediator.emit('profile-PUT', values)

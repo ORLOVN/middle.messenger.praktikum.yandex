@@ -13,6 +13,11 @@ export class TextButton extends Block {
     }
 
     render():string {
-        return `<a class="text-button{{#if style}} text-button_{{style}}{{/if}}" {{#if href}}href="{{href}}"{{/if}}>{{content}}</a>`;
+        return `
+<a class="text-button{{#if style}} text-button_{{style}}{{/if}}" {{#if href}}href="{{href}}"{{/if}}>
+   {{content}}
+</a>
+
+`;
     }
 }

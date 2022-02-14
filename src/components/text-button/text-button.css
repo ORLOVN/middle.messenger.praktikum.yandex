@@ -1,50 +1,52 @@
-
-.text-button{
-    text-decoration-line: none;
-    cursor: pointer;
+.text-button {
+  text-decoration-line: none;
+  cursor: pointer;
 }
+
 .text-button:visited {
-    text-decoration-line: none;
+  text-decoration-line: none;
 }
 
 .text-button:hover {
-    text-decoration-line: none;
+  text-decoration-line: none;
 }
+
 .text-button:focus {
-    text-decoration-line: none;
+  text-decoration-line: none;
 }
 
-
-.text-button_white{
-    color: var(--main-link-color);
+.text-button_white {
+  color: var(--main-link-color);
 }
+
 .text-button_white:visited {
-    color: var(--main-link-color);
+  color: var(--main-link-color);
 }
 
 .text-button_white:hover {
-    color: var(--main-link-hover-color);
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  color: var(--main-link-hover-color);
+  text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
 }
+
 .text-button_white:focus {
-    color: var(--main-link-hover-color);
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  color: var(--main-link-hover-color);
+  text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
 }
 
-
-
-.text-button_red{
-    color: var(--main-accent-color);
+.text-button_red {
+  color: var(--main-accent-color);
 }
+
 .text-button_red:visited {
-    color: var(--main-accent-color);
+  color: var(--main-accent-color);
 }
 
 .text-button_red:hover {
-    color: var(--main-accent-hover-color);
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  color: var(--main-accent-hover-color);
+  text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
 }
+
 .text-button_red:focus {
-    color: var(--main-accent-hover-color);
-    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  color: var(--main-accent-hover-color);
+  text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
 }

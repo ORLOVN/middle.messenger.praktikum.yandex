@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "color-hex-case": "lower"
+  },
+  "ignoreFiles": [
+    "build/*"
+  ]
+}

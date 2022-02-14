@@ -30,14 +30,15 @@ export class ProfileItem extends Block {
 
     }
     render():string {
-
+// eslint-disable-next-line max-len
         return `
         
  <div class="profile-item">
      <div class="profile-settings__item-label">{{label}}</div>
      {{#if editing}}
      <div class="profile-item__input-wrap">
-         <input class="profile-item__input" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}" value="{{editableValue}}">
+
+       <input class="profile-item__input" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}" value="{{editableValue}}">
      </div>
      {{else}}
      <div class="profile-item__value">

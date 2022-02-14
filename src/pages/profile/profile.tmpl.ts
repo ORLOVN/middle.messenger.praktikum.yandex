@@ -1,7 +1,11 @@
 export default `
 <div class="profile-settings__back-pane">
     {{{backButton}}}
-    {{#if editing}}<form class="profile-settings__settings-pane" method="post">{{else}}<div class="profile-settings__settings-pane">{{/if}}
+    {{#if editing}}
+    <form class="profile-settings__settings-pane">
+    {{else}}
+    <div class="profile-settings__settings-pane">
+    {{/if}}
         <div class="profile-settings__avatar-pane">
             <div class="profile-settings__avatar">
         

@@ -14,6 +14,10 @@ export class Button extends Block {
     }
 
     render():string {
-        return `<button {{#if class}} class="{{class}}" {{/if}}  {{#if type}} type="{{type}}" {{/if}}> {{{content}}} </button>`;
+        return `
+<button {{#if class}} class="{{class}}" {{/if}}  {{#if type}} type="{{type}}" {{/if}}>
+ {{{content}}} 
+ </button>
+`;
     }
 }

@@ -8,7 +8,6 @@ interface BlockMeta<P = any> {
 }
 
 type Events = Values<typeof Block.EVENTS>
-type ChildrenLists = Array<Block>;
 
 export default class Block<P = any> {
     static EVENTS = {
@@ -91,6 +90,7 @@ export default class Block<P = any> {
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     init(props:P) {
 
     }
@@ -104,6 +104,7 @@ export default class Block<P = any> {
     }
 
     // Может переопределять пользователь, необязательно трогать
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     componentDidMount(oldProps: P) {}
 
     dispatchComponentDidMount() {
@@ -119,6 +120,7 @@ export default class Block<P = any> {
     }
 
     // Может переопределять пользователь, необязательно трогать
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     componentDidUpdate(oldProps: P, newProps: P): boolean {
         return true;
     }
@@ -263,18 +265,15 @@ export default class Block<P = any> {
         fragment.innerHTML = TemplateCompile(tmpl, propsAndStubs);
 
 
-        Object.entries(this.children).forEach(([key ,child]) => {
-
-            // здесь происходит замена заглушек в отпарсенном шаблоне на компоненты
+        Object.values(this.children).forEach((child) => {
             // @ts-ignore
             const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
             if (stub) {
                 stub.replaceWith(child.getContent());
             }
-            //
         });
 
-        Object.entries(this.childrenLists).forEach(([key ,list]) => {
+        Object.values(this.childrenLists).forEach((list) => {
             // @ts-ignore
             const stub = fragment.content.querySelector(`[data-id="${list.id}"]`);
 
