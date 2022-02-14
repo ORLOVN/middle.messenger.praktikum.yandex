@@ -29,7 +29,7 @@
     "node": ">=12"
   },
   "homepage": "https://github.com/ORLOVN/messenger-app#readme",
-  "keywords": [
+  "keywords":  [
     "messenger",
     "yandex",
     "practicum"
@@ -41,7 +41,7 @@
     "url": "git+https://github.com/ORLOVN/messenger-app.git"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "parcel build src/index.html && node server.js",
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html",
     "lint": "eslint . --ext .ts"
