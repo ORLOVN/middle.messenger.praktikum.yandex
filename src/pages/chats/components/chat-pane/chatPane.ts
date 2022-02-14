@@ -4,7 +4,6 @@ import Message from '../message';
 import MessageInput from "../message-input";
 import Button from "../../../../components/button";
 import dummydata from "./dummydata";
-import { v4 as uuid} from 'uuid';
 import {listFromArray} from "../../../../utils/blockTools";
 
 

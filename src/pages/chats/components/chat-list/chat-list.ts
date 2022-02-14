@@ -4,7 +4,6 @@ import tmpl from './chat-list.tmpl';
 import Button from '../../../../components/button';
 import ChatListElement from "../chat-list-element";
 import chatListData from './dummydata';
-import { v4 as uuid} from 'uuid';
 import {listFromArray} from "../../../../utils/blockTools";
 
 export class ChatList extends Block {
