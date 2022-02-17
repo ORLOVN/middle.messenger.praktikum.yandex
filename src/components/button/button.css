@@ -1,0 +1,21 @@
+.button_red {
+    display: block;
+    background: var(--form-button-bg-color);
+    margin-left: auto;
+    height: 100%;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-size: 1.5rem;
+    color: var(--form-button-font-color);
+    border: none;
+}
+
+.button_red:hover {
+    box-shadow: var(--main-shadow-level1);
+    background: var(--form-button-bg-hover-color);
+}
+
+.button_red:focus {
+    background: var(--form-button-bg-hover-color);
+    box-shadow: var(--main-shadow-level1);
+}

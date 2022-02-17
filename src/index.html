@@ -1,34 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="no-cache">
-    <meta http-equiv="Expires" content="-1">
-    <meta http-equiv="Cache-Control" content="no-cache">
-
+    <meta charset="UTF-8">
+    <title>messenger app</title>
+    <!-- Connection of Google fonts -->
     <meta charset="utf-8"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-    <title>Sign In</title>
+    <!--  -->
+
+    <!-- Connection of styles of components and pages  -->
     <link rel="stylesheet" href="index.css" />
-    <link rel="stylesheet" href="./modules/chats/chats.css" />
-    <link rel="stylesheet" href="./modules/chats/components/chatlist/chatlist.css" />
-    <link rel="stylesheet" href="./modules/chats/components/chat-pane/chat-pane.css" />
+    <link rel="stylesheet" href="./pages/chats/chats.css" />
+    <link rel="stylesheet" href="pages/chats/components/chat-list/chat-list.css" />
+    <link rel="stylesheet" href="pages/chats/components/chat-pane/chatPane.css" />
+    <link rel="stylesheet" href="pages/chats/components/search-field/search-field.css" />
+    <link rel="stylesheet" href="components/input-assy/input-assy.css" />
+    <link rel="stylesheet" href="components/text-button/text-button.css" />
+    <link rel="stylesheet" href="components/button/button.css" />
+    <link rel="stylesheet" href="pages/signup/signup.css" />
+    <link rel="stylesheet" href="pages/signin/signin.css" />
+    <link rel="stylesheet" href="pages/profile/profile.css" />
+    <link rel="stylesheet" href="pages/profile/components/profile-item/profile-item.css" />
+    <!--  -->
 
-    <link rel="stylesheet" href="modules/signin/signin.css" />
-    <link rel="stylesheet" href="modules/signup/signup.css" />
 
-    <link rel="stylesheet" href="modules/profile-settings/profile-settings.css" />
-
-    <link rel="stylesheet" href="modules/error-pages/error.css" />
-
-    <script type="module" src="./index.js"></script>
 </head>
 <body id="root">
-    <div class="overall-back">
-        <plug_in_place></plug_in_place>
+    <div class="overall-back app"></div>
+    <div class="ref-pane">
+        <a class="ref-pane-link" href="/signin">Sign in</a> |
+        <a class="ref-pane-link" href="/signup">Sign un</a> |
+        <a class="ref-pane-link" href="/chats">Chats</a> |
+        <a class="ref-pane-link" href="/profile">Profile</a> |
     </div>
+    <script type="module" src="index.ts"></script>
+    <script type="module" src="modules/signup.ts"></script>
+    <script type="module" src="modules/signin.ts"></script>
+    <script type="module" src="modules/profile.ts"></script>
 </body>
 </html>

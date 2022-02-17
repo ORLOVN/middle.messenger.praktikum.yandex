@@ -1,0 +1,43 @@
+.signin__pane {
+  display: grid;
+  grid-template-rows: 45px auto 10px;
+  width: 733px;
+  height: 129px;
+  background: var(--main-pane-bg-color);
+  box-shadow: var(--main-shadow-level1);
+  border-radius: 15px;
+}
+
+.signin__pane-name {
+  margin-left: 25px;
+  margin-top: 17px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.signin__signup-link {
+  margin: auto;
+  margin-top: 40px;
+  font-size: 1.5rem;
+}
+
+.signin__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.signin__back {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin__submit-button {
+  margin-right: 25px;
+  height: 40px;
+}
+
