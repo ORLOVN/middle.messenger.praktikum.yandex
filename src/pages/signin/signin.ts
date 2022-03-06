@@ -5,10 +5,7 @@ import InputAssembly from "../../components/input-assy";
 import TextButton from "../../components/text-button";
 import {listFromArray} from "../../utils/blockTools";
 
-import Mediator from "../../utils/Mediator";
-const mediator = Mediator.getInstance();
-
-type inputData = Record<string, string>;
+import mediator from "../../utils/Mediator";
 
 export class Signin extends Block {
     constructor() {
@@ -38,7 +35,7 @@ export class Signin extends Block {
                 placeholder: 'password',
             }
         ];
-        const inputList = listFromArray(inputsProps, InputAssembly, commonProps);
+        const inputList = listFromArray(inputsProps, InputAssembly, commonProps, 'inputList');
 
         const submitButton = new Button({
             content: 'Вход',
@@ -57,9 +54,10 @@ export class Signin extends Block {
 
 
         super({
-            'inputList': inputList,
-            'submitButton' :submitButton,
-            'signupRef': signupRef,
+            name: 'signinPage',
+            inputList: inputList,
+            submitButton :submitButton,
+            signupRef: signupRef,
             eventSelector: 'form',
             events:{
                 submit: (event: Event) => {
@@ -69,33 +67,11 @@ export class Signin extends Block {
                     inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
-                    mediator.emit('signin-POST', values)
+                    mediator.emit('signin-submit', values)
                 }
             }
         });
 
-        mediator.on('signin-GET', (values: inputData, validResults?: inputData) => {
-
-            Object.entries(values).forEach(([name,value]) => {
-                inputList.list[inputList.nameList[name]].setProps({value: value});
-            });
-
-            if (!validResults) {
-                return
-            }
-
-            Object.entries(validResults).forEach(([name,value]) => {
-                inputList.list[inputList.nameList[name]].setProps({validLabel: value});
-            });
-
-        });
-
-        mediator.on('signin-input-validated', (name: string, value: string, validResult: string) => {
-            if (inputList.nameList[name] !== undefined) {
-                inputList.list[inputList.nameList[name]].setProps({value: value, validLabel: validResult});
-            }
-
-        });
     }
 
     render(): string {

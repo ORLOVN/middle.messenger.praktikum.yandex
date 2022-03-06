@@ -5,10 +5,7 @@ import InputAssembly from "../../components/input-assy";
 import TextButton from "../../components/text-button";
 import {listFromArray} from '../../utils/blockTools'
 
-import Mediator from "../../utils/Mediator";
-const mediator = Mediator.getInstance();
-
-type inputData = Record<string, string>;
+import mediator from "../../utils/Mediator";
 
 export class Signup extends Block {
     constructor() {
@@ -26,7 +23,7 @@ export class Signup extends Block {
             }
         }
 
-        const inputsProps = [
+        const inputsProps: Array<Record<string, string>> = [
             {
                 name:'login',
                 type:'text',
@@ -72,9 +69,10 @@ export class Signup extends Block {
             },
         ];
 
-        const inputList = listFromArray(inputsProps, InputAssembly, commonProps);
+        const inputList = listFromArray(inputsProps, InputAssembly, commonProps, 'inputList');
 
         const submitButton = new Button({
+            name: 'submit',
             content: 'Регистрация',
             type: 'submit',
             style: 'red',
@@ -94,6 +92,7 @@ export class Signup extends Block {
 
 
         super({
+            name: 'signupPage',
             inputList: inputList,
             signinRef: signinRef,
             submitButton: submitButton,
@@ -106,32 +105,9 @@ export class Signup extends Block {
                     inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
-                    mediator.emit('signup-PUT', values)
+                    mediator.emit('signup-submit', values)
                 }
             }
-        });
-
-        mediator.on('signup-GET', (values: inputData,validResults?: inputData) => {
-
-            Object.entries(values).forEach(([name,value]) => {
-                inputList.list[inputList.nameList[name]].setProps({value: value});
-            });
-
-            if (!validResults) {
-                return
-            }
-
-            Object.entries(validResults).forEach(([name,value]) => {
-                inputList.list[inputList.nameList[name]].setProps({validLabel: value});
-            });
-
-        });
-
-        mediator.on('signup-input-validated', (name: string, value: string, validResult: string) => {
-            if (inputList.nameList[name] !== undefined) {
-                inputList.list[inputList.nameList[name]].setProps({value: value, validLabel: validResult});
-            }
-
         });
     }
 

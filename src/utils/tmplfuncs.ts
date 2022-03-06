@@ -22,8 +22,9 @@ export function TemplateCompile(tmpl: string, tmplData: any) {
 }
 
 export function ReplaceTag(tag: string, NodeHTML: Node) {
-    if (document!.querySelector(tag)) {
-        document!.querySelector(tag).replaceWith(NodeHTML);
+    let element = document!.querySelector(tag);
+    if (element) {
+        element.replaceWith(NodeHTML);
     }
 }
 export function ParseStringHTML(stringHTML: string) {

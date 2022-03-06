@@ -30,7 +30,7 @@ export class ChatList extends Block {
             }
         };
 
-        const chatList = listFromArray(chatListData,ChatListElement, commonProps);
+        const chatList = listFromArray(chatListData,ChatListElement, commonProps, 'chat-list');
 
         super({chatList: chatList, searchField: searchField, profileButton: profileButton});
 

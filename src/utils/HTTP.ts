@@ -17,7 +17,14 @@ type OptionsWithoutMethod = Omit<Options, 'method'>;
 // Этот тип эквивалентен следующему:
 // type OptionsWithoutMethod = { data?: any };
 
-export class HTTPTransport {
+export default class HTTP {
+    static METHOD = METHOD;
+    private _url: string;
+
+    constructor(url: string = '') {
+        this._url = url;
+    }
+
     get(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
         return this.request(url, {...options, method: METHOD.GET});
     };
@@ -27,7 +34,7 @@ export class HTTPTransport {
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open(method, url);
+            xhr.open(method, this._url+url);
 
             xhr.onload = function() {
                 resolve(xhr);

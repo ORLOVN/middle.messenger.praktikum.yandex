@@ -4,9 +4,9 @@ import Button from "../../components/button";
 import ProfileItem from "./components/profile-item/";
 import TextButton from "../../components/text-button";
 import {listFromArray} from '../../utils/blockTools';
+import router from '../../utils/Router';
 
-import Mediator from "../../utils/Mediator";
-const mediator = Mediator.getInstance();
+import mediator from "../../utils/Mediator";
 
 type inputData = Record<string, string>;
 
@@ -27,7 +27,7 @@ export class Profile extends Block {
             }
         }
 
-        const profileProps = [
+        const profileProps: Array<Record<string, string>> = [
             {
                 name:'login',
                 type:'text',
@@ -56,7 +56,7 @@ export class Profile extends Block {
             },
         ];
 
-        const passwordProps = [
+        const passwordProps: Array<Record<string, string>> = [
             {
                 name:'password',
                 type:'password',
@@ -74,9 +74,9 @@ export class Profile extends Block {
             },
         ];
 
-        const profileInputs = listFromArray(profileProps, ProfileItem, commonProps);
+        const profileInputs = listFromArray(profileProps, ProfileItem, commonProps, 'inputList');
 
-        const passwordInputs = listFromArray(passwordProps, ProfileItem, commonProps);
+        const passwordInputs = listFromArray(passwordProps, ProfileItem, commonProps, 'passwordInputList');
 
         const buttons = {
             changeData: new TextButton({
@@ -117,18 +117,15 @@ export class Profile extends Block {
                         profileInputs.list.forEach((value: Block) => {
                             value.setProps({
                                 editing:false,
-                                validLabel:'',
-                                editableValue:'',
                             });
                         });
 
                         passwordInputs.list.forEach((value: Block) => {
                             value.setProps({
                                 editing:false,
-                                validLabel:'',
-                                editableValue:'',
                             });
                         });
+                        mediator.emit('profile-cancel-editing');
                     }
                 }
             }),
@@ -137,13 +134,14 @@ export class Profile extends Block {
             content: `<span class="material-icons">arrow_back</span>`,
             class: `profile-settings__back-button`,
             events: {
-                click: () => console.log('profile button clicked')
+                click: () => router.go('/')
             }
         });
 
 
 
         super({
+            name: 'profilePage',
             profileInputs: profileInputs,
             passwordInputs: passwordInputs,
             ...buttons,

@@ -1,1 +1,4 @@
-export { Signin as default } from './signin'
+import Connect from '../../utils/Connect';
+import {Signin} from './signin'
+
+export default Connect(Signin);

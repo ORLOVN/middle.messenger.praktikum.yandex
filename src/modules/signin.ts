@@ -1,20 +1,20 @@
-import Mediator from '../utils/Mediator';
+import mediator from '../utils/Mediator';
 import {validate} from "../utils/validtools";
-import {HTTPTransport, METHOD} from "../utils/HTTPTransport";
+import HTTP, {METHOD} from "../utils/HTTP";
+import store from '../utils/Store';
 
-const xhr = new HTTPTransport();
+const xhr = new HTTP();
 
-const mediator = Mediator.getInstance();
-
-mediator.on('signin-POST', (values: Record<string, string>) => {
-    let validResults: Record<string, string> ={};
+mediator.on('signin-submit', (values: Record<string, string>) => {
+    let validResult = '';
     let ifProblem = false;
+
     Object.entries(values).forEach(([name,value]) => {
-        validResults[name] = validate (name, value);
-        ifProblem ||= !!validResults[name];
+        validResult = validate (name, value);
+        store.set(`signinPage.inputList.${name}`, { value: value, validLabel: validResult});
+        ifProblem ||= !!validResult;
     });
 
-    mediator.emit('signin-GET', values, validResults);
 
     if (ifProblem) {
         return
@@ -28,5 +28,5 @@ mediator.on('signin-POST', (values: Record<string, string>) => {
 
 mediator.on('signin-input-blur', (name: string, value: string) => {
     let validResult = validate (name, value, value);
-    mediator.emit('signin-input-validated', name, value, validResult);
+    store.set(`signinPage.inputList.${name}`, { value: value, validLabel: validResult});
 })

@@ -2,6 +2,7 @@ import Block from "../../utils/Block";
 
 export class Button extends Block {
     constructor(props: {
+        name?: string;
         content?: string,
         style? :string,
         class?: string,

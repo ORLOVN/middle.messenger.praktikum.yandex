@@ -1,4 +1,7 @@
 import Block from "./Block";
+import {ChildrenList} from './types';
+// @ts-ignore
+import { v4 as uuid} from 'uuid';
 
 type List = {
     nameList: Record<string, number>
@@ -8,14 +11,17 @@ type List = {
 export function listFromArray(
     propsList: Array<Record<string, string>>,
     BlockClass: typeof Block,
-    commonProps?:Record<string, any>): List
+    commonProps?:Record<string, any>,
+    listName = ''): List
 {
-    const list: {
-        nameList: Record<string, number>
-        list: Array<Block>;
-    } = {
+    const id = uuid();
+    const list: ChildrenList = {
+        id: id,
+        name: listName || id,
+        list: [],
+        commonProps: commonProps || {},
         nameList: {},
-        list: []
+        BlockClass: BlockClass
     }
 
     propsList.forEach(props => {

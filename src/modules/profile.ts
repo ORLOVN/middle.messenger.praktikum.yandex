@@ -1,21 +1,20 @@
-import Mediator from '../utils/Mediator';
+import mediator from '../utils/Mediator';
 import {validate} from "../utils/validtools";
-import {HTTPTransport, METHOD} from "../utils/HTTPTransport";
+import HTTP, {METHOD} from "../utils/HTTP";
+import store from '../utils/Store';
 
-const xhr = new HTTPTransport();
+const xhr = new HTTP();
 
-const mediator = Mediator.getInstance();
-
-mediator.on('profile-PUT', (values: Record<string, string>) => {
-    let validResults: Record<string, string> ={};
+mediator.on('profile-submit', (values: Record<string, string>) => {
+    let validResult = '';
     let ifProblem = false;
     Object.entries(values).forEach(([name,value]) => {
         let aux = (name === 'repassword') ? values['newpassword'] || '' : '';
-        validResults[name] = validate (name, value, aux);
-        ifProblem ||= !!validResults[name];
+        validResult = validate (name, value, aux);
+        let inputList = (name === 'password' || name === 'repassword') ? 'passwordInputList' : 'inputList';
+        store.set(`signupPage.${inputList}.${name}`, { value: value, validLabel: validResult});
+        ifProblem ||= !!validResult;
     });
-
-    mediator.emit('profile-GET', values, validResults);
 
     if (ifProblem) {
         return
@@ -29,5 +28,17 @@ mediator.on('profile-PUT', (values: Record<string, string>) => {
 
 mediator.on('profile-input-blur', (name: string, value: string) => {
     let validResult = validate (name, value, value);
-    mediator.emit('profile-input-validated', name, value, validResult);
+    let inputList = (name === 'password' || name === 'repassword') ? 'passwordInputList' : 'inputList';
+    store.set(`profilePage.${inputList}.${name}`, { value: value, validLabel: validResult});
 })
+
+mediator.on('profile-cancel-editing', () => {
+    Object.entries(store.getState('profilePage.inputList')).forEach(([key, item]) => {
+        let oldValue = (typeof item === "object" && item) ? (item as Record<string, string>).value : '';
+        store.set(`profilePage.inputList.${key}`, {validLabel: '', editableValue: oldValue});
+    })
+    Object.entries(store.getState('profilePage.passwordInputList')).forEach(([key, item]) => {
+        let oldValue = (typeof item === "object" && item) ? (item as Record<string, string>).value : '';
+        store.set(`profilePage.passwordInputList.${key}`, {validLabel: '', editableValue: oldValue});
+    })
+});

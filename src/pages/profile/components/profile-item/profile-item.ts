@@ -11,8 +11,8 @@ export class ProfileItem extends Block {
         label?: string,
         editing?: boolean,
         events?: {
-            keyup?:(eventProp?) => void
-            blur?:(eventProp?) => void
+            keyup?:(eventProp?: any) => void
+            blur?:(eventProp?: FocusEvent) => void
         }
     }) {
 
