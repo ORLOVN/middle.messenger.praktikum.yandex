@@ -29,6 +29,14 @@ export default class HTTP {
         return this.request(url, {...options, method: METHOD.GET});
     };
 
+    post(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
+        return this.request(url, {...options, method: METHOD.POST});
+    };
+
+    put(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
+        return this.request(url, {...options, method: METHOD.PUT});
+    };
+
     request(url: string, options: Options = { method: METHOD.GET }): Promise<XMLHttpRequest> {
         const {method, data} = options;
 
@@ -46,11 +54,11 @@ export default class HTTP {
 
             xhr.setRequestHeader('Accept', 'application/json');
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.withCredentials = true;
 
             if (method === METHOD.GET || !data) {
                 xhr.send();
             } else {
-                console.log(data)
                 xhr.send(data);
             }
         });

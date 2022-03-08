@@ -5,6 +5,7 @@ import Button from '../../../../components/button';
 import ChatListElement from "../chat-list-element";
 import chatListData from './dummydata';
 import {listFromArray} from "../../../../utils/blockTools";
+import router from "../../../../utils/Router";
 
 export class ChatList extends Block {
     constructor() {
@@ -18,7 +19,7 @@ export class ChatList extends Block {
             content: `<span class="material-icons">account_circle</span>`,
             class: 'chatlist__profile-settings',
             events:{
-                click:() => console.log('profile button clicked')
+                click:() => router.go('/setting')
             }
         });
 

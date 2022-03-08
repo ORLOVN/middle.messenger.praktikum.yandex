@@ -6,8 +6,8 @@ import Profile from './pages/profile';
 import router from './utils/Router';
 
 router
-    .use('/', Chats)
-    .use('/signup', Signup)
-    .use('/signin', Signin)
-    .use('/profile', Profile)
+    .use('/messenger', Chats)
+    .use('/sign-up', Signup)
+    .use('/', Signin)
+    .use('/setting', Profile)
     .start();

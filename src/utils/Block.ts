@@ -46,6 +46,9 @@ export default class Block {
         this.children = children;
         this.childrenLists = childrenLists;
         const eventBus = new EventBus<Events>();
+        if (props.display === undefined) {
+            props.display = true;
+        }
         this._meta  = {
             props
         };
@@ -132,8 +135,8 @@ export default class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps: P, newProps: P) {
-        const response = this.componentDidUpdate(oldProps, newProps);
+    _componentDidUpdate(oldProps: P, newProps: P, addedProps: P) {
+        const response = this.componentDidUpdate(oldProps, newProps, addedProps);
         if (!response) {
             return;
         }
@@ -142,7 +145,7 @@ export default class Block {
 
     // Может переопределять пользователь, необязательно трогать
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    componentDidUpdate(_oldProps: P, _newProps: P): boolean {
+    componentDidUpdate(_oldProps: P, _newProps: P, _addedProps: P): boolean {
         return true;
     }
 
@@ -154,7 +157,7 @@ export default class Block {
         Object.assign(oldProps, this._meta.props);
         Object.assign(this._meta.props, nextProps);
         //(this._meta.props.name === 'login') && console.log(this._meta.props);
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this._meta.props);
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this._meta.props, nextProps);
     };
 
     getProps = () => {
@@ -180,6 +183,9 @@ export default class Block {
 
             // не забываем сохранить новый корень
             this._element = element;
+
+            this._element!.style.display = this.props.display ? '' : 'none';
+
         }
 
         this._addEvents();
@@ -266,15 +272,11 @@ export default class Block {
     }
 
     show() {
-        if (this._element) {
-            this._element.style.display = "";
-        }
+        this.setProps({display: true});
     }
 
     hide() {
-        if (this._element) {
-            this._element.style.display = "none";
-        }
+        this.setProps({display: false});
     }
 
     _compile(tmpl: string) {

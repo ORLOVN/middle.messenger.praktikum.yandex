@@ -12,6 +12,7 @@ export default `
             {{{signinRef}}}
         </div>
     </div>
+    {{{popupNote}}}
 </div>
 
 `

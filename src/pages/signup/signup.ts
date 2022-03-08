@@ -3,7 +3,8 @@ import tmpl from './signup.tmpl';
 import Button from "../../components/button";
 import InputAssembly from "../../components/input-assy";
 import TextButton from "../../components/text-button";
-import {listFromArray} from '../../utils/blockTools'
+import {listFromArray} from '../../utils/blockTools';
+import PopupNote from "../../components/popup-note";
 
 import mediator from "../../utils/Mediator";
 
@@ -89,13 +90,16 @@ export class Signup extends Block {
             style: 'white'
         });
 
-
+        const popupNote = new PopupNote({
+            name: 'popupNote'
+        });
 
         super({
             name: 'signupPage',
             inputList: inputList,
             signinRef: signinRef,
             submitButton: submitButton,
+            popupNote: popupNote,
             eventsSelector: 'form',
             events:{
                 submit: (event: Event) => {

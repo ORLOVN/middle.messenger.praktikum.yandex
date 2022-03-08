@@ -34,3 +34,4 @@ export function isArray(value: unknown): value is [] {
 export function isArrayOrObject(value: unknown): value is [] | PlainObject {
     return isPlainObject(value) || isArray(value);
 }
+

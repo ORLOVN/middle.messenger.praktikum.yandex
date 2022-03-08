@@ -8,8 +8,6 @@ import router from '../../utils/Router';
 
 import mediator from "../../utils/Mediator";
 
-type inputData = Record<string, string>;
-
 export class Profile extends Block {
     constructor() {
 
@@ -134,7 +132,7 @@ export class Profile extends Block {
             content: `<span class="material-icons">arrow_back</span>`,
             class: `profile-settings__back-button`,
             events: {
-                click: () => router.go('/')
+                click: () => router.go('/messenger')
             }
         });
 
@@ -157,42 +155,8 @@ export class Profile extends Block {
                     inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
-                    mediator.emit('profile-PUT', values)
+                    mediator.emit('profile-submit', values)
                 }
-            }
-        });
-
-        mediator.on('profile-GET', (values: inputData,validResults: inputData) => {
-
-            Object.entries(values).forEach(([name,value]) => {
-                if (profileInputs.nameList[name] !== undefined) {
-                    profileInputs.list[profileInputs.nameList[name]].setProps({editableValue: value})
-                }
-                if (passwordInputs.nameList[name] !== undefined) {
-                    passwordInputs.list[passwordInputs.nameList[name]].setProps({editableValue: value})
-                }
-            })
-
-            if (!validResults) {
-                return
-            }
-            Object.entries(validResults).forEach(([name,value]) => {
-                if (profileInputs.nameList[name] !== undefined) {
-                    profileInputs.list[profileInputs.nameList[name]].setProps({validLabel: value})
-                }
-                if (passwordInputs.nameList[name] !== undefined) {
-                    passwordInputs.list[passwordInputs.nameList[name]].setProps({validLabel: value})
-                }
-            })
-        });
-
-        mediator.on('profile-input-validated', (name: string, value: string, validResult: string) => {
-            if (profileInputs.nameList[name] !== undefined) {
-                profileInputs.list[profileInputs.nameList[name]].setProps({editableValue: value, validLabel: validResult})
-            }
-
-            if (passwordInputs.nameList[name] !== undefined) {
-                passwordInputs.list[passwordInputs.nameList[name]].setProps({editableValue: value, validLabel: validResult})
             }
         });
     }
