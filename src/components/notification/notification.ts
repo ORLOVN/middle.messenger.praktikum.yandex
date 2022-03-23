@@ -1,7 +1,7 @@
 import Block from "../../utils/Block";
 import {PlainObject} from "../../utils/types";
 
-export class PopupNote extends Block {
+export class Notification extends Block {
     constructor(props: {
         name?: string,
         display?: boolean,

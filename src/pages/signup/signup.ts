@@ -4,7 +4,6 @@ import Button from "../../components/button";
 import InputAssembly from "../../components/input-assy";
 import TextButton from "../../components/text-button";
 import {listFromArray} from '../../utils/blockTools';
-import PopupNote from "../../components/popup-note";
 
 import mediator from "../../utils/Mediator";
 
@@ -85,21 +84,17 @@ export class Signup extends Block {
         })
 
         const signinRef = new TextButton({
-            href: '/signin',
+            href: '/',
             content: 'Уже есть аккаунт?',
             style: 'white'
         });
 
-        const popupNote = new PopupNote({
-            name: 'popupNote'
-        });
 
         super({
             name: 'signupPage',
             inputList: inputList,
             signinRef: signinRef,
             submitButton: submitButton,
-            popupNote: popupNote,
             eventsSelector: 'form',
             events:{
                 submit: (event: Event) => {

@@ -1,12 +1,12 @@
-import Block from "../../utils/Block";
-import tmpl from './profile.tmpl';
-import Button from "../../components/button";
-import ProfileItem from "./components/profile-item/";
-import TextButton from "../../components/text-button";
-import {listFromArray} from '../../utils/blockTools';
-import router from '../../utils/Router';
-
-import mediator from "../../utils/Mediator";
+import Block            from '../../utils/Block';
+import tmpl             from './profile.tmpl';
+import Button           from '../../components/button';
+import ProfileItem      from './components/profile-item/';
+import TextButton       from '../../components/text-button';
+import {listFromArray}  from '../../utils/blockTools';
+import router           from '../../utils/Router';
+import mediator         from '../../utils/Mediator';
+import AvatarSetting    from './components/avatar-setting';
 
 export class Profile extends Block {
     constructor() {
@@ -30,6 +30,11 @@ export class Profile extends Block {
                 name:'login',
                 type:'text',
                 label:'Логин'
+            },
+            {
+                name:'display_name',
+                type:'text',
+                label:'Имя в чате'
             },
             {
                 name:'email',
@@ -128,6 +133,13 @@ export class Profile extends Block {
                 }
             }),
         }
+        const avatarButton = new Button({
+            content: `<span class="material-icons">portrait</span>`,
+            class: `profile-settings__back-button`,
+            events: {
+                click: () => router.go('/messenger')
+            }
+        });
         const backButton = new Button({
             content: `<span class="material-icons">arrow_back</span>`,
             class: `profile-settings__back-button`,
@@ -136,17 +148,31 @@ export class Profile extends Block {
             }
         });
 
+        const avatarSetting = new AvatarSetting({
+            name: 'avatarSetting',
+            events: {
+                submit: (event: Event) => {
+                    event.preventDefault();
+                    if (!event || !event.target) return;
+                    const form = new FormData((event.target as HTMLFormElement));
+                    mediator.emit('profile-avatar-submit', form)
+                }
+            }
+        })
+
 
 
         super({
             name: 'profilePage',
+            avatarSetting: avatarSetting,
             profileInputs: profileInputs,
             passwordInputs: passwordInputs,
+            avatarButton: avatarButton,
             ...buttons,
             backButton: backButton,
             editing: false,
             changingPassword: false,
-            eventsSelector: 'form',
+            eventsSelector: '#profileSettingsForm',
             events:{
                 submit: (event: Event) => {
                     event.preventDefault();

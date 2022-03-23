@@ -6,6 +6,7 @@
   --main-link-hover-color: #fff;
   --main-font-color: aliceblue;
   --main-input-caret-color: #fff;
+  --main-hover-over-color: rgba(147, 153, 153, 0.47);
   --main-icon-color: #939999;
   --main-icon-hover-color: aliceblue;
   --main-accent-color: #b1091d;
@@ -19,6 +20,8 @@
   --from-input-bg-hover-color: var(--main-focus-color);
   --form-button-bg-color: var(--main-accent-color);
   --form-button-bg-hover-color: var(--main-accent-hover-color);
+  --form-button-bg-color1: #c08c02;
+  --form-button-bg-hover-color1: #a18956;
   --form-button-font-color: #fff;
   --chat-blank-font-color: var(--main-font-color);
   --chatlist-bg-color: var(--main-pane-bg-color);

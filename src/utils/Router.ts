@@ -1,5 +1,6 @@
 import Route from "./Route";
 import Block from "./Block";
+import mediator from "./Mediator";
 
 export class Router {
   private readonly routes:        Route[];
@@ -22,6 +23,12 @@ export class Router {
     Object.assign(window, {router :this});
   }
 
+  currentPath(): string{
+    if (this._currentRoute) {
+      return this._currentRoute.getPathname();
+    }
+    return '';
+  }
   use(pathname: string, block: typeof Block) {
     const route = new Route(pathname, block, {rootQuery: this._rootQuery});
     this.routes.push(route);
@@ -48,11 +55,14 @@ export class Router {
     if (route) {
       route!.render();
     }
+    mediator.emit('check-user')
   }
 
   go(pathname: string) {
-    this.history.pushState({}, "", pathname);
-    this._onRoute(pathname);
+    if (!this._currentRoute || this._currentRoute.getPathname() !== pathname) {
+      this.history.pushState({}, "", pathname);
+      this._onRoute(pathname);
+    }
   }
 
   back() {

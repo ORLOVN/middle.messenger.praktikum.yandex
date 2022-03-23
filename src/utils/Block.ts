@@ -22,13 +22,14 @@ export default class Block {
         FLOW_RENDER: "flow:render"
     } as const;
 
-    public id = uuid();
-    protected _element: Nullable<HTMLElement> = null;
-    protected readonly props: P;
-    public readonly name: string;
-    public readonly _meta: BlockMeta;
-    public children: Record<string, Block> = {};
-    public childrenLists: Record<string, ChildrenList> = {};
+    public              id =           uuid();
+    protected           _element:      Nullable<HTMLElement> = null;
+    protected readonly  props:         P;
+    public readonly     name:          string;
+    public readonly     _meta:         BlockMeta;
+    public              children:      Record<string, Block> = {};
+    public              childrenLists: Record<string, ChildrenList> = {};
+
 
     eventBus: () => EventBus<Events>;
 
@@ -55,6 +56,10 @@ export default class Block {
 
         if ('name' in props && typeof props.name === 'string') {
             this.name = props.name;
+        } else if ('id' in props && typeof props.id === 'string') {
+            this.name = props.id
+        } else if ('id' in props && typeof props.id === 'number') {
+            this.name = props.id.toString();
         } else {
             this.name = this.id;
         }
@@ -68,9 +73,9 @@ export default class Block {
     }
 
     _getChildren(propsAndChildren:P) {
-        const children: Record<string, Block> = {};
+        const children:      Record<string, Block> = {};
         const childrenLists: Record<string, ChildrenList> = {};
-        const props: P = {};
+        const props:         P = {};
 
         Object.entries(propsAndChildren).forEach(([key, value]) => {
             if (value instanceof Block) {
@@ -92,9 +97,9 @@ export default class Block {
     }
 
     _registerEvents(eventBus: EventBus<Events>) {
-        eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+        eventBus.on(Block.EVENTS.INIT,        this._init.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDM,    this._componentDidMount.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDU,    this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
@@ -118,18 +123,16 @@ export default class Block {
 
 
     _componentDidMount(props: P) {
-        if (this.children) {
-            Object.values(this.children).forEach(child => {
-                child.dispatchComponentDidMount();
-            });
-        }
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+
         this.componentDidMount(props);
+
     }
 
     // Может переопределять пользователь, необязательно трогать
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    componentDidMount(_oldProps: P) {}
+    componentDidMount(_oldProps: P) {
+
+    }
 
     dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -170,13 +173,14 @@ export default class Block {
 
     _render() {
 
-        const element = this._compile(this.render()); // корневой HTMLElement, который возвращает шаблон
+        const element = this._compile(this.render() || this._meta.props.tmpl); // корневой HTMLElement, который возвращает шаблон
 
         this._removeEvents();
 
         // если this._element еще не назначен — значит это первый рендер
         if (!this._element) {
             this._element = element;
+            this._componentDidMount(this.props);
         } else {
             // с помощью метода replaceWith заменяем элемент в DOM
             this._element.replaceWith(element);
@@ -187,7 +191,6 @@ export default class Block {
             this._element!.style.display = this.props.display ? '' : 'none';
 
         }
-
         this._addEvents();
 
     }
@@ -239,7 +242,9 @@ export default class Block {
     }
 
     _addEvents() {
-        const events: Record<string, () => void> = (this.props as any).events;
+        if (!this._element) return;
+        type Events = Record<string, () => void | Record<string, () => void>>;
+        const events: Events = (this.props as any).events;
 
 
         if (!events) {
@@ -247,32 +252,61 @@ export default class Block {
         }
         const selector = (this.props as any).eventsSelector;
 
-        let eventElement = selector ? (this._element!.querySelector(selector) || this._element) : this._element;
+        let eventElement = selector ? (this._element.querySelector(selector) || this._element) : this._element;
 
 
 
         Object.entries(events).forEach(([event,listener]) => {
-            eventElement.addEventListener(event, listener);
+            if (typeof listener === 'function') {
+                eventElement.addEventListener(event, listener);
+            }
+            if (typeof listener === 'object') {
+                const selector = event;
+                const events = (listener as Events);
+                const eventSubElement = this._element!.querySelector(selector)
+                if (!eventSubElement) return
+                    Object.entries(events).forEach(([event, listener]) => {
+                        eventSubElement.addEventListener(event, listener);
+                    })
+
+            }
         });
     }
 
     _removeEvents() {
-        const events: Record<string, () => void> = (this.props as any).events;
+        if (!this._element) return;
+        type Events = Record<string, () => void | Record<string, () => void>>;
+        const events: Events = (this.props as any).events;
 
         if (!events || !this._element) {
             return;
         }
 
         const selector = (this.props as any).eventsSelector;
-        let eventElement = selector ? (this._element!.querySelector(selector) || this._element) : this._element;
+        let eventElement = selector ? (this._element.querySelector(selector) || this._element) : this._element;
 
         Object.entries(events).forEach(([event,listener]) => {
-            eventElement.removeEventListener(event, listener);
+            if (typeof listener === 'function') {
+                eventElement.removeEventListener(event, listener);
+            }
+            if (typeof listener === 'object') {
+                const selector = event;
+                const events = (listener as Events);
+                const eventElement = this._element!.querySelector(selector)
+                if (!eventElement) return
+                Object.entries(events).forEach(([event, listener]) => {
+                    eventElement.removeEventListener(event, listener);
+                })
+
+            }
         });
     }
+    onShow() {
 
+    }
     show() {
         this.setProps({display: true});
+        this.onShow();
     }
 
     hide() {
@@ -301,9 +335,12 @@ export default class Block {
             Object.values(this.children).forEach((child) => {
                 // @ts-ignore
                 const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
+
                 if (stub) {
-                    stub.replaceWith(child.getContent());
+                    const content = child.getContent();
+                    if (content) stub.replaceWith(child.getContent());
                 }
+
             });
         }
 

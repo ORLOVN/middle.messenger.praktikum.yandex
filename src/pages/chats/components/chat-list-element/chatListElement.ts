@@ -4,11 +4,13 @@ import tmpl from './chatListElement.tmpl';
 export class ChatListElement extends Block {
     constructor(props: {
         id: string,
+        title: string,
+        created_by: number,
         name: string,
         avatar: string,
-        unread: number,
+        unread_count: number,
         time: string,
-        lastmessage: string,
+        last_message: string,
         events?: { click:() => void}}) {
 
         super({...props});

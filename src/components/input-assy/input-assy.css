@@ -19,6 +19,10 @@
   box-shadow: none;
 }
 
+.input-assy__input:focus {
+  outline: none;
+}
+
 .input-assy__wrap {
   font-size: 1.2rem;
   color: var(--from-input-font-color);

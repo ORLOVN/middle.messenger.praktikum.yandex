@@ -1,3 +1,9 @@
+.button {
+    display: block;
+    font-family: Roboto;
+    border: none;
+}
+
 .button_red {
     display: block;
     background: var(--form-button-bg-color);
@@ -17,5 +23,27 @@
 
 .button_red:focus {
     background: var(--form-button-bg-hover-color);
+    box-shadow: var(--main-shadow-level1);
+}
+
+.button_yellow {
+    display: block;
+    background: var(--form-button-bg-color1);
+    margin-left: auto;
+    height: 100%;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-size: 1.5rem;
+    color: var(--form-button-font-color);
+    border: none;
+}
+
+.button_yellow:hover {
+    box-shadow: var(--main-shadow-level1);
+    background: var(--form-button-bg-hover-color1);
+}
+
+.button_yellow:focus {
+    background: var(--form-button-bg-hover-color1);
     box-shadow: var(--main-shadow-level1);
 }

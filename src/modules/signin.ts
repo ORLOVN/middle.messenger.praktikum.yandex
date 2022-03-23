@@ -1,9 +1,11 @@
 import mediator from '../utils/Mediator';
 import {validate} from "../utils/validtools";
-import HTTP, {METHOD} from "../utils/HTTP";
 import store from '../utils/Store';
+import authAPI from "../api/auth-api";
+import router from "../utils/Router";
+import {PlainObject} from "../utils/types";
 
-const xhr = new HTTP();
+const storeLocation = 'signinPage.inputList';
 
 mediator.on('signin-submit', (values: Record<string, string>) => {
     let validResult = '';
@@ -11,7 +13,7 @@ mediator.on('signin-submit', (values: Record<string, string>) => {
 
     Object.entries(values).forEach(([name,value]) => {
         validResult = validate (name, value);
-        store.set(`signinPage.inputList.${name}`, { value: value, validLabel: validResult});
+        store.set(`${storeLocation}.${name}`, { value: value, validLabel: validResult});
         ifProblem ||= !!validResult;
     });
 
@@ -20,13 +22,54 @@ mediator.on('signin-submit', (values: Record<string, string>) => {
         return
     }
 
-    console.log(values);
-    xhr.request('/data-receiver', {method:METHOD.POST, data: JSON.stringify(values)}).then((res) => {
-        console.log(res.status)
-        }).catch( (res) => console.log(res.status));
+    const state: PlainObject = store.getState(storeLocation);
+
+    authAPI.createSession({
+        "login":    state.login.value,
+        "password": state.password.value
+    }).then((res) => {
+        if (res.status === 200) {
+            mediator.emit('check-user')
+        }
+        if (res.status === 400) {
+            mediator.emit('check-user');
+        }
+        if (res.status === 401) {
+            Object.entries(values).forEach(([name, value]) => {
+                store.set(`${storeLocation}.${name}`, {
+                    value: value,
+                    validLabel: 'Неправильные имя пользователя или пароль'
+                });
+            });
+        }
+    })
 })
 
 mediator.on('signin-input-blur', (name: string, value: string) => {
     let validResult = validate (name, value, value);
     store.set(`signinPage.inputList.${name}`, { value: value, validLabel: validResult});
+})
+
+mediator.on('check-user', (force: boolean = false) => {
+    const user = store.getState('user');
+    if (user && user.id && !force) {
+        if (router.currentPath() === '/' || router.currentPath() === '/sign-up') {
+            router.go('/messenger')
+        }
+    } else {
+        authAPI.request().then((res) => {
+            if (res.status === 200) {
+                store.set('user', res.response);
+
+                if (router.currentPath() === '/' || router.currentPath() === '/sign-up') {
+                    router.go('/messenger')
+                }
+            }
+            if (res.status === 401) {
+                if (router.currentPath() !== '/' && router.currentPath() !== '/sign-up') {
+                    router.go('/');
+                }
+            }
+        })
+    }
 })

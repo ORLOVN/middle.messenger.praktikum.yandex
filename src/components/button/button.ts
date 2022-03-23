@@ -8,7 +8,7 @@ export class Button extends Block {
         class?: string,
         type?: string,
         events?: {
-            click:() => void
+            click:({}) => void
         }
     }) {
 
@@ -17,7 +17,7 @@ export class Button extends Block {
 
     render():string {
         return `
-<button {{#if class}} class="{{class}}" {{/if}} {{#if style}}class="button_{{style}}" {{/if}}  {{#if type}} type="{{type}}" {{/if}}>
+<button class = "button{{#if class}} {{class}}{{/if}} {{#if style}} button_{{style}}{{/if}}"  {{#if type}} type="{{type}}" {{/if}}>
  {{{content}}} 
  </button>
 `;

@@ -42,12 +42,12 @@ export class Signin extends Block {
             style: 'red',
             type: 'submit',
             events: {
-                click: () => console.log('profile button clicked')
+                click: () => {}
             }
         });
 
         const signupRef = new TextButton({
-            href: '/signup',
+            href: '/sign-up',
             content:'Нет аккаунта?',
             style: 'white'
         });
@@ -76,10 +76,6 @@ export class Signin extends Block {
 
     render(): string {
         return tmpl;
-    }
-
-    ChatListElementClick(id: string) {
-        console.log(`Element list item ${id} has been clicked`)
     }
 }
 

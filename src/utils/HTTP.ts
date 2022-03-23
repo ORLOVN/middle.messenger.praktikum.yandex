@@ -19,11 +19,15 @@ type OptionsWithoutMethod = Omit<Options, 'method'>;
 
 export default class HTTP {
     static METHOD = METHOD;
-    private _url: string;
+    private readonly _url: string;
 
     constructor(url: string = '') {
         this._url = url;
     }
+
+    delete(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
+        return this.request(url, {...options, method: METHOD.DELETE});
+    };
 
     get(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
         return this.request(url, {...options, method: METHOD.GET});
@@ -34,10 +38,14 @@ export default class HTTP {
     };
 
     put(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
-        return this.request(url, {...options, method: METHOD.PUT});
+        let contentType = 'application/json';
+        if (options.data instanceof FormData) {
+            contentType = '';
+        }
+        return this.request(url, {...options, method: METHOD.PUT}, contentType);
     };
 
-    request(url: string, options: Options = { method: METHOD.GET }): Promise<XMLHttpRequest> {
+    request(url: string, options: Options = { method: METHOD.GET }, contentType: string = 'application/json'): Promise<XMLHttpRequest> {
         const {method, data} = options;
 
         return new Promise((resolve, reject) => {
@@ -53,7 +61,9 @@ export default class HTTP {
             xhr.ontimeout = reject;
 
             xhr.setRequestHeader('Accept', 'application/json');
-            xhr.setRequestHeader('Content-Type', 'application/json');
+            if (contentType) {
+                xhr.setRequestHeader('Content-Type', contentType);
+            }
             xhr.withCredentials = true;
 
             if (method === METHOD.GET || !data) {

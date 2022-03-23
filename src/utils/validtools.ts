@@ -61,3 +61,9 @@ export function validate (name: string, value: string, aux: string = ''): string
 
     return result;
 }
+export function chatNameValidate(value: string): string {
+    if (value.length < 1 || value.length > 20) {
+        return 'Название чата должно иметь от 1 до 20 символов'
+    }
+    return ''
+}

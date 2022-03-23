@@ -1,4 +1,6 @@
 import Block from "./Block";
+import {render} from "./blockTools";
+
 type Props = Record<string, any>;
 
 export default class Route {
@@ -11,6 +13,9 @@ export default class Route {
         this._blockClass = view;
         this._block = null;
         this._props = props;
+    }
+    getPathname(): string {
+        return this._pathname;
     }
 
     navigate(pathname: string) {
@@ -43,13 +48,4 @@ export default class Route {
 
 function isEqual(lhs: any, rhs: any) {
     return lhs === rhs;
-}
-
-function render(query: string, block: Block) {
-    const root = document.querySelector(query);
-    const content = block.getContent();
-    if (root && content) {
-        root.appendChild(content);
-    }
-    return root;
 }

@@ -1,18 +1,31 @@
-import mediator from '../utils/Mediator';
-import {validate} from "../utils/validtools";
-import HTTP, {METHOD} from "../utils/HTTP";
-import store from '../utils/Store';
+import mediator             from '../utils/Mediator';
+import {validate}           from "../utils/validtools";
+import store, {StoreEvents} from '../utils/Store';
+import userApi              from "../api/user-api";
+import {PlainObject}        from "../utils/types";
 
-const xhr = new HTTP();
+const storeLocation = 'profilePage';
+
+const inputNameList = [
+    'first_name',
+    'second_name',
+    'display_name',
+    'login',
+    'email',
+    'phone',
+];
+
 
 mediator.on('profile-submit', (values: Record<string, string>) => {
     let validResult = '';
-    let ifProblem = false;
+    let ifProblem   = false;
+    let inputList   = '';
+    console.log(values);
     Object.entries(values).forEach(([name,value]) => {
         let aux = (name === 'repassword') ? values['newpassword'] || '' : '';
         validResult = validate (name, value, aux);
-        let inputList = (name === 'password' || name === 'repassword') ? 'passwordInputList' : 'inputList';
-        store.set(`signupPage.${inputList}.${name}`, { value: value, validLabel: validResult});
+        inputList = (name === 'password' || name === 'repassword' || name === 'newpassword') ? 'passwordInputList' : 'inputList';
+        store.set(`${storeLocation}.${inputList}.${name}`, { editableValue: value, validLabel: validResult});
         ifProblem ||= !!validResult;
     });
 
@@ -20,16 +33,54 @@ mediator.on('profile-submit', (values: Record<string, string>) => {
         return
     }
 
-    console.log(values);
-    xhr.request('/data-receiver', {method:METHOD.POST, data: JSON.stringify(values)}).then((res) => {
-        console.log(res.status)
-    }).catch( (res) => console.log(res.status));
+    if (inputList === 'inputList') {
+        const state: PlainObject = store.getState(`${storeLocation}.${inputList}`);
+        const requestBody: Record<string, string> = {};
+
+        inputNameList.forEach(item => {requestBody[item] = state[item].editableValue})
+
+        userApi.change(requestBody).then((res) => {
+            if (res.status === 200) {
+                store.set(`notification`, { content: 'Данные изменены'});
+                mediator.emit('check-user', true);
+                store.set(`${storeLocation}`, { editing:false, changingPassword:false });
+                return
+            }
+        })
+    }
+
+    if (inputList === 'passwordInputList') {
+        const state: PlainObject = store.getState(`${storeLocation}.${inputList}`);
+        const requestBody: Record<string, string>=
+            {
+                "oldPassword":      state.password.editableValue,
+                "newPassword":      state.newpassword.editableValue,
+            }
+
+        userApi.changePassword(requestBody).then((res) => {
+            if (res.status === 200) {
+                store.set(`notification`, { content: 'Пароль изменен'});
+                Object.keys(store.getState(`${storeLocation}.${inputList}`)).forEach((key) => {
+                    store.set(`${storeLocation}.${inputList}.${key}`, {validLabel: '', editableValue: '', value: '', editing: false});
+                });
+                store.set(`${storeLocation}`, { editing:false, changingPassword:false });
+            }
+        })
+    }
 })
 
 mediator.on('profile-input-blur', (name: string, value: string) => {
     let validResult = validate (name, value, value);
-    let inputList = (name === 'password' || name === 'repassword') ? 'passwordInputList' : 'inputList';
-    store.set(`profilePage.${inputList}.${name}`, { value: value, validLabel: validResult});
+    let inputList = (name === 'password' || name === 'repassword' || name === 'newpassword') ? 'passwordInputList' : 'inputList';
+    store.set(`profilePage.${inputList}.${name}`, { editableValue: value, validLabel: validResult});
+})
+
+mediator.on('profile-avatar-submit', (formData: FormData) => {
+    userApi.changeAvatar(formData).then((res) => {
+        if (res.status === 200) {
+            store.set(`user`, {...res.response});
+        }
+    })
 })
 
 mediator.on('profile-cancel-editing', () => {
@@ -42,3 +93,15 @@ mediator.on('profile-cancel-editing', () => {
         store.set(`profilePage.passwordInputList.${key}`, {validLabel: '', editableValue: oldValue});
     })
 });
+
+store.on(`${StoreEvents.Updated}-user`, (user) => {
+    inputNameList.forEach((item) => {
+        store.set(`${storeLocation}.inputList.${item}`, {validLabel: '', editableValue: user[item], value: user[item], editing: false});
+    });
+    store.set(`${storeLocation}.avatarSetting`, {
+        first_name: user.first_name,
+        display_name: user.display_name,
+        avatar_file: `https://ya-praktikum.tech/api/v2/resources/${user.avatar}`,
+    });
+});
+

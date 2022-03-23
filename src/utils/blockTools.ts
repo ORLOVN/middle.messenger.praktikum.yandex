@@ -9,7 +9,7 @@ type List = {
 }
 
 export function listFromArray(
-    propsList: Array<Record<string, string>>,
+    propsList: Array<Record<string, any>>,
     BlockClass: typeof Block,
     commonProps?:Record<string, any>,
     listName = ''): List
@@ -25,6 +25,7 @@ export function listFromArray(
     }
 
     propsList.forEach(props => {
+        props.name = props.name || props.id || uuid();
         list.nameList[props.name] = -1 +
             list.list.push(new BlockClass({
                 ...props,
@@ -33,4 +34,13 @@ export function listFromArray(
     });
 
     return list;
+}
+
+export function render(query: string, block: Block) {
+    const root = document.querySelector(query);
+    const content = block.getContent();
+    if (root && content) {
+        root.appendChild(content);
+    }
+    return root;
 }

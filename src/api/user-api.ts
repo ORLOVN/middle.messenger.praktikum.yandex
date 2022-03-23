@@ -1,25 +1,24 @@
 import HTTP from "../utils/HTTP";
-import {BaseAPI} from "./base-api";
+import {BaseAPI, handleResponse} from "./base-api";
 
-
-const chatAPIInstance  = new HTTP('https://ya-praktikum.tech/api/v2/user/');
+const http  = new HTTP('https://ya-praktikum.tech/api/v2/user');
 
 
 export class UserApi extends BaseAPI {
     change(requestBody: Record<string, string>) {
-        return chatAPIInstance.put('/profile', {data: JSON.stringify(requestBody)})
+        return handleResponse(http.put('/profile', {data: JSON.stringify(requestBody)}),200);
     }
-    changeAvatar(requestBody: Record<string, string>) {
-        return chatAPIInstance.put('/profile/avatar', {data: JSON.stringify(requestBody)})
+    changeAvatar(formData: FormData) {
+        return handleResponse(http.put('/profile/avatar', {data: formData}), 200);
     }
     changePassword(requestBody: Record<string, string>) {
-        return chatAPIInstance.put('/profile/password', {data: JSON.stringify(requestBody)})
+        return handleResponse(http.put('/password', {data: JSON.stringify(requestBody)}), 200);
     }
     request(id: number) {
-        return chatAPIInstance.get(`/${id}`, {});
+        return handleResponse(http.get(`/${id}`, {}), 200);
     }
     search(requestBody: Record<string, string>) {
-        return chatAPIInstance.post('/search', {data: JSON.stringify(requestBody)})
+        return handleResponse(http.post('/search', {data: JSON.stringify(requestBody)}),200);
     }
 }
 

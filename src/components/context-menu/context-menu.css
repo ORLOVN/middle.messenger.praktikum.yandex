@@ -1,0 +1,35 @@
+.popup-input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(182, 160, 160, 0.32);
+}
+
+.popup-input__field {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background: #1E2418;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.popup-input__title {
+    margin: 5px;
+    font-size: 1.3rem;
+
+}
+
+.popup-input__button-pane {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding: 10px;
+}
+
+.popup-input__button {
+    margin-left: 20px;
+}
