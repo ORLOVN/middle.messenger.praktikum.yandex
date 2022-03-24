@@ -45,6 +45,14 @@ mediator.on('signin-submit', (values: Record<string, string>) => {
     })
 })
 
+mediator.on('signout', () => {
+    authAPI.delete().then((res) => {
+        if (res.status === 200) {
+            router.go('/');
+        }
+    })
+})
+
 mediator.on('signin-input-blur', (name: string, value: string) => {
     let validResult = validate (name, value, value);
     store.set(`signinPage.inputList.${name}`, { value: value, validLabel: validResult});

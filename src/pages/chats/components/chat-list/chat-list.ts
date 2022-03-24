@@ -6,6 +6,7 @@ import ChatListElement  from "../chat-list-element";
 import chatListData     from './dummydata';
 import {listFromArray}  from "../../../../utils/blockTools";
 import router           from "../../../../utils/Router";
+import mediator         from "../../../../utils/Mediator";
 
 export class ChatList extends Block {
     constructor(props:{
@@ -17,11 +18,11 @@ export class ChatList extends Block {
             }
         });
 
-        const newChatButton  = new Button({
-            content: `<span class="material-icons">account_circle</span>`,
+        const addChatButton  = new Button({
+            content: `<span class="material-icons">add_comment</span>`,
             class: 'chatlist__profile-settings',
             events:{
-                click:() => router.go('/setting')
+                click:() => mediator.emit('chatPage-new-chat')
             }
         });
 
@@ -34,12 +35,16 @@ export class ChatList extends Block {
         });
 
         const logoutButton  = new Button({
-            content: `<span class="material-icons">account_circle</span>`,
+            content: `<span class="material-icons">logout</span>`,
             class: 'chatlist__profile-settings',
             events:{
-                click:() => router.go('/setting')
+                click:() => {
+                    mediator.emit('signout');
+                },
             }
         });
+
+
 
         const commonProps = {
             events: {
@@ -52,9 +57,11 @@ export class ChatList extends Block {
         const chatList = listFromArray(chatListData,ChatListElement, commonProps, 'list');
 
         super({
-            chatList: chatList,
-            searchField: searchField,
-            profileButton: profileButton,
+            chatList:       chatList,
+            searchField:    searchField,
+            profileButton:  profileButton,
+            addChatButton:  addChatButton,
+            logoutButton:   logoutButton,
             ...props});
 
     }

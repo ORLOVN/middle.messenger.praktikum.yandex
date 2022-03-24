@@ -31,20 +31,14 @@ mediator.on('signup-submit', (values: Record<string, string>) => {
         "phone":         state.phone.value
     }
 
-    authAPI.create(requestBody).then((res) => {
-        let response = JSON.parse(res.response);
+    authAPI.createUser(requestBody).then((res) => {
             if (res.status === 200) {
                 mediator.emit('check-user');
-                return
             }
             if (res.status === 400) {
                 store.set(`${storeLocation}.login`, {validLabel: 'Такой пользователь уже существует'});
-                return
             }
-            throw `Status ${res.status}: ${response.reason}`;
-        }).catch((reason) => {
-            store.set('notification',{content: reason});
-        });
+        })
 
 
 })

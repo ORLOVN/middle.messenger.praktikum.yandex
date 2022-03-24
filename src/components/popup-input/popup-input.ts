@@ -17,9 +17,11 @@ export class PopupInput extends Block {
         display?:          boolean,
         validFunction?: ()=> void,
         events?: {
-            click:() => void
+            click:() => void,
         }
     } = {
+        okCaption: 'Ок',
+        cancelCaption: 'Отмена',
         display:           false,
     }) {
         const input = new InputAssy({

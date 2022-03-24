@@ -9,6 +9,9 @@ export class AuthApi extends BaseAPI {
     createSession(requestBody: Record<string, string>) {
         return handleResponse(http.post('/signin', {data: JSON.stringify(requestBody)}), 200, 400, 401);
     }
+    createUser(requestBody: Record<string, string>) {
+        return handleResponse(http.post('/signup', {data: JSON.stringify(requestBody)}), 200, 400);
+    }
     request() {
         return handleResponse(http.get('/user', {}),200, 401);
     }

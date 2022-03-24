@@ -17,9 +17,9 @@ export default function Connect(Component: typeof Block) {
 
 function connectDeep(rootBlock: Block, parentPath: string) {
 
-    store.set(parentPath, rootBlock._meta.props, true);
+   store.set(parentPath, rootBlock._meta.props, true);
 
-    store.on(`${StoreEvents.Updated}-${parentPath}`, () => {
+   store.on(`${StoreEvents.Updated}-${parentPath}`, () => {
         rootBlock.setProps({...store.getState(parentPath)});
     });
 
