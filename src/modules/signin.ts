@@ -47,8 +47,10 @@ mediator.on('signin-submit', (values: Record<string, string>) => {
 
 mediator.on('signout', () => {
     authAPI.delete().then((res) => {
+
         if (res.status === 200) {
-            router.go('/');
+             store.replace('user', {});
+             router.go('/');
         }
     })
 })

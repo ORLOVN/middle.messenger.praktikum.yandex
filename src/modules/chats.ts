@@ -25,7 +25,6 @@ mediator.on('chatPage-get-chats', () => {
                 chat['avatar_file'] = `https://ya-praktikum.tech/api/v2/resources/${chat.avatar}`
                 list[chat.name || chat.id] = chat;
             })
-            console.log(list)
             store.replace('chatPage.chatList.list',list);
         }
     })

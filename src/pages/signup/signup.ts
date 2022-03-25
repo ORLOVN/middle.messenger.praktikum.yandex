@@ -6,6 +6,7 @@ import TextButton from "../../components/text-button";
 import {listFromArray} from '../../utils/blockTools';
 
 import mediator from "../../utils/Mediator";
+import router from "../../utils/Router";
 
 export class Signup extends Block {
     constructor() {
@@ -84,9 +85,13 @@ export class Signup extends Block {
         })
 
         const signinRef = new TextButton({
-            href: '/',
             content: 'Уже есть аккаунт?',
-            style: 'white'
+            style: 'white',
+            events: {
+                click: () => {
+                    router.go('/')
+                }
+            }
         });
 
 

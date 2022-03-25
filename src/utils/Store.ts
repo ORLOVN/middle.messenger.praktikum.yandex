@@ -38,13 +38,16 @@ export class Store extends EventBus{
     public set(path: string, value: unknown, mute = false) {
         set(this.state, path, value);
         if (!mute) {
-            this.emit(`${StoreEvents.Updated}-${path}`, value);
+            try {
+                this.emit(`${StoreEvents.Updated}-${path}`, value);
+            } catch (e) {
+
+            }
         }
     };
 
     public replace(path: string, value: unknown, mute = false) {
         const storeObject = find(this.state, path);
-        console.log(storeObject)
         Object.keys(storeObject).forEach(key => delete storeObject[key]);
         Object.assign(storeObject, value)
         if (!mute) {
