@@ -7,6 +7,7 @@ import chatListData     from './dummydata';
 import {listFromArray}  from "../../../../utils/blockTools";
 import router           from "../../../../utils/Router";
 import mediator         from "../../../../utils/Mediator";
+import {ContextMenu} from "../../../../components/context-menu/context-menu";
 
 export class ChatList extends Block {
     constructor(props:{
@@ -44,7 +45,9 @@ export class ChatList extends Block {
             }
         });
 
-
+        const contextMenu = new ContextMenu({
+            name: 'contextMenu'
+        })
 
         const commonProps = {
             events: {
