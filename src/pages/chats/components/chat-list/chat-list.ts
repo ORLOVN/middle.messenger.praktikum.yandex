@@ -46,8 +46,21 @@ export class ChatList extends Block {
         });
 
         const contextMenu = new ContextMenu({
-            name: 'contextMenu'
-        })
+            name: 'contextMenu',
+            items: [
+                {
+                    title: 'Удалить',
+                    value: 'delete',
+                    enable: true,
+                },
+                {
+                    title: 'Архивировать',
+                    value: 'archive',
+                    enable: false,
+                }
+            ],
+        }
+        )
 
         const commonProps = {
             events: {
@@ -65,7 +78,17 @@ export class ChatList extends Block {
             profileButton:  profileButton,
             addChatButton:  addChatButton,
             logoutButton:   logoutButton,
-            ...props});
+            contextMenu:    contextMenu,
+            ...props,
+            events: {
+                '.chatlist__list-pane': {
+                    contextmenu: (event: MouseEvent) => {
+                        event.preventDefault();
+                        contextMenu.popup(event.pageX, event.pageY)
+                        console.log(event)
+                    }
+                }
+            }});
 
     }
 

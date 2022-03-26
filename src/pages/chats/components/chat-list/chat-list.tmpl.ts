@@ -10,7 +10,7 @@ export default `
     <ul id="chatlist" class="chatlist__list-pane">
         {{{chatList}}}
     </ul>
-
+{{{contextMenu}}}
  </div>
     
 `
