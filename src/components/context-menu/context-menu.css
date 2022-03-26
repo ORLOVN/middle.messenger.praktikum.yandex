@@ -1,8 +1,5 @@
 .context-menu {
-    left: 100px;
-    top: 100px;
-    display: block;
-    position: absolute;
+    margin: 100px;
     z-index: 10;
     padding: 12px 0;
     width: 240px;
@@ -10,6 +7,10 @@
     border: solid 1px var(--bottom-line-color);
     box-shadow: var(--main-shadow-level2);
     border-radius: 15px;
+}
+
+.context-menu__behind-pane {
+    position: absolute;
 }
 
 .context-menu--active {
@@ -37,8 +38,18 @@
     color: var(--main-font-color);
     text-decoration: none;
     font-size: 1.3rem;
+    cursor: pointer;
 }
 
 .context-menu__link:hover {
     background-color: var(--main-focus-color);
+}
+
+.context-menu__link_disabled {
+    display: block;
+    padding: 4px 12px;
+    color: var(--main-bg-color);
+    text-decoration: none;
+    font-size: 1.3rem;
+    cursor: pointer;
 }

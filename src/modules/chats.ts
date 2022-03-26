@@ -40,3 +40,13 @@ mediator.on('chatPage-new-chat', () => {
         })
     })
 })
+
+mediator.on('chatPage-chat-list-action', (id, action) => {
+    if (action === 'delete') {
+        ChatAPI.deleteChat(id).then((res) => {
+            if (res.status === 200) {
+                mediator.emit('chatPage-get-chats')
+            }
+        });
+    }
+})

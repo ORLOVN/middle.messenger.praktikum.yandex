@@ -63,11 +63,6 @@ export class ChatList extends Block {
         )
 
         const commonProps = {
-            events: {
-                click: () => {
-                    console.log(`Element list item has been clicked`);
-                }
-            }
         };
 
         const chatList = listFromArray(chatListData,ChatListElement, commonProps, 'list');
@@ -84,8 +79,18 @@ export class ChatList extends Block {
                 '.chatlist__list-pane': {
                     contextmenu: (event: MouseEvent) => {
                         event.preventDefault();
-                        contextMenu.popup(event.pageX, event.pageY)
-                        console.log(event)
+                        const liElement = (event.target as HTMLLIElement).closest('li')
+                        if (!liElement) return;
+                        const id = liElement.getAttribute('data-id');
+                        console.log(id)
+                        if (!id) return;
+                        contextMenu.popup({x: event.pageX, y: event.pageY})
+                            .then((value)=> {
+                                if (value) {
+                                    mediator.emit('chatPage-chat-list-action', id, value);
+                                }
+                            })
+
                     }
                 }
             }});

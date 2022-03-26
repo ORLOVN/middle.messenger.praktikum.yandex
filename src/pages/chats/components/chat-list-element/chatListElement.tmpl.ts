@@ -1,5 +1,5 @@
 export default `
-<li class="chatselector">
+<li class="chatselector" data-id="{{id}}">
 <div class="chatselector__avatar-container">
 <div class="chatselector__avatar" {{#if avatar}} style="background-image: url('{{avatar_file}}')" {{/if}}>
 </div>
