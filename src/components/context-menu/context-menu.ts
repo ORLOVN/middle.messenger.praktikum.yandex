@@ -81,10 +81,41 @@ export class ContextMenu extends Block {
 
     popup(position: {x: number, y: number}) {
         return new Promise((resolve, reject) => {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            this.show();
+
+            const element = this.getContent();
+            if (!element) {reject(); return}
+
+            const navElement = element.querySelector('nav');
+            if (!navElement) {reject(); return}
+
+            const rect =navElement.getBoundingClientRect();
+
+
+
+
             position.x -= 100;
             position.y -= 100;
+
+            console.log('rect', rect)
+            console.log('window',windowWidth, windowHeight)
+            console.log('position', position)
+
+            if (rect.width + position.x > windowWidth) {
+                position.x -= rect.width;
+            }
+
+            console.log('calculation',rect.height + position.y , windowHeight)
+            if (rect.height + position.y > windowHeight) {
+                position.y -= rect.height;
+            }
+
             this.setProps(position);
-            this.show();
+
+
             this.clicked = resolve;
             this.clickedOutside = reject;
         }).then((event:MouseEvent) => {
