@@ -82,7 +82,6 @@ export class ChatList extends Block {
                         const liElement = (event.target as HTMLLIElement).closest('li')
                         if (!liElement) return;
                         const id = liElement.getAttribute('data-id');
-                        console.log(id)
                         if (!id) return;
                         contextMenu.popup({x: event.pageX, y: event.pageY})
                             .then((value)=> {
@@ -91,6 +90,15 @@ export class ChatList extends Block {
                                 }
                             })
 
+                    },
+
+                    click: (event: MouseEvent) => {
+                        const liElement = (event.target as HTMLLIElement).closest('li')
+                        if (!liElement) return;
+                        const id = liElement.getAttribute('data-id');
+                        if (!id) return;
+
+                        mediator.emit('chatPage-chat-select', id);
                     }
                 }
             }});

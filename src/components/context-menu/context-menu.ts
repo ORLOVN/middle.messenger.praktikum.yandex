@@ -27,17 +27,8 @@ export class ContextMenu extends Block {
                         this.clicked(event);
                     }
                 },
-                contextmenu: (event: MouseEvent) => {
-                    const liElement = (event.target as HTMLLIElement).closest('li')
-                    if (!liElement) {
-                        this.clicked(event);
-                        return;
-                    }
-                    const enable = liElement.getAttribute('data-enable')
-                    if (enable) {
-                        this.clicked(event);
-                    }
-                    event.preventDefault();
+                contextmenu: () => {
+                    this.clickedOutside();
                 },
                 mouseout: (event: MouseEvent) => {
                     if (!this._element) return;
@@ -63,15 +54,15 @@ export class ContextMenu extends Block {
     render(): string {
         return `
 <div class="context-menu__behind-pane" style="left:{{x}}px; top: {{y}}px">
-<nav id="context-menu" class="context-menu">
-    <ul class="context-menu__items">
-    {{#each items}}
-      <li class="context-menu__item" data-value="{{this.value}}" data-enable="{{#if this.enable}}true{{/if}}">
-        <a class="{{#if this.enable}}context-menu__link{{else}}context-menu__link_disabled{{/if}}" >{{this.title}}</a>
-      </li>
-    {{/each}}
-    </ul>
-</nav>
+    <nav id="context-menu" class="context-menu">
+        <ul class="context-menu__items">
+        {{#each items}}
+          <li class="context-menu__item" data-value="{{this.value}}" data-enable="{{#if this.enable}}true{{/if}}">
+            <a class="{{#if this.enable}}context-menu__link{{else}}context-menu__link_disabled{{/if}}" >{{this.title}}</a>
+          </li>
+        {{/each}}
+        </ul>
+    </nav>
 </div>  
         `
     }
@@ -94,24 +85,16 @@ export class ContextMenu extends Block {
 
             const rect =navElement.getBoundingClientRect();
 
-
-
-
-            position.x -= 100;
-            position.y -= 100;
-
-            console.log('rect', rect)
-            console.log('window',windowWidth, windowHeight)
-            console.log('position', position)
-
             if (rect.width + position.x > windowWidth) {
                 position.x -= rect.width;
             }
 
-            console.log('calculation',rect.height + position.y , windowHeight)
             if (rect.height + position.y > windowHeight) {
                 position.y -= rect.height;
             }
+
+            position.x -= 100;
+            position.y -= 100;
 
             this.setProps(position);
 

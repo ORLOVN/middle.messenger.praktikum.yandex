@@ -17,17 +17,68 @@ mediator.on('chatPage-initiated', () => {
 
 
 mediator.on('chatPage-get-chats', () => {
-    ChatAPI.getChats().then((res) => {
-        if (res.status === 200) {
-            const list: Record<string | number, Record<string, string | number>> = {};
+    ChatAPI.getChats()
+        .then((res) => {
+            if (res.status === 200) {
+                const list: Record<string | number, Record<string, string | number>> = {};
 
-            res.response.forEach((chat: Record<string, string | number>) => {
-                chat['avatar_file'] = `https://ya-praktikum.tech/api/v2/resources/${chat.avatar}`
-                list[chat.name || chat.id] = chat;
+                res.response.forEach((chat: Record<string, string | number>) => {
+                    chat['avatar_file'] = `https://ya-praktikum.tech/api/v2/resources/${chat.avatar}`
+                    list[chat.name || chat.id] = chat;
+                })
+                store.replace('chatPage.chatList.list',list);
+                console.log(list)
+                return list;
+            }
+        })
+        .then( (list) => {
+           Object.entries(list).forEach(([id, item]) => {
+               ChatAPI.requestChatToken(id)
+                   .then((res) => {
+                   if (res.status === 200) {
+                       item.token = res.response.token;
+                   }
+               })
             })
-            store.replace('chatPage.chatList.list',list);
-        }
-    })
+
+           return list
+        })
+        .then((list) => {
+
+            Object.entries(list).forEach(([id, item]) => {
+
+                const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/6/1/${item.token}`);
+
+                list.socket = socket;
+
+                socket.addEventListener('open', () => {
+                    console.log(`Соединение c ${list.title} установлено`);
+                    socket.send(JSON.stringify({
+                        content: 'Моё второе сообщение миру!',
+                        type: 'message',
+                    }));
+                });
+
+                socket.addEventListener('close', event => {
+                    if (event.wasClean) {
+                        console.log(`Соединение закрыто чисто с ${list.title}`);
+                    } else {
+                        console.log(`Обрыв соединения с ${list.title}`);
+                    }
+
+                    console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+                });
+
+                socket.addEventListener('message', event => {
+                    console.log('Получены данные', event.data);
+                });
+
+                socket.addEventListener('error', event => {
+                    console.log('Ошибка', event.message);
+                });
+
+            })
+        })
 });
 
 mediator.on('chatPage-new-chat', () => {
@@ -48,5 +99,47 @@ mediator.on('chatPage-chat-list-action', (id, action) => {
                 mediator.emit('chatPage-get-chats')
             }
         });
+    }
+})
+
+
+mediator.on('chatPage-chat-select', (id) => {
+    let currentChat = store.getState(`chats.${id}`)
+    if (!currentChat) {
+        currentChat = {};
+        ChatAPI.requestChatToken(id).then((res) => {
+            if (res.status === 200) {
+                currentChat.token = res.response.token;
+            }
+
+            const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/6/1/${currentChat.token}`);
+
+            socket.addEventListener('open', () => {
+                console.log('Соединение установлено');
+
+                socket.send(JSON.stringify({
+                    content: 'Моё второе сообщение миру!',
+                    type: 'message',
+                }));
+            });
+
+            socket.addEventListener('close', event => {
+                if (event.wasClean) {
+                    console.log('Соединение закрыто чисто');
+                } else {
+                    console.log('Обрыв соединения');
+                }
+
+                console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+            });
+
+            socket.addEventListener('message', event => {
+                console.log('Получены данные', event.data);
+            });
+
+            socket.addEventListener('error', event => {
+                console.log('Ошибка', event.message);
+            });
+        })
     }
 })
