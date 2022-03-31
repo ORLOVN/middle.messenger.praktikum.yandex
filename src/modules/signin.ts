@@ -60,26 +60,31 @@ mediator.on('signin-input-blur', (name: string, value: string) => {
     store.set(`signinPage.inputList.${name}`, { value: value, validLabel: validResult});
 })
 
-mediator.on('check-user', (force: boolean = false) => {
+mediator.on('check-user', async (force: boolean = false, resolve = ()=>{}) => {
     const user = store.getState('user');
     if (user && user.id && !force) {
         if (router.currentPath() === '/' || router.currentPath() === '/sign-up') {
             router.go('/messenger')
         }
-    } else {
-        authAPI.request().then((res) => {
-            if (res.status === 200) {
-                store.set('user', res.response);
 
-                if (router.currentPath() === '/' || router.currentPath() === '/sign-up') {
-                    router.go('/messenger')
-                }
+        resolve(user);
+
+    } else {
+        const res = await authAPI.request()
+        if (res.status === 200) {
+            store.set('user', res.response);
+
+            if (router.currentPath() === '/' || router.currentPath() === '/sign-up') {
+                router.go('/messenger')
             }
-            if (res.status === 401) {
-                if (router.currentPath() !== '/' && router.currentPath() !== '/sign-up') {
-                    router.go('/');
-                }
+
+            resolve(res.response);
+        }
+        if (res.status === 401) {
+            if (router.currentPath() !== '/' && router.currentPath() !== '/sign-up') {
+                router.go('/');
             }
-        })
+        }
+
     }
 })

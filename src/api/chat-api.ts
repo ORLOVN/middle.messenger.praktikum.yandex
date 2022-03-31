@@ -82,7 +82,7 @@ class ChatAPI extends BaseAPI {
         return handleResponse(http.delete('/users', {data: JSON.stringify(usersRequest)}), 200)
     }
 
-    requestChatToken(id: number) {
+    requestChatToken(id: string) {
         return handleResponse(http.post(`/token/${id}`, {}),200);
     }
 }

@@ -4,6 +4,7 @@ import authAPI from "../api/auth-api";
 import router   from '../utils/Router';
 import store    from '../utils/Store';
 
+
 mediator.on('chats-logout', () => {
     authAPI.delete().then(() => {
         router.go('/');
@@ -16,22 +17,22 @@ mediator.on('chatPage-initiated', () => {
 });
 
 
-mediator.on('chatPage-get-chats', () => {
+mediator.on('chatPage-get-chats', async () => {
     ChatAPI.getChats()
         .then((res) => {
             if (res.status === 200) {
-                const list: Record<string | number, Record<string, string | number>> = {};
+                const list: Record<string, Record<string, string | number>> = {};
 
                 res.response.forEach((chat: Record<string, string | number>) => {
                     chat['avatar_file'] = `https://ya-praktikum.tech/api/v2/resources/${chat.avatar}`
-                    list[chat.name || chat.id] = chat;
+                    list[chat.id] = chat;
                 })
                 store.replace('chatPage.chatList.list',list);
                 console.log(list)
                 return list;
             }
         })
-        .then( (list) => {
+   /*     .then( (list) => {
            Object.entries(list).forEach(([id, item]) => {
                ChatAPI.requestChatToken(id)
                    .then((res) => {
@@ -41,13 +42,14 @@ mediator.on('chatPage-get-chats', () => {
                })
             })
 
+            console.log(list)
            return list
-        })
-        .then((list) => {
+        })*/
+      /*  .then((list) => {
 
             Object.entries(list).forEach(([id, item]) => {
 
-                const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/6/1/${item.token}`);
+                const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${item.token}`);
 
                 list.socket = socket;
 
@@ -78,7 +80,7 @@ mediator.on('chatPage-get-chats', () => {
                 });
 
             })
-        })
+        })*/
 });
 
 mediator.on('chatPage-new-chat', () => {
@@ -105,6 +107,8 @@ mediator.on('chatPage-chat-list-action', (id, action) => {
 
 mediator.on('chatPage-chat-select', (id) => {
     let currentChat = store.getState(`chats.${id}`)
+    let user = store.getState('user');
+    if (!user) return;
     if (!currentChat) {
         currentChat = {};
         ChatAPI.requestChatToken(id).then((res) => {
