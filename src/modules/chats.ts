@@ -3,6 +3,7 @@ import ChatAPI  from '../api/chat-api';
 import authAPI from "../api/auth-api";
 import router   from '../utils/Router';
 import store    from '../utils/Store';
+import chatDealer from "./chats/ChatDealer";
 
 
 mediator.on('chats-logout', () => {
@@ -18,7 +19,9 @@ mediator.on('chatPage-initiated', () => {
 
 
 mediator.on('chatPage-get-chats', async () => {
-    ChatAPI.getChats()
+
+    await chatDealer.uploadAllChats();
+/*    ChatAPI.getChats()
         .then((res) => {
             if (res.status === 200) {
                 const list: Record<string, Record<string, string | number>> = {};
@@ -83,15 +86,16 @@ mediator.on('chatPage-get-chats', async () => {
         })*/
 });
 
-mediator.on('chatPage-new-chat', () => {
-    const popupInput = store.getState('chatPage.popupNewChat');
+mediator.on('chatPage-new-chat', async (title) => {
+    await chatDealer.uploadAllChats(title);
+/*    const popupInput = store.getState('chatPage.popupNewChat');
     (popupInput.popup as () => Promise<any>)().then((res) => {
         ChatAPI.createChat(res).then((res) => {
             if (res.status === 200) {
                 mediator.emit('chatPage-get-chats')
             }
         })
-    })
+    })*/
 })
 
 mediator.on('chatPage-chat-list-action', (id, action) => {

@@ -1,18 +1,21 @@
 import HTTP from '../utils/HTTP'
 import { BaseAPI, handleResponse } from './base-api';
+import queryStringify from "../utils/queryStringify";
 
 const http = new HTTP('https://ya-praktikum.tech/api/v2/chats');
 
 class ChatAPI extends BaseAPI {
 
-    getChats(offset: number | null = null, limit: number | null = null, title: string | null = null) {
+    getChats(offset: number = 0, limit: number = 10, filter: string = '*') {
         const data: Record<string, string | number> = {};
+        data.offset = offset;
+        data.limit  = limit;
+        data.title  = filter;
 
-        if (offset) data.offset = offset;
-        if (limit)  data.limit  = limit;
-        if (title)  data.title  = title;
+        let url = '/?'+queryStringify(data)
 
-        return  handleResponse(http.get('/', {data: JSON.stringify(data)}), 200);
+        console.log(url);
+        return  handleResponse(http.get(url, {data: JSON.stringify(data)}), 200);
     }
 
     createChat(title: string) {
@@ -82,7 +85,7 @@ class ChatAPI extends BaseAPI {
         return handleResponse(http.delete('/users', {data: JSON.stringify(usersRequest)}), 200)
     }
 
-    requestChatToken(id: string) {
+    requestChatToken(id: number) {
         return handleResponse(http.post(`/token/${id}`, {}),200);
     }
 }

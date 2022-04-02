@@ -8,7 +8,13 @@ import {listFromArray} from "../../../../utils/blockTools";
 
 
 export class ChatPane extends Block {
-    constructor(props: { name: string }) {
+    constructor(props: {
+        name?:   string,
+        title?:  string,
+        chatId: number,
+    } = {
+        chatId: 0,
+    }) {
         const messageInput = new MessageInput({ message:'' });
 
         const sendingButton = new Button({
@@ -27,7 +33,7 @@ export class ChatPane extends Block {
             }
         };
 
-        const messageList = listFromArray(dummydata, Message, commonProps);
+        const messageList = listFromArray(dummydata, Message, commonProps, 'messageList');
 
         super( {
             messageList: messageList,

@@ -1,5 +1,6 @@
 import store from "../../utils/Store";
 import ChatAPI from "../../api/chat-api";
+import {storeAddresses} from "../../utils/globalVariables";
 
 type Message = {
     id: string,
@@ -18,7 +19,8 @@ type Message = {
     }
 }
 
-type ChatGeneralData = {
+export type ChatData = {
+    id:           number;
     title:        string,
     avatar:       string,
     unread_count: number,
@@ -37,37 +39,73 @@ type ChatGeneralData = {
 }
 
 export default class Chat {
-    private chatData: ChatGeneralData;
-
-    private chatListAddress: string;
-    private chatPaneAddress: string
-
+    private chatData: ChatData;
     private connected:       boolean;
     private messages:        Message[];
-    private lastuploaded
-    private id:              string;
+    private lastGot:         number;
+    private id:              number;
     private userId:          string;
     private socket:          WebSocket;
     private token:           string;
-    constructor(chatListAddress: string, chatPaneAddress: string, id: string) {
-        this.chatListAddress = chatListAddress;
-        this.chatPaneAddress = chatPaneAddress;
-        this.id = id;
+
+    private lastReading:     number = 0;
+    private countReading:    number = 20;
+
+    constructor(chatData: ChatData) {
+        this.chatData = chatData;
+        this.id = chatData.id;
+    }
+
+    getChatData(): ChatData {
+        return this.chatData
+    }
+
+    makeProps(): Record<string, string | number> {
+        const element: Record<string, string | number> = {};
+        const chatData = this.chatData;
+        element.id             = chatData.id;
+        element.title          = chatData.title;
+        element.avatar         = chatData.avatar;
+        element.unread_count   = chatData.unread_count;
+        element.avatar_file    = `https://ya-praktikum.tech/api/v2/resources/${chatData.avatar}`
+
+        if (element.last_message) {
+            element.last_message   = chatData.last_message.content;
+            element.time           = chatData.last_message.time;
+            element.author         = `${chatData.last_message.user.first_name} ${chatData.last_message.user.second_name}`;
+        }
+
+        return element;
     }
 
     getId(){
         return this.id
     }
 
-    match(id: string) {
-        return isEqual(id, this.id);
+    match(id: number) {
+        return id === this.id
     }
 
-    switch(){
-        store.set(`${this.chatPaneAddress}`, this.getChat())
+    async switch(){
+        await this.connect()
+
+        store.set(`${storeAddresses.ChatPane}`, this.getChat())
     }
 
-    async add(){
+    async getMessages(offset: number) {
+        this.socket.send(JSON.stringify({
+            content: `${offset}`,
+            type: 'get old',
+        }));
+    }
+
+    mount() {
+        store.set(storeAddresses.ChatPane,{chatId: this.chatData.id})
+    }
+    leave() {
+        store.set(storeAddresses.ChatPane,{chatId: 0})
+    }
+    async connect(){
             if (!this.token) {
                 const res = await  ChatAPI.requestChatToken(this.id)
                 if (res.status === 200) {
@@ -114,8 +152,4 @@ export default class Chat {
                 });
             }
     }
-}
-
-function isEqual(lhs: any, rhs: any) {
-    return lhs === rhs;
 }

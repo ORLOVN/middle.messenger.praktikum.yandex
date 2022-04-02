@@ -1,7 +1,17 @@
+.chat-pane__stub {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  height: 100%;
+  width: auto;
+}
+
 .chat-pane {
   display: grid;
   grid-template-rows: 84px auto;
   justify-items: center;
+  height: 100%;
 }
 
 .chat-pane__header {

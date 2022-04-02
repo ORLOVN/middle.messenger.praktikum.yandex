@@ -3,6 +3,7 @@
     justify-content: center;
     align-items: center;
     position: absolute;
+    top: 0;
     width: 100vw;
     height: 100vh;
     background: rgba(182, 160, 160, 0.32);

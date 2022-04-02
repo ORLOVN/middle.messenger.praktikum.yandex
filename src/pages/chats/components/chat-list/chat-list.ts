@@ -8,6 +8,8 @@ import {listFromArray}  from "../../../../utils/blockTools";
 import router           from "../../../../utils/Router";
 import mediator         from "../../../../utils/Mediator";
 import {ContextMenu} from "../../../../components/context-menu/context-menu";
+import PopupInput from "../../../../components/popup-input";
+import chatDealer from "../../../../modules/chats/ChatDealer";
 
 export class ChatList extends Block {
     constructor(props:{
@@ -19,13 +21,6 @@ export class ChatList extends Block {
             }
         });
 
-        const addChatButton  = new Button({
-            content: `<span class="material-icons">add_comment</span>`,
-            class: 'chatlist__profile-settings',
-            events:{
-                click:() => mediator.emit('chatPage-new-chat')
-            }
-        });
 
         const profileButton  = new Button({
             content: `<span class="material-icons">account_circle</span>`,
@@ -60,7 +55,25 @@ export class ChatList extends Block {
                 }
             ],
         }
-        )
+        );
+
+        const popupNewChat  = new PopupInput({
+            name:             'popupNewChat',
+            display:           false,
+            inputPlaceholder: 'Новый чат',
+            inputLabel:       'Введите название нового чата',
+            title:            'Новый чат',
+            okCaption:        'Ок',
+            cancelCaption:    'Отмена',
+        });
+
+        const addChatButton  = new Button({
+            content: `<span class="material-icons">add_comment</span>`,
+            class: 'chatlist__profile-settings',
+            events:{
+                click:() => popupNewChat.popup().then(title => chatDealer.createNewChat(title))
+            }
+        });
 
         const commonProps = {
         };
@@ -74,6 +87,7 @@ export class ChatList extends Block {
             addChatButton:  addChatButton,
             logoutButton:   logoutButton,
             contextMenu:    contextMenu,
+            popupNewChat:   popupNewChat,
             ...props,
             events: {
                 '.chatlist__list-pane': {

@@ -1,10 +1,11 @@
 export default `
+{{#if chatId}}
 <div class="chat-pane">
     <div class="chat-pane__header">
         <div class="chat-pane__avatar">
         </div>
         <div class="chat-pane__contact-name">
-        {{name}}        
+        {{title}}        
         </div> 
         <div class="chat-pane__contact-status">
         {{status}}
@@ -31,4 +32,10 @@ export default `
         {{{sendingButton}}}
     </div>
 </div>
+{{else}}
+    <div class="chat-pane__stub">    
+Выберите чат, чтобы начать общение
+    </div>
+
+{{/if}}
 `

@@ -11,6 +11,7 @@ export default `
         {{{chatList}}}
     </ul>
 {{{contextMenu}}}
+{{{popupNewChat}}}
  </div>
     
 `
