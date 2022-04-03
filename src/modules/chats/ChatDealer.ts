@@ -45,6 +45,7 @@ class ChatDealer {
                 res.response.forEach((chat: ChatData) => {
                     this.chats.push(new Chat(chat));
                 })
+                console.log(res.response)
             }
         }
 
@@ -53,6 +54,7 @@ class ChatDealer {
     async uploadNextChats(filter: string = ''){
         if (!this._readingEnd) {
             await this.uploadChats(this._readingPosition, this._readingCount, filter)
+            console.log(this.chats.length)
             this._readingPosition += this._readingCount;
             return true;
         } else {
@@ -62,10 +64,12 @@ class ChatDealer {
     }
 
     async uploadAllChats(filter: string = '') {
-
+        this._readingEnd = false;
+        let count = 1000;
         while (await this.uploadNextChats(filter)) {
+            count --;
+            if (count <= 0) throw new Error('API requests for reading chat list are not success. The count reached over 1000 ')
         }
-        console.log(this.chats)
         this.mount();
     }
 
@@ -74,12 +78,20 @@ class ChatDealer {
         const title = await (popupInput.popup as () => Promise<any>)()*/
         const res = await ChatAPI.createChat(title)
         if (res.status === 200) {
-            await this.uploadAllChats();
+            await this.uploadChats(0, 1)
+            this.mount();
         }
     }
 
     async deleteChat(id: number) {
-
+        const res = await ChatAPI.deleteChat(id)
+        if (res.status === 200) {
+            const index = this.getChatIndexById(id);
+            if (index !== undefined) {
+                this.chats.splice(index);
+            }
+            this.mount();
+        }
     }
 
     doAction(id: number, action: string) {
@@ -104,6 +116,9 @@ class ChatDealer {
         return this.chats.find(chat => chat.match(id));
     }
 
+    getChatIndexById(id: number): number | undefined{
+        return this.chats.findIndex((chat) => chat.match(id));
+    }
 }
 
 export default new ChatDealer()

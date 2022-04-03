@@ -5,6 +5,7 @@
     grid-template-columns: 84px auto;
     height: 84px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .chatselector:hover {

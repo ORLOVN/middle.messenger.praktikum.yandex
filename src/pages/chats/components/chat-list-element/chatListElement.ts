@@ -11,6 +11,7 @@ export class ChatListElement extends Block {
         unread_count: number,
         time: string,
         last_message: string,
+        order: number;
         events?: { click:() => void}}) {
 
         super({...props});

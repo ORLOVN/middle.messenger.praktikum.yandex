@@ -68,6 +68,7 @@ export default class Chat {
         element.avatar         = chatData.avatar;
         element.unread_count   = chatData.unread_count;
         element.avatar_file    = `https://ya-praktikum.tech/api/v2/resources/${chatData.avatar}`
+        element.order          = -chatData.id;
 
         if (element.last_message) {
             element.last_message   = chatData.last_message.content;

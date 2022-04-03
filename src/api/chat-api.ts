@@ -13,8 +13,6 @@ class ChatAPI extends BaseAPI {
         data.title  = filter;
 
         let url = '/?'+queryStringify(data)
-
-        console.log(url);
         return  handleResponse(http.get(url, {data: JSON.stringify(data)}), 200);
     }
 

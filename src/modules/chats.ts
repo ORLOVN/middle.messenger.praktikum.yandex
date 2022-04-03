@@ -98,13 +98,9 @@ mediator.on('chatPage-new-chat', async (title) => {
     })*/
 })
 
-mediator.on('chatPage-chat-list-action', (id, action) => {
+mediator.on('chatPage-chat-list-action', async (id, action) => {
     if (action === 'delete') {
-        ChatAPI.deleteChat(id).then((res) => {
-            if (res.status === 200) {
-                mediator.emit('chatPage-get-chats')
-            }
-        });
+        await chatDealer.uploadAllChats(id);
     }
 })
 
