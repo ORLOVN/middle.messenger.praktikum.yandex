@@ -70,7 +70,7 @@ class ChatDealer {
             count --;
             if (count <= 0) throw new Error('API requests for reading chat list are not success. The count reached over 1000 ')
         }
-        this.mount();
+        this.updateStore();
     }
 
     async createNewChat(title: string) {
@@ -79,26 +79,33 @@ class ChatDealer {
         const res = await ChatAPI.createChat(title)
         if (res.status === 200) {
             await this.uploadChats(0, 1)
-            this.mount();
+            this.updateStore();
         }
     }
 
     async deleteChat(id: number) {
         const res = await ChatAPI.deleteChat(id)
         if (res.status === 200) {
+            if (this._currentChat && this._currentChat.getId() === id) {
+                this._currentChat.leave();
+                this._currentChat = undefined;
+            }
+
             const index = this.getChatIndexById(id);
             if (index !== undefined) {
-                this.chats.splice(index);
+                this.chats.splice(index,1);
             }
-            this.mount();
+            this.updateStore();
         }
     }
 
-    doAction(id: number, action: string) {
-
+    async doAction(id: number, action: string) {
+        if (action === 'delete') {
+            await this.deleteChat(id);
+        }
     }
 
-    mount(){
+    updateStore(){
         const list: Record<string, Record<string, string | number>> = {};
         this.chats.forEach((chat: Chat) => {
             list[chat.getId()] = chat.makeProps();

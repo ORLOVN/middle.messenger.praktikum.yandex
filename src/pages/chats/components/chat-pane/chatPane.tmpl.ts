@@ -2,7 +2,7 @@ export default `
 {{#if chatId}}
 <div class="chat-pane">
     <div class="chat-pane__header">
-        <div class="chat-pane__avatar">
+        <div class="chat-pane__avatar" {{#if avatar_file}} style="background-image: url('{{avatar_file}}')" {{/if}}>
         </div>
         <div class="chat-pane__contact-name">
         {{title}}        

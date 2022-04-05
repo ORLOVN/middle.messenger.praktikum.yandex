@@ -12,6 +12,7 @@ export class ChatPane extends Block {
         name?:   string,
         title?:  string,
         chatId: number,
+        avatar_file?: string,
     } = {
         chatId: 0,
     }) {

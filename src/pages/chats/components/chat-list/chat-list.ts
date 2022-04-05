@@ -95,12 +95,14 @@ export class ChatList extends Block {
                         event.preventDefault();
                         const liElement = (event.target as HTMLLIElement).closest('li')
                         if (!liElement) return;
-                        const id = liElement.getAttribute('data-id');
-                        if (!id) return;
+                        const idStr = liElement.getAttribute('data-id');
+                        if (!idStr) return;
+                        const id = parseInt(idStr, 10)
+                        if (isNaN(id)) return;
                         contextMenu.popup({x: event.pageX, y: event.pageY})
                             .then((value)=> {
                                 if (value) {
-                                    mediator.emit('chatPage-chat-list-action', id, value);
+                                    chatDealer.doAction(id,value)
                                 }
                             })
 
@@ -109,10 +111,11 @@ export class ChatList extends Block {
                     click: (event: MouseEvent) => {
                         const liElement = (event.target as HTMLLIElement).closest('li')
                         if (!liElement) return;
-                        const id = liElement.getAttribute('data-id');
-                        if (!id) return;
-
-                        mediator.emit('chatPage-chat-select', id);
+                        const idStr = liElement.getAttribute('data-id');
+                        if (!idStr) return;
+                        const id = parseInt(idStr, 10)
+                        if (isNaN(id)) return;
+                        chatDealer.go(id)
                     }
                 }
             }});

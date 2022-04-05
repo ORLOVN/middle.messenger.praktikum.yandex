@@ -101,7 +101,12 @@ export default class Chat {
     }
 
     mount() {
-        store.set(storeAddresses.ChatPane,{chatId: this.chatData.id})
+        const chatData = this.chatData;
+        store.set(storeAddresses.ChatPane,{
+            chatId:         chatData.id,
+            title:          chatData.title,
+            avatar_file:    `https://ya-praktikum.tech/api/v2/resources/${chatData.avatar}`,
+        })
     }
     leave() {
         store.set(storeAddresses.ChatPane,{chatId: 0})
