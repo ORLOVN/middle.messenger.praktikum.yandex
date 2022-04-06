@@ -47,7 +47,7 @@ export class ContextMenu extends Block {
             }
         }
         document.addEventListener('contextmenu', handleDocumentClick, true);
-        document.addEventListener('click', handleDocumentClick);
+        document.addEventListener('click', handleDocumentClick, true);
 
     }
 

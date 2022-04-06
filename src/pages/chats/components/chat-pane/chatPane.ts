@@ -5,6 +5,8 @@ import MessageInput from "../message-input";
 import Button from "../../../../components/button";
 import dummydata from "./dummydata";
 import {listFromArray} from "../../../../utils/blockTools";
+import ContextMenu from "../../../../components/context-menu";
+import chatDealer from "../../../../modules/chats/ChatDealer";
 
 
 export class ChatPane extends Block {
@@ -26,6 +28,47 @@ export class ChatPane extends Block {
             }
         });
 
+
+        const optionMenu = new ContextMenu({
+            name: 'optionsMenu',
+            items: [
+                {
+                    title:  'Изменить аватарку',
+                    value:  'change-avatar',
+                    enable: true,
+
+                },
+                {
+                    title:  'Добавить пользователя',
+                    value:  'add-users',
+                    enable: true,
+                },
+            ]
+        })
+
+        const optionButton = new Button({
+            content: `<span class="material-icons">more_horiz</span>`,
+            class: 'chat-pane__option-button',
+            events: {
+                click:(event: MouseEvent) =>
+                optionMenu.popup({x: event.pageX, y: event.pageY})
+                    .then((value) => {
+                        if (value) {
+                            chatDealer.doAction(this.getProps().chatId,value)
+                            if (value === 'change-avatar') {
+                                if (!this._element) return;
+                                const avatarInput = this._element.querySelector('#avatarInput')
+                                if (!avatarInput) return;
+                                const event = document.createEvent("MouseEvents");
+                                event.initMouseEvent("click",true,true,window,0,0,0,0,0,false,false,false,false,0,null);
+                                //const event = new Event('click');
+                                avatarInput.dispatchEvent(event);
+                            }
+                        }
+                    })
+            }
+        });
+
         const commonProps = {
             events: {
                 click: () => {
@@ -40,6 +83,8 @@ export class ChatPane extends Block {
             messageList: messageList,
             messageInput: messageInput,
             sendingButton: sendingButton,
+            optionButton: optionButton,
+            optionMenu: optionMenu,
                 ...props,
         });
 

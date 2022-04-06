@@ -103,6 +103,12 @@ class ChatDealer {
         if (action === 'delete') {
             await this.deleteChat(id);
         }
+        if (action === 'change-avatar') {
+            console.log(id, action)
+        }
+        if (action === 'add-users') {
+            console.log(id, action)
+        }
     }
 
     updateStore(){
