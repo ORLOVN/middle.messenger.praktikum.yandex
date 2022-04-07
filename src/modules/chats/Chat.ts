@@ -111,6 +111,15 @@ export default class Chat {
     leave() {
         store.set(storeAddresses.ChatPane,{chatId: 0})
     }
+
+    async changeAvatar(fromData: FormData){
+        const res = await ChatAPI.uploadChatAvatar(fromData);
+        if (res.status === 200) {
+            //this.chatData = res.response;
+            this.mount();
+        }
+    }
+
     async connect(){
             if (!this.token) {
                 const res = await  ChatAPI.requestChatToken(this.id)

@@ -1,10 +1,9 @@
 export default `
 {{#if chatId}}
 <div class="chat-pane">
-<form class="avatar-setting__pane" id="avatarForm">
-        <label class="avatar-setting__avatar-input-label" for="avatar">
-        <input class="avatar-setting__avatar-input" id="avatarInput" type="file" name="avatarInput" accept="image/*">
-        </label>
+<form style="display: none" id="avatarForm">
+    <input id="avatarInput" type="file" name="avatar" accept="image/*">
+    <input id="avatarInput" type="text" name="chatId" value="{{chatId}}">   
 </form>
 
     <div class="chat-pane__header">

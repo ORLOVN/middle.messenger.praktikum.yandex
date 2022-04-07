@@ -111,6 +111,12 @@ class ChatDealer {
         }
     }
 
+    async changeAvatar(fromData: FormData) {
+        if (this._currentChat) {
+            await this._currentChat.changeAvatar(fromData);
+        }
+    }
+
     updateStore(){
         const list: Record<string, Record<string, string | number>> = {};
         this.chats.forEach((chat: Chat) => {
