@@ -48,6 +48,9 @@
   height: 60px;
   background-color: var(--chat-pane-avartar-color);
   border-radius: 5px;
+  background-size: cover;
+  background-position: center;
+  background-image: url("../../../../../resources/chat-icon.png");
 }
 
 .chat-pane__contact-name {

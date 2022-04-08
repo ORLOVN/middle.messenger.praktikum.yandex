@@ -64,6 +64,7 @@ class ChatDealer {
     }
 
     async uploadAllChats(filter: string = '') {
+        this._readingPosition = 0;
         this._readingEnd = false;
         let count = 1000;
         while (await this.uploadNextChats(filter)) {
@@ -113,7 +114,11 @@ class ChatDealer {
 
     async changeAvatar(fromData: FormData) {
         if (this._currentChat) {
-            await this._currentChat.changeAvatar(fromData);
+            const res = await this._currentChat.changeAvatar(fromData);
+            if (res.status === 200) {
+                await this.uploadAllChats();
+                this._currentChat.mount();
+            }
         }
     }
 

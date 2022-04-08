@@ -41,7 +41,7 @@
     background-size: cover;
     background-color: var(--from-input-bg-hover-color);
     background-position: center;
-    background-image: url("../../../../../resources/portrait.png");
+    background-image: url("../../../../../resources/chat-icon.png");
 }
 
 .chatselector__discription {

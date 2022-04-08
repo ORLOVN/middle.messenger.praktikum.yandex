@@ -67,7 +67,7 @@ export default class Chat {
         element.title          = chatData.title;
         element.avatar         = chatData.avatar;
         element.unread_count   = chatData.unread_count;
-        element.avatar_file    = `https://ya-praktikum.tech/api/v2/resources/${chatData.avatar}`
+        element.avatar_file    = chatData.avatar ? `https://ya-praktikum.tech/${chatData.avatar}` : '';
         element.order          = -chatData.id;
 
         if (element.last_message) {
@@ -102,22 +102,30 @@ export default class Chat {
 
     mount() {
         const chatData = this.chatData;
+        console.log(this.chatData)
         store.set(storeAddresses.ChatPane,{
             chatId:         chatData.id,
             title:          chatData.title,
-            avatar_file:    `https://ya-praktikum.tech/api/v2/resources/${chatData.avatar}`,
+            avatar_file:    chatData.avatar ? `https://ya-praktikum.tech/${chatData.avatar}` : '',
         })
     }
+
     leave() {
         store.set(storeAddresses.ChatPane,{chatId: 0})
     }
 
     async changeAvatar(fromData: FormData){
-        const res = await ChatAPI.uploadChatAvatar(fromData);
-        if (res.status === 200) {
-            //this.chatData = res.response;
-            this.mount();
-        }
+        return await ChatAPI.uploadChatAvatar(fromData);
+        /*if (res.status === 200) {
+            const res = await ChatAPI.getChats(0, 20, this.chatData.title)
+            if (res.status === 200) {
+                const chatData = res.response.find((chat: ChatData) => {
+                    return chat.id === this.chatData.id;
+                })
+                this.chatData.avatar = chatData.avatar;
+                this.mount();
+            }
+        }*/
     }
 
     async connect(){
