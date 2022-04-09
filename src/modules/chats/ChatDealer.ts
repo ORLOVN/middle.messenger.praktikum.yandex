@@ -33,7 +33,7 @@ class ChatDealer {
             this._currentChat.leave();
         }
         this._currentChat = chat;
-        this._currentChat.mount();
+        this._currentChat.mountChatPane();
     }
 
     async uploadChats(start: number, count: number, filter: string = ''){
@@ -116,8 +116,9 @@ class ChatDealer {
         if (this._currentChat) {
             const res = await this._currentChat.changeAvatar(fromData);
             if (res.status === 200) {
-                await this._currentChat.upload();
-                this._currentChat.mount();
+                await this._currentChat.updateModel();
+                this._currentChat.mountChatPane();
+                this._currentChat.updateChatList();
             }
         }
     }

@@ -100,7 +100,7 @@ export default class Chat {
         }));
     }
 
-    mount() {
+    mountChatPane() {
         const chatData = this.chatData;
         console.log(this.chatData)
         store.set(storeAddresses.ChatPane,{
@@ -110,26 +110,19 @@ export default class Chat {
         })
     }
 
+    updateChatList() {
+        store.set(`${storeAddresses.ChatList}.${this.chatData.id}`,this.makeProps());
+    }
+
     leave() {
         store.set(storeAddresses.ChatPane,{chatId: 0})
     }
 
     async changeAvatar(fromData: FormData){
         return await ChatAPI.uploadChatAvatar(fromData);
-
-        /*if (res.status === 200) {
-            const res = await ChatAPI.getChats(0, 20, this.chatData.title)
-            if (res.status === 200) {
-                const chatData = res.response.find((chat: ChatData) => {
-                    return chat.id === this.chatData.id;
-                })
-                this.chatData.avatar = chatData.avatar;
-                this.mount();
-            }
-        }*/
     }
 
-    async upload() {
+    async updateModel() {
         const count = 10;
         let offset = 0;
         let maxAttempt = 10;
