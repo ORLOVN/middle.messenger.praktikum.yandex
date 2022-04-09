@@ -116,7 +116,7 @@ class ChatDealer {
         if (this._currentChat) {
             const res = await this._currentChat.changeAvatar(fromData);
             if (res.status === 200) {
-                await this.uploadAllChats();
+                await this._currentChat.upload();
                 this._currentChat.mount();
             }
         }

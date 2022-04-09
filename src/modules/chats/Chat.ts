@@ -116,6 +116,7 @@ export default class Chat {
 
     async changeAvatar(fromData: FormData){
         return await ChatAPI.uploadChatAvatar(fromData);
+
         /*if (res.status === 200) {
             const res = await ChatAPI.getChats(0, 20, this.chatData.title)
             if (res.status === 200) {
@@ -128,6 +129,32 @@ export default class Chat {
         }*/
     }
 
+    async upload() {
+        const count = 10;
+        let offset = 0;
+        let maxAttempt = 10;
+        const request = async () => {
+            const res = await ChatAPI.getChats(offset, count, this.chatData.title);
+            console.log('offset',offset);
+            let foundChat: ChatData | undefined;
+            if (res.status === 200) {
+                foundChat = res.response.find((chat: ChatData) => chat.id === this.chatData.id);
+            }
+
+            if (foundChat) {
+                this.chatData = foundChat;
+            }
+
+            return !(foundChat || res.response.length === 0)
+        }
+        while (await request()) {
+            offset += count;
+            console.log(offset);
+            maxAttempt --;
+            if (maxAttempt <= 0)  throw new Error('API requests for looking for chat are not success. The count reached over 100 ')
+        }
+
+    }
     async connect(){
             if (!this.token) {
                 const res = await  ChatAPI.requestChatToken(this.id)
