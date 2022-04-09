@@ -2,8 +2,6 @@ import Chat, {ChatData} from "./Chat";
 import ChatAPI from "../../api/chat-api";
 import store from "../../utils/Store";
 import {storeAddresses} from "../../utils/globalVariables";
-import mediator from "../../utils/Mediator";
-import {response} from "express";
 
 class ChatDealer {
 
@@ -26,14 +24,14 @@ class ChatDealer {
         ChatDealer.__instance = this;
         Object.assign(window, {chatDealer :this});
     }
-    _OnSwitch(id: number) {
+    async _OnSwitch(id: number) {
         const chat = this.getChatById(id);
         if (!chat) return;
         if (this._currentChat) {
             this._currentChat.leave();
         }
         this._currentChat = chat;
-        this._currentChat.mountChatPane();
+        await this._currentChat.mountChatPane();
     }
 
     async uploadChats(start: number, count: number, filter: string = ''){
@@ -45,7 +43,6 @@ class ChatDealer {
                 res.response.forEach((chat: ChatData) => {
                     this.chats.push(new Chat(chat));
                 })
-                console.log(res.response)
             }
         }
 
@@ -54,7 +51,6 @@ class ChatDealer {
     async uploadNextChats(filter: string = ''){
         if (!this._readingEnd) {
             await this.uploadChats(this._readingPosition, this._readingCount, filter)
-            console.log(this.chats.length)
             this._readingPosition += this._readingCount;
             return true;
         } else {
@@ -97,6 +93,17 @@ class ChatDealer {
                 this.chats.splice(index,1);
             }
             this.updateStore();
+        }
+    }
+
+    async sendMessage() {
+        if (this._currentChat)
+        await this._currentChat.sendMessage();
+    }
+
+    inputMessageUpdate(message: string) {
+        if (this._currentChat) {
+            this._currentChat.inputMessageUpdate(message);
         }
     }
 

@@ -31,12 +31,8 @@ export default `
                 </ul>                
             </div>
         </div>
-        <div>
-        <!-- no content -->
-        </div>
-        {{{messageInput}}}
 
-        {{{sendingButton}}}
+        {{{messageInput}}}
     </div>
 </div>
 {{else}}

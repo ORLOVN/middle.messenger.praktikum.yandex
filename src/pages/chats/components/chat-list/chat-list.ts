@@ -75,10 +75,7 @@ export class ChatList extends Block {
             }
         });
 
-        const commonProps = {
-        };
-
-        const chatList = listFromArray(chatListData,ChatListElement, commonProps, 'list');
+        const chatList = listFromArray(chatListData,ChatListElement, {}, 'list');
 
         super({
             chatList:       chatList,

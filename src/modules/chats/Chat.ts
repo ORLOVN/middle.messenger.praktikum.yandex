@@ -42,6 +42,7 @@ export default class Chat {
     private chatData: ChatData;
     private connected:       boolean;
     private messages:        Message[];
+    private inputMessage:    string;
     private lastGot:         number;
     private id:              number;
     private userId:          string;
@@ -54,12 +55,16 @@ export default class Chat {
     constructor(chatData: ChatData) {
         this.chatData = chatData;
         this.id = chatData.id;
+        this.userId = store.getState('user').id as string;
     }
 
     getChatData(): ChatData {
         return this.chatData
     }
 
+    inputMessageUpdate(message: string) {
+        this.inputMessage = message;
+    }
     makeProps(): Record<string, string | number> {
         const element: Record<string, string | number> = {};
         const chatData = this.chatData;
@@ -100,14 +105,14 @@ export default class Chat {
         }));
     }
 
-    mountChatPane() {
+    async mountChatPane() {
         const chatData = this.chatData;
-        console.log(this.chatData)
         store.set(storeAddresses.ChatPane,{
             chatId:         chatData.id,
             title:          chatData.title,
             avatar_file:    chatData.avatar ? `https://ya-praktikum.tech/${chatData.avatar}` : '',
         })
+        await this.connect();
     }
 
     updateChatList() {
@@ -148,33 +153,49 @@ export default class Chat {
         }
 
     }
+
+    async sendMessage() {
+        if (!this.inputMessage) return
+        if (!this.socket) {
+            await this.connect();
+        }
+
+        if (this.socket) {
+            this.socket.send(JSON.stringify({
+                content: this.inputMessage,
+                type: 'message',
+            }));
+        }
+
+        this.inputMessage = '';
+    }
+
     async connect(){
             if (!this.token) {
                 const res = await  ChatAPI.requestChatToken(this.id)
                 if (res.status === 200) {
                     this.token = res.response.token;
+                    console.log(this.token)
+                } else {
+                    return
                 }
             }
 
             if (!this.socket) {
 
                 const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${this.userId}/${this.id}/${this.token}`);
-
+                console.log(`wss://ya-praktikum.tech/ws/chats/${this.userId}/${this.id}/${this.token}`)
                 this.socket = socket;
 
                 socket.addEventListener('open', () => {
-                    console.log(`Соединение c ${list.title} установлено`);
-                    socket.send(JSON.stringify({
-                        content: 'Моё второе сообщение миру!',
-                        type: 'message',
-                    }));
+                    console.log(`Соединение c ${this.chatData.title} установлено`);
                 });
 
                 socket.addEventListener('close', event => {
                     if (event.wasClean) {
-                        console.log(`Соединение закрыто чисто с ${list.title}`);
+                        console.log(`Соединение закрыто чисто с ${this.chatData.title}`);
                     } else {
-                        console.log(`Обрыв соединения с ${list.title}`);
+                        console.log(`Обрыв соединения с ${this.chatData.title}`);
                     }
 
                     console.log(`Код: ${event.code} | Причина: ${event.reason}`);
@@ -187,7 +208,7 @@ export default class Chat {
                             user_id: event.data.user_id,
                             content: event.data.content,
                     });*/
-                    console.log('Получены данные', event.data);
+                    console.log('Получены данные',event);
                 });
 
                 socket.addEventListener('error', event => {

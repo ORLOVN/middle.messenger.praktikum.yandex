@@ -1,19 +1,41 @@
 import Block from '../../../../utils/Block';
 import Input from "../../../../components/input";
-import tmpl from './message-input.tmpl';
+import Button from "../../../../components/button";
+import chatDealer from "../../../../modules/chats/ChatDealer";
+
 export class MessageInput extends Block {
 
     private _message: string;
 
     constructor(props: {message?: string }) {
-        const messageInput = new Input({
+        const input = new Input({
+            class:  'chat-pane__message-input',
+            value:  props.message,
             events: {
-                keyup: (eventProp) => this._message = eventProp!.target!.value
+                keyup: (eventProp: KeyboardEvent) => {
+                    chatDealer.inputMessageUpdate((eventProp.target as HTMLInputElement).value)
+                }
             }
         });
 
+        const sendButton = new Button({
+            content: `<span class="material-icons">send</span>`,
+            class: 'chat-pane__submit-button',
+            events: {
+                click: async () => {
+                    await chatDealer.sendMessage()
+                    input.setProps({
+                        value: ''
+                    });
+                }
+            }
+        });
 
-        super({...props, 'messageInput': messageInput});
+        super({
+            ...props,
+            input:      input,
+            sendButton: sendButton,
+        });
         this._message = '';
     }
 
@@ -26,6 +48,19 @@ export class MessageInput extends Block {
     }
 
     render():string {
-        return tmpl;
+        return `
+<div class="chat-pane__new-message-wrapper">
+<div class="chat-pane__new-message-pane">
+    <div class="chat-pane__attach-button">
+        <span class="material-icons">
+        attach_file
+        </span>
+    </div>
+    {{{input}}}
+   
+</div>
+ {{{sendButton}}}
+ </div>
+        `;
     }
 }

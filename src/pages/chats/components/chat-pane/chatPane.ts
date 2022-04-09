@@ -7,7 +7,6 @@ import dummydata from "./dummydata";
 import {listFromArray} from "../../../../utils/blockTools";
 import ContextMenu from "../../../../components/context-menu";
 import chatDealer from "../../../../modules/chats/ChatDealer";
-import mediator from "../../../../utils/Mediator";
 import ChatDealer from "../../../../modules/chats/ChatDealer";
 
 
@@ -21,14 +20,6 @@ export class ChatPane extends Block {
         chatId: 0,
     }) {
         const messageInput = new MessageInput({ message:'' });
-
-        const sendingButton = new Button({
-            content: `<span class="material-icons">send</span>`,
-            class: 'chat-pane__submit-button',
-            events: {
-                click:() => console.log(messageInput.getMassage())
-            }
-        });
 
 
         const optionMenu = new ContextMenu({
@@ -83,7 +74,6 @@ export class ChatPane extends Block {
         super( {
             messageList:    messageList,
             messageInput:   messageInput,
-            sendingButton:  sendingButton,
             optionButton:   optionButton,
             optionMenu:     optionMenu,
             ...props,

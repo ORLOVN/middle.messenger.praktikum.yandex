@@ -101,7 +101,7 @@ store.on(`${StoreEvents.Updated}-user`, (user) => {
     store.set(`${storeLocation}.avatarSetting`, {
         first_name: user.first_name,
         display_name: user.display_name,
-        avatar_file: `https://ya-praktikum.tech/api/v2/resources/${user.avatar}`,
+        avatar_file: `https://ya-praktikum.tech/${user.avatar}`,
     });
 });
 
