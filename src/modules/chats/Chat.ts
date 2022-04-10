@@ -1,11 +1,12 @@
 import store from "../../utils/Store";
 import ChatAPI from "../../api/chat-api";
 import {storeAddresses} from "../../utils/globalVariables";
+import {isArray} from "../../utils/types";
 
 type Message = {
-    id: string,
-    time: string,
-    user_id: string,
+    id: number,
+    time: Date,
+    user_id: number,
     content: string,
     type: string,
     file?: {
@@ -41,21 +42,24 @@ export type ChatData = {
 export default class Chat {
     private chatData: ChatData;
     private connected:       boolean;
-    private messages:        Message[];
-    private inputMessage:    string;
-    private lastGot:         number;
-    private id:              number;
-    private userId:          string;
-    private socket:          WebSocket;
-    private token:           string;
 
-    private lastReading:     number = 0;
-    private countReading:    number = 20;
+    private readonly messages:        Message[] = [];
+    private          lastReading:     number = 0;
+    private          countReading:    number = 20;
+
+    private          inputMessage:    string;
+    private          lastGot:         number;
+    private          id:              number;
+    private          userId:          string;
+    private          socket:          WebSocket;
+    private          token:           string;
+
+
 
     constructor(chatData: ChatData) {
         this.chatData = chatData;
         this.id = chatData.id;
-        this.userId = store.getState('user').id as string;
+        console.log(this.messages)
     }
 
     getChatData(): ChatData {
@@ -98,7 +102,7 @@ export default class Chat {
         store.set(`${storeAddresses.ChatPane}`, this.getChat())
     }
 
-    async getMessages(offset: number) {
+    getMessages(offset: number) {
         this.socket.send(JSON.stringify({
             content: `${offset}`,
             type: 'get old',
@@ -170,7 +174,75 @@ export default class Chat {
         this.inputMessage = '';
     }
 
+    async uploadMessages() {
+        if (this.lastReading === 0) {
+            const res = await ChatAPI.getNewMessagesCount(this.id)
+            let unread_count = 0;
+            if (res.status === 200) {
+                unread_count = res.response.unread_count;
+            }
+
+            if (unread_count === 0) {
+                this.getMessages(0);
+                this.lastReading += this.countReading;
+            }
+
+            for (let i = 0; i <=unread_count - 1; i += 20) {
+                this.getMessages(i);
+                this.lastReading += this.countReading;
+            }
+        } else {
+            this.getMessages(this.lastReading);
+            this.lastReading += this.countReading;
+        }
+    }
+    handleMessage(event: MessageEvent) {
+        const messageData = JSON.parse(event.data);
+        if (isArray(messageData)) {
+            messageData.forEach((message: {
+                content:    string,
+                id:         number,
+                time:       string,
+                user_id:    number,
+            }) => {
+                this.messages.push({
+                    id:         message.id,
+                    time:       new Date(message.time),
+                    user_id:    message.user_id,
+                    content:    message.content,
+                    type:       'message',
+                })
+            })
+            this.updateMessagePaneView();
+        } else {
+            this.messages.push({
+                id:         messageData.id,
+                time:       new Date(messageData.time),
+                user_id:    messageData.userId,
+                content:    messageData.content,
+                type:       messageData.type,
+            })
+        }
+
+    }
+
+    updateMessagePaneView() {
+        const list: Record<string, Record<string, string | number>> = {};
+        this.messages.forEach((message: Message) => {
+            list[message.id] = {
+                author:     '',
+                id:         message.id,
+                text:       message.content,
+                time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
+                status:     0,
+            }
+        })
+
+        store.set(storeAddresses.MessageList, list)
+    }
+
     async connect(){
+            this.userId = store.getState('user').id as string;
             if (!this.token) {
                 const res = await  ChatAPI.requestChatToken(this.id)
                 if (res.status === 200) {
@@ -189,6 +261,7 @@ export default class Chat {
 
                 socket.addEventListener('open', () => {
                     console.log(`Соединение c ${this.chatData.title} установлено`);
+                    this.uploadMessages();
                 });
 
                 socket.addEventListener('close', event => {
@@ -201,15 +274,7 @@ export default class Chat {
                     console.log(`Код: ${event.code} | Причина: ${event.reason}`);
                 });
 
-                socket.addEventListener('message', event => {
-                    /*this.messages.unshift({
-                            id:      event.data.id,
-                            time:    event.data.time,
-                            user_id: event.data.user_id,
-                            content: event.data.content,
-                    });*/
-                    console.log('Получены данные',event);
-                });
+                socket.addEventListener('message', this.handleMessage.bind(this));
 
                 socket.addEventListener('error', event => {
                     console.log('Ошибка', event.message);
