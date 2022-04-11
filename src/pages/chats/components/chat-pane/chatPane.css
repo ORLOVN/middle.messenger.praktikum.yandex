@@ -66,21 +66,60 @@
   font-weight: bold;
 }
 
-.chat-pane__main-pane {
+.chat-pane__main-area {
   display: grid;
   grid-template-rows: auto 60px;
-  min-width: 480px;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-y: hidden;
 }
+
+.chat-pane__messages-area {
+  display: flex;
+  flex-direction: column;
+  padding-left: 25%;
+  padding-right: calc(25% - 10px);
+  width: calc(50% + 10px);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.chat-pane__message-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.chat-pane__messages-area::-webkit-scrollbar {
+  width: 10px;
+  background-color: var(--main-icon-color);
+}
+
+.chat-pane__messages-area::-webkit-scrollbar-thumb {
+  background-color: var(--main-accent-color);
+  border-radius: 0;
+}
+
+.chat-pane__messages-area::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: var(--main-icon-color);
+}
+
+.chat-pane__message-input-section {
+  padding-left: 25%;
+  padding-right: 25%;
+  width: 50%;
+  height: 100%;
+}
+
+
 
 .chat-pane__new-message-wrapper {
   display: grid;
   height: 60px;
   grid-template-columns: 100% 60px;
-  margin-left: 25%;
-  margin-right: 25%;
 }
 .chat-pane__new-message-pane {
   display: grid;
@@ -153,15 +192,7 @@
   width: 100%;
 }
 
-.chat-pane__messages-pane {
-  display: flex;
-  flex-direction: column;
-  padding-left: 25%;
-  padding-right: 25%;
-  width: 50%;
-  height: 100%;
-  overflow-y: auto;
-}
+
 
 .chat-pane__date-section {
   display: flex;
@@ -170,7 +201,11 @@
 }
 
 .chat-pane__date-caption {
-  align-self: center;
+  padding-top: 30px;
+  padding-bottom: 5px;
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 .chat-pane__bottom-line {
@@ -179,13 +214,6 @@
   height: 1px;
 }
 
-.chat-pane__messages-section {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
 
 .chat-pane__received-message {
   display: flex;

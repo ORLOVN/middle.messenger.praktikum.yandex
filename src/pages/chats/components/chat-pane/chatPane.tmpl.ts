@@ -18,21 +18,15 @@ export default `
         {{{optionButton}}}
         {{{optionMenu}}}                                          
     </div>
-    <div class="chat-pane__main-pane">
-        <div class="chat-pane__messages-pane">
-            <div class="chat-pane__date-section">
-                <time class="chat-pane__date-caption">
-                Сегодня
-                </time>
-                <div class="chat-pane__bottom-line">
-                </div>
-                <ul class="chat-pane__messages-section">                               
+    <div class="chat-pane__main-area">
+        <div class="chat-pane__messages-area">
+            <ul class="chat-pane__message-list">                               
                 {{{messageList}}}
-                </ul>                
-            </div>
+            </ul>
         </div>
-
-        {{{messageInput}}}
+        <div class="chat-pane__message-input-section">                
+            {{{messageInput}}}
+        </div>
     </div>
 </div>
 {{else}}

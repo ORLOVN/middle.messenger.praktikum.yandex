@@ -233,10 +233,16 @@ export default class Chat {
                 author:     '',
                 id:         message.id,
                 text:       message.content,
+                orderTime:  message.time.getTime(),
                 time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
                 status:     0,
             }
         })
+
+        list['ddd'] = {
+            dateSeparator: '3 февраля',
+            time: 'dsd',
+        }
 
         store.set(storeAddresses.MessageList, list)
     }
