@@ -86,7 +86,7 @@
 
 .chat-pane__message-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   width: 100%;
   padding: 0;
   margin: 0;

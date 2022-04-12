@@ -68,7 +68,7 @@ export class ChatPane extends Block {
             }
         };
 
-        const messageList = listFromArray(dummydata, Message, commonProps, 'messageList');
+        const messageList = listFromArray([], Message, commonProps, 'messageList');
 
 
         super( {

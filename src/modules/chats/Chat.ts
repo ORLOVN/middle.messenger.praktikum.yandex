@@ -2,6 +2,7 @@ import store from "../../utils/Store";
 import ChatAPI from "../../api/chat-api";
 import {storeAddresses} from "../../utils/globalVariables";
 import {isArray} from "../../utils/types";
+import {beautifulDate} from "../../utils/beautifulDate";
 
 type Message = {
     id: number,
@@ -215,15 +216,41 @@ export default class Chat {
             })
             this.updateMessagePaneView();
         } else {
-            this.messages.push({
+            const index = -1 + this.messages.push({
                 id:         messageData.id,
                 time:       new Date(messageData.time),
                 user_id:    messageData.userId,
                 content:    messageData.content,
                 type:       messageData.type,
             })
+
+            this.addMessageToView(this.messages[index]);
+
+
         }
 
+    }
+
+    addMessageToView(message: Message) {
+        console.log(message);
+        const list: Record<string, Record<string, string | number>> = {};
+        list[message.id] = {
+            author:     '',
+            id:         message.id,
+            text:       message.content,
+            orderTime:  message.time.getTime(),
+            time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
+            status:     0,
+        }
+        const date = new Date(message.time.getTime());
+        const dateInMs = date.setHours(0,0,0,0);
+        if (!list[dateInMs]) {
+            list[dateInMs] = {
+                dateSeparator:  beautifulDate(date),
+                orderTime:      dateInMs,
+            }
+        }
+        store.set(storeAddresses.MessageList, list)
     }
 
     updateMessagePaneView() {
@@ -237,12 +264,15 @@ export default class Chat {
                 time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
                 status:     0,
             }
+            const date = new Date(message.time.getTime());
+            const dateInMs = date.setHours(0,0,0,0);
+            if (!list[dateInMs]) {
+                list[dateInMs] = {
+                    dateSeparator:  beautifulDate(date),
+                    orderTime:      dateInMs,
+                }
+            }
         })
-
-        list['ddd'] = {
-            dateSeparator: '3 февраля',
-            time: 'dsd',
-        }
 
         store.set(storeAddresses.MessageList, list)
     }
