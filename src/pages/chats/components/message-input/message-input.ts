@@ -9,19 +9,27 @@ export class MessageInput extends Block {
 
     constructor(props: {message?: string }) {
         const input = new Input({
-            class:  'chat-pane__message-input',
-            value:  props.message,
-            events: {
+            class:      'chat-pane__message-input',
+            value:      props.message,
+            events:     {
                 keyup: (eventProp: KeyboardEvent) => {
                     chatDealer.inputMessageUpdate((eventProp.target as HTMLInputElement).value)
+                },
+                keydown: async (eventProp: KeyboardEvent) => {
+                    if (eventProp.key === 'Enter') {
+                        await chatDealer.sendMessage()
+                        input.setProps({
+                            value: ''
+                        });
+                    }
                 }
             }
         });
 
         const sendButton = new Button({
-            content: `<span class="material-icons">send</span>`,
-            class: 'chat-pane__submit-button',
-            events: {
+            content:    `<span class="material-icons">send</span>`,
+            class:      'chat-pane__submit-button',
+            events:     {
                 click: async () => {
                     await chatDealer.sendMessage()
                     input.setProps({

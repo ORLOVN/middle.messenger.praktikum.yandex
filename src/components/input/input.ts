@@ -7,7 +7,8 @@ export class Input extends Block {
         placeholder?:string,
         class?: string,
         events?: {
-            keyup:(event?: Event) => void
+            keyup?   :(event?: Event) => void
+            keydown? :(event?: Event) => void
         }
     }) {
 

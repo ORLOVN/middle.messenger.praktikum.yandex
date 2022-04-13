@@ -84,7 +84,7 @@ export default class Block {
                 (value)                                         &&
                 (typeof value === 'object')                     &&
                 (Array.isArray((value as ChildrenList).list))   &&
-                ((value as ChildrenList).list[0] instanceof Block)) {
+                ((value as ChildrenList).BlockClass.prototype instanceof Block)) {
                 (value as ChildrenList).id = uuid();
                 childrenLists[key] = value as ChildrenList;
             }

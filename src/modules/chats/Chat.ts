@@ -238,7 +238,7 @@ export default class Chat {
             author:     '',
             id:         message.id,
             text:       message.content,
-            orderTime:  message.time.getTime(),
+            orderTime:  message.time.getTime()/1000,
             time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
             status:     0,
         }
@@ -247,7 +247,7 @@ export default class Chat {
         if (!list[dateInMs]) {
             list[dateInMs] = {
                 dateSeparator:  beautifulDate(date),
-                orderTime:      dateInMs,
+                orderTime:      dateInMs/1000,
             }
         }
         store.set(storeAddresses.MessageList, list)
@@ -260,7 +260,7 @@ export default class Chat {
                 author:     '',
                 id:         message.id,
                 text:       message.content,
-                orderTime:  message.time.getTime(),
+                orderTime:  message.time.getTime()/1000,
                 time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
                 status:     0,
             }
@@ -269,7 +269,7 @@ export default class Chat {
             if (!list[dateInMs]) {
                 list[dateInMs] = {
                     dateSeparator:  beautifulDate(date),
-                    orderTime:      dateInMs,
+                    orderTime:      dateInMs/1000,
                 }
             }
         })
