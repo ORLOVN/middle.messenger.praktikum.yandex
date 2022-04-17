@@ -34,6 +34,13 @@ export class Store extends EventBus{
         return find(this.state, path);
     }
 
+    public invoke(path: string, ...args: any) {
+        const func: any = this.getState(path);
+
+        if (func && typeof func === 'function') {
+            func(args)
+        }
+    }
 
     public set(path: string, value: unknown, mute = false) {
         set(this.state, path, value);
@@ -48,12 +55,17 @@ export class Store extends EventBus{
 
     public replace(path: string, value: unknown, mute = false) {
         const storeObject = find(this.state, path);
-        Object.keys(storeObject).forEach(key => delete storeObject[key]);
-        Object.assign(storeObject, value)
+        if (storeObject) {
+            Object.keys(storeObject).forEach(key => delete storeObject[key]);
+        }
+
+        this.set(path, value, mute)
+        /*Object.assign(storeObject, value)
         if (!mute) {
             this.emit(`${StoreEvents.Updated}-${path}`, value);
-        }
+        }*/
     };
+
 }
 
 export default Store.getInstance();

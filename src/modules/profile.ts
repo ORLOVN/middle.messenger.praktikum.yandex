@@ -3,6 +3,7 @@ import {validate}           from "../utils/validtools";
 import store, {StoreEvents} from '../utils/Store';
 import userApi              from "../api/user-api";
 import {PlainObject}        from "../utils/types";
+import {AVATAR_URL} from "../utils/globalVariables";
 
 const storeLocation = 'profilePage';
 
@@ -101,7 +102,7 @@ store.on(`${StoreEvents.Updated}-user`, (user) => {
     store.set(`${storeLocation}.avatarSetting`, {
         first_name: user.first_name,
         display_name: user.display_name,
-        avatar_file: `https://ya-praktikum.tech/${user.avatar}`,
+        avatar_file: `${AVATAR_URL}${user.avatar}`,
     });
 });
 

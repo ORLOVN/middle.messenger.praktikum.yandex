@@ -5,4 +5,6 @@ enum storeAddresses {
     MessageInput = 'chatPage.chatPane.messageInput'
 }
 
+export const AVATAR_URL = 'https://ya-praktikum.tech/api/v2/resources'
+
 export {storeAddresses};

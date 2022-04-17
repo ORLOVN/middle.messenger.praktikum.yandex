@@ -7,20 +7,21 @@ export class MessageInput extends Block {
 
     private _message: string;
 
-    constructor(props: {message?: string }) {
+    constructor(props: {
+        name: string;
+        message?: string
+    }) {
         const input = new Input({
             class:      'chat-pane__message-input',
             value:      props.message,
             events:     {
-                keyup: (eventProp: KeyboardEvent) => {
-                    chatDealer.inputMessageUpdate((eventProp.target as HTMLInputElement).value)
+                keyup: () => {
+                    chatDealer.inputMessageUpdate(input.value)
                 },
                 keydown: async (eventProp: KeyboardEvent) => {
                     if (eventProp.key === 'Enter') {
                         await chatDealer.sendMessage()
-                        input.setProps({
-                            value: ''
-                        });
+                        input.value = '';
                     }
                 }
             }
@@ -32,9 +33,7 @@ export class MessageInput extends Block {
             events:     {
                 click: async () => {
                     await chatDealer.sendMessage()
-                    input.setProps({
-                        value: ''
-                    });
+                    input.value = '';
                 }
             }
         });
@@ -43,6 +42,9 @@ export class MessageInput extends Block {
             ...props,
             input:      input,
             sendButton: sendButton,
+            focus: () => {
+                input.focus();
+            }
         });
         this._message = '';
     }

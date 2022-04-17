@@ -1,6 +1,6 @@
 import store from "../../utils/Store";
 import ChatAPI from "../../api/chat-api";
-import {storeAddresses} from "../../utils/globalVariables";
+import {AVATAR_URL, storeAddresses} from "../../utils/globalVariables";
 import {isArray} from "../../utils/types";
 import {beautifulDate} from "../../utils/beautifulDate";
 
@@ -42,25 +42,21 @@ export type ChatData = {
 
 export default class Chat {
     private chatData: ChatData;
-    private connected:       boolean;
-
     private readonly messages:        Message[] = [];
     private          lastReading:     number = 0;
     private          countReading:    number = 20;
-
     private          inputMessage:    string;
-    private          lastGot:         number;
     private          id:              number;
     private          userId:          string;
-    private          socket:          WebSocket;
+    private          socket:          WebSocket | undefined;
     private          token:           string;
+    private          pingPongTimer:   NodeJS.Timer;
 
 
 
     constructor(chatData: ChatData) {
         this.chatData = chatData;
         this.id = chatData.id;
-        console.log(this.messages)
     }
 
     getChatData(): ChatData {
@@ -70,6 +66,7 @@ export default class Chat {
     inputMessageUpdate(message: string) {
         this.inputMessage = message;
     }
+
     makeProps(): Record<string, string | number> {
         const element: Record<string, string | number> = {};
         const chatData = this.chatData;
@@ -77,7 +74,7 @@ export default class Chat {
         element.title          = chatData.title;
         element.avatar         = chatData.avatar;
         element.unread_count   = chatData.unread_count;
-        element.avatar_file    = chatData.avatar ? `https://ya-praktikum.tech/${chatData.avatar}` : '';
+        element.avatar_file    = chatData.avatar ? `${AVATAR_URL}${chatData.avatar}` : '';
         element.order          = -chatData.id;
 
         if (element.last_message) {
@@ -97,14 +94,8 @@ export default class Chat {
         return id === this.id
     }
 
-    async switch(){
-        await this.connect()
-
-        store.set(`${storeAddresses.ChatPane}`, this.getChat())
-    }
-
     getMessages(offset: number) {
-        this.socket.send(JSON.stringify({
+        this.socket?.send(JSON.stringify({
             content: `${offset}`,
             type: 'get old',
         }));
@@ -115,9 +106,10 @@ export default class Chat {
         store.set(storeAddresses.ChatPane,{
             chatId:         chatData.id,
             title:          chatData.title,
-            avatar_file:    chatData.avatar ? `https://ya-praktikum.tech/${chatData.avatar}` : '',
+            avatar_file:    chatData.avatar ? `${AVATAR_URL}${chatData.avatar}` : '',
         })
         await this.connect();
+        this.updateStoreWithMessages();
     }
 
     updateChatList() {
@@ -125,7 +117,8 @@ export default class Chat {
     }
 
     leave() {
-        store.set(storeAddresses.ChatPane,{chatId: 0})
+        store.set(storeAddresses.ChatPane,{chatId: 0});
+        store.replace(storeAddresses.MessageList, {});
     }
 
     async changeAvatar(fromData: FormData){
@@ -198,6 +191,7 @@ export default class Chat {
         }
     }
     handleMessage(event: MessageEvent) {
+        console.log(event.type);
         const messageData = JSON.parse(event.data);
         if (isArray(messageData)) {
             messageData.forEach((message: {
@@ -214,34 +208,33 @@ export default class Chat {
                     type:       'message',
                 })
             })
-            this.updateMessagePaneView();
+            this.updateStoreWithMessages();
         } else {
-            const index = -1 + this.messages.push({
-                id:         messageData.id,
-                time:       new Date(messageData.time),
-                user_id:    messageData.userId,
-                content:    messageData.content,
-                type:       messageData.type,
-            })
+            console.log(messageData.type)
+            if (messageData.type === 'message') {
+                const index = -1 + this.messages.push({
+                    id:         messageData.id,
+                    time:       new Date(messageData.time),
+                    user_id:    messageData.userId,
+                    content:    messageData.content,
+                    type:       messageData.type,
+                })
+                this.updateStoreWithNewMessage(this.messages[index]);
+            }
 
-            this.addMessageToView(this.messages[index]);
+            if (messageData.type === 'pong') {
+                // do nothing
+            }
 
 
         }
 
     }
 
-    addMessageToView(message: Message) {
-        console.log(message);
+    updateStoreWithNewMessage(message: Message) {
         const list: Record<string, Record<string, string | number>> = {};
-        list[message.id] = {
-            author:     '',
-            id:         message.id,
-            text:       message.content,
-            orderTime:  message.time.getTime()/1000,
-            time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
-            status:     0,
-        }
+        list[message.id] = this.toStoreMessage(message);
+
         const date = new Date(message.time.getTime());
         const dateInMs = date.setHours(0,0,0,0);
         if (!list[dateInMs]) {
@@ -250,22 +243,27 @@ export default class Chat {
                 orderTime:      dateInMs/1000,
             }
         }
-        store.set(storeAddresses.MessageList, list)
+        console.log('hello here')
+        store.set(storeAddresses.MessageList, list);
+        store.invoke(`${storeAddresses.MessageList}.${message.id}.scroll`);
+        store.invoke(`${storeAddresses.MessageInput}.focus`);
     }
 
-    updateMessagePaneView() {
+    updateStoreWithMessages() {
         const list: Record<string, Record<string, string | number>> = {};
+        let latestDate: number = 0;
+        let latestId: number = 0;
         this.messages.forEach((message: Message) => {
-            list[message.id] = {
-                author:     '',
-                id:         message.id,
-                text:       message.content,
-                orderTime:  message.time.getTime()/1000,
-                time:       `${message.time.getHours()}:${message.time.getMinutes()}`,
-                status:     0,
-            }
+            list[message.id] = this.toStoreMessage(message);
+
             const date = new Date(message.time.getTime());
             const dateInMs = date.setHours(0,0,0,0);
+
+            if (dateInMs > latestDate) {
+                latestDate = dateInMs;
+                latestId = message.id;
+            }
+
             if (!list[dateInMs]) {
                 list[dateInMs] = {
                     dateSeparator:  beautifulDate(date),
@@ -274,7 +272,20 @@ export default class Chat {
             }
         })
 
-        store.set(storeAddresses.MessageList, list)
+        store.replace(storeAddresses.MessageList, list);
+
+        store.invoke(`${storeAddresses.MessageList}.${latestId}.scroll`);
+    }
+
+    toStoreMessage(message: Message) {
+        return {
+            author:     '',
+            id:         message.id,
+            text:       message.content,
+            orderTime:  message.time.getTime()/1000,
+            time:       `${String(message.time.getHours()).padStart(2,'0')}:${String(message.time.getMinutes()).padStart(2,'0')}`,
+            status:     0,
+        }
     }
 
     async connect(){
@@ -298,9 +309,17 @@ export default class Chat {
                 socket.addEventListener('open', () => {
                     console.log(`Соединение c ${this.chatData.title} установлено`);
                     this.uploadMessages();
+                    this.pingPongTimer = setInterval(() => {
+                        this.socket?.send(JSON.stringify({
+                            type: 'ping',
+                        }));
+                    }, 10000)
                 });
 
                 socket.addEventListener('close', event => {
+                    this.socket = undefined;
+                    clearInterval(this.pingPongTimer);
+
                     if (event.wasClean) {
                         console.log(`Соединение закрыто чисто с ${this.chatData.title}`);
                     } else {
@@ -313,7 +332,7 @@ export default class Chat {
                 socket.addEventListener('message', this.handleMessage.bind(this));
 
                 socket.addEventListener('error', event => {
-                    console.log('Ошибка', event.message);
+                    console.log('Ошибка', event);
                 });
             }
     }

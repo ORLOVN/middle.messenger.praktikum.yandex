@@ -9,7 +9,12 @@ export class Message extends Block {
         dateSeparator?: string,
         status?: number,
     }) {
-        super(props);
+        super({
+                ...props,
+                scroll: () => {
+                    this._element?.scrollIntoView();
+                }}
+            );
     }
 
     render():string {

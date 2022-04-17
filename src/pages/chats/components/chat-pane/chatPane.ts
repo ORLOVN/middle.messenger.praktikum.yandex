@@ -18,7 +18,10 @@ export class ChatPane extends Block {
     } = {
         chatId: 0,
     }) {
-        const messageInput = new MessageInput({ message:'' });
+        const messageInput = new MessageInput({
+            name: 'messageInput',
+            message: ''
+        });
 
 
         const optionMenu = new ContextMenu({

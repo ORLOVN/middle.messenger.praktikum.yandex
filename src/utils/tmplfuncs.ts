@@ -1,4 +1,5 @@
 const Handlebars = require("handlebars");
+import {HelperOptions} from "handlebars";
 
 Handlebars.registerHelper('statusAwaiting', function (value: number) {
     return value === 1;
@@ -14,6 +15,10 @@ Handlebars.registerHelper('statusReceived', function (value: number) {
 
 Handlebars.registerHelper('statusRead', function (value: number) {
     return value === 4;
+});
+
+Handlebars.registerHelper('ifEquals', function(arg1: string, arg2: string, options: HelperOptions) {
+    return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });
 
 export function TemplateCompile(tmpl: string, tmplData: any) {

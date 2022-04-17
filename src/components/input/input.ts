@@ -15,6 +15,19 @@ export class Input extends Block {
         super(props);
     }
 
+    get value(): string {
+        return (this._element as HTMLInputElement).value
+    }
+
+    set value(value:string) {
+        (this._element as HTMLInputElement).value = value;
+        this._meta.props.value = value;
+    }
+
+    focus(){
+        (this._element as HTMLInputElement).focus();
+    }
+
     render():string {
 
         return `<input name="{{name}}" value="{{value}}" class="{{class}}" placeholder="{{placeholder}}"/>`;
