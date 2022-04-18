@@ -10,13 +10,13 @@ export default `
     {{#switch currentList}}
         {{#case 'chat'}}
     <ul id="side-bar" class="side-bar__list-pane">
-        {{{switch}}}
+        {{{chatList}}}
     </ul>
         {{/case}}
         
         {{#case 'user'}}
     <ul id="side-bar" class="side-bar__list-pane">
-        {{{switch}}}
+//
     </ul>
         {{/case}}
         

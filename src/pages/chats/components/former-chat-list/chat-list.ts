@@ -85,7 +85,6 @@ export class ChatList extends Block {
             logoutButton:   logoutButton,
             contextMenu:    contextMenu,
             popupNewChat:   popupNewChat,
-            list:           [],
             ...props,
             events: {
                 '.chatlist__list-pane': {

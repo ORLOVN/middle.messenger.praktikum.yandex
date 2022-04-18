@@ -13,7 +13,7 @@ export class ChatPane extends Block {
     constructor(props: {
         name?:   string,
         title?:  string,
-        chatId: number,
+        chatId?: number,
         avatar_file?: string
     } = {
         chatId: 0,

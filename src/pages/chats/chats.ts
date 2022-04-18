@@ -1,18 +1,18 @@
 import Block        from '../../utils/Block';
-import ChatList     from "./components/chat-list";
 import ChatPane     from "./components/chat-pane";
 import tmpl         from './chats.tmpl';
 import mediator     from "../../utils/Mediator";
+import {SideBar}    from "./components/side-bar/side-bar";
 
 export class Chats extends Block {
     constructor() {
-        const chatList      = new ChatList( {name: 'chatList'});
-        const chatPane      = new ChatPane( {name: 'chatPane'});
+        const sideBar     = new SideBar( {name: 'sideBar'});
+        const chatPane    = new ChatPane( {name: 'chatPane'});
 
 
         super({
             name:           'chatPage',
-            chatList:       chatList,
+            sideBar:        sideBar,
             chatPane:       chatPane,
         });
 
