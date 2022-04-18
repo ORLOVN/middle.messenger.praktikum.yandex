@@ -2,6 +2,7 @@ import Chat, {ChatData} from "./Chat";
 import ChatAPI from "../../api/chat-api";
 import store from "../../utils/Store";
 import {storeAddresses} from "../../utils/globalVariables";
+import userApi from "../../api/user-api";
 
 class ChatDealer {
 
@@ -70,6 +71,11 @@ class ChatDealer {
         this.updateStore();
     }
 
+    async uploadUsers() {
+        const res = await userApi.search()
+        store.set(storeAddresses.UserList, {list: res.response})
+    }
+
     async createNewChat(title: string) {
         /*const popupInput = store.getState('chatPage.popupNewChat');
         const title = await (popupInput.popup as () => Promise<any>)()*/
@@ -114,10 +120,20 @@ class ChatDealer {
         if (action === 'change-avatar') {
             console.log(id, action)
         }
-        if (action === 'add-users') {
-            console.log(id, action)
+        if (action === 'new-chat') {
+            await this.uploadUsers()
+            store.set(storeAddresses.SideBar, {currentList: 'chats'})
+            const res = await new Promise((resolve, reject) => {
+                this.selected = resolve;
+                this.rejected = reject;
+            });
+            await this.createNewChat(res as string);
         }
     }
+
+    // @ts-ignore
+    selected = (value: string) => {}
+    rejected = () => {}
 
     async changeAvatar(fromData: FormData) {
         if (this._currentChat) {
@@ -131,11 +147,11 @@ class ChatDealer {
     }
 
     updateStore(){
-        const list: Record<string, Record<string, string | number>> = {};
+        const list: Record<string, string | number>[] = [];
         this.chats.forEach((chat: Chat) => {
-            list[chat.getId()] = chat.makeProps();
+            list.push(chat.makeProps());
         })
-        store.replace(storeAddresses.ChatList,list);
+        store.set(storeAddresses.ChatList,{list: list});
     }
 
     go(id: number) {

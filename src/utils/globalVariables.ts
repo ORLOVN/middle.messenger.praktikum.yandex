@@ -1,5 +1,7 @@
 enum storeAddresses {
-    ChatList = 'chatPage.chatList.list',
+    ChatList = 'chatPage.sideBar.chatList',
+    UserList = 'chatPage.sideBar.userList',
+    SideBar = 'chatPage.sideBar',
     ChatPane = 'chatPage.chatPane',
     MessageList = 'chatPage.chatPane.messageList',
     MessageInput = 'chatPage.chatPane.messageInput'

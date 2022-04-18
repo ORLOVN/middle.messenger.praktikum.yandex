@@ -8,16 +8,12 @@ export default `
         {{{logoutButton}}}
     </div>
     {{#switch currentList}}
-        {{#case 'chat'}}
-    <ul id="side-bar" class="side-bar__list-pane">
+        {{#case 'chats'}}
         {{{chatList}}}
-    </ul>
         {{/case}}
         
-        {{#case 'user'}}
-    <ul id="side-bar" class="side-bar__list-pane">
-//
-    </ul>
+        {{#case 'users'}}
+///
         {{/case}}
         
     {{/switch}}

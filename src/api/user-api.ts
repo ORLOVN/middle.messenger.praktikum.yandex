@@ -17,8 +17,8 @@ export class UserApi extends BaseAPI {
     request(id: number) {
         return handleResponse(http.get(`/${id}`, {}), 200);
     }
-    search(requestBody: Record<string, string>) {
-        return handleResponse(http.post('/search', {data: JSON.stringify(requestBody)}),200);
+    search(login: string = '') {
+        return handleResponse(http.post('/search', {data: JSON.stringify({login: login})}),200);
     }
 }
 
