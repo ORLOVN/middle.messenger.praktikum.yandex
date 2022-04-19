@@ -5,6 +5,8 @@ import Button           from '../../../../components/button';
 import router           from "../../../../utils/Router";
 import mediator         from "../../../../utils/Mediator";
 import ChatList         from "../chat-list";
+import {UserList} from "../user-list/user-list";
+import chatDealer from "../../../../modules/chats/ChatDealer";
 
 enum currentList  {
     chats    = 'chats',
@@ -17,7 +19,8 @@ export class SideBar extends Block {
         name: string;
     }) {
         const chatList = new ChatList({name: 'chatList'});
-
+        const userList = new UserList({name: 'userList'})
+        //chatDealer.doAction('new-chat');
         const searchField  = new SearchField({
             events:{
                 keyup:() => console.log('search-key up event')
@@ -55,6 +58,7 @@ export class SideBar extends Block {
 
         super({
             chatList:       chatList,
+            userList:       userList,
             searchField:    searchField,
             profileButton:  profileButton,
             logoutButton:   logoutButton,

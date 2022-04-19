@@ -75,8 +75,8 @@ class ChatAPI extends BaseAPI {
         return handleResponse(http.put('/avatar', {data: formData}), 200);
     }
 
-    addUsersToChat(usersRequest: {users: number[], chatId: number}) {
-        return handleResponse(http.put('/users', {data: JSON.stringify(usersRequest)}), 200)
+    addUsersToChat(users: number[], chatId: number) {
+        return handleResponse(http.put('/users', {data: JSON.stringify({users: users, chatId: chatId})}), 200)
     }
 
     deleteUsersFromChat(usersRequest: {users: number[], chatId: number}) {

@@ -59,10 +59,10 @@ export class ChatList extends Block {
             class: 'chat-list__options-button',
             events:{
                 click:(event: MouseEvent) => {
-                    contextMenu.popup({x: event.pageX, y: event.pageY})
+                    optionMenu.popup({x: event.pageX, y: event.pageY})
                         .then((value)=> {
                             if (value) {
-                                chatDealer.doAction(0,value)
+                                chatDealer.doAction(value)
                             }
                         })
 
@@ -90,7 +90,7 @@ export class ChatList extends Block {
                         contextMenu.popup({x: event.pageX, y: event.pageY})
                             .then((value)=> {
                                 if (value) {
-                                    chatDealer.doAction(id,value)
+                                    chatDealer.doAction(value, id)
                                 }
                             })
 

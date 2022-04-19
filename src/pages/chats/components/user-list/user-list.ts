@@ -59,10 +59,10 @@ export class UserList extends Block {
             class: 'chat-list__options-button',
             events:{
                 click:(event: MouseEvent) => {
-                    contextMenu.popup({x: event.pageX, y: event.pageY})
+                    optionMenu.popup({x: event.pageX, y: event.pageY})
                         .then((value)=> {
                             if (value) {
-                                chatDealer.doAction(0,value)
+                                chatDealer.doAction(value)
                             }
                         })
 
@@ -80,23 +80,6 @@ export class UserList extends Block {
             list:           [],
             ...props,
             events: {
-                    contextmenu: (event: MouseEvent) => {
-                        event.preventDefault();
-                        const liElement = (event.target as HTMLLIElement).closest('li')
-                        if (!liElement) return;
-                        const idStr = liElement.getAttribute('data-id');
-                        if (!idStr) return;
-                        const id = parseInt(idStr, 10)
-                        if (isNaN(id)) return;
-                        contextMenu.popup({x: event.pageX, y: event.pageY})
-                            .then((value)=> {
-                                if (value) {
-                                    chatDealer.doAction(id,value)
-                                }
-                            })
-
-                    },
-
                     click: (event: MouseEvent) => {
                         const liElement = (event.target as HTMLLIElement).closest('li')
                         if (!liElement) return;
@@ -104,7 +87,7 @@ export class UserList extends Block {
                         if (!idStr) return;
                         const id = parseInt(idStr, 10)
                         if (isNaN(id)) return;
-                        chatDealer.go(id)
+                        chatDealer.userSelected(id);
                     }
             }});
 

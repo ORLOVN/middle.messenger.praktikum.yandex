@@ -13,7 +13,7 @@ export default `
         {{/case}}
         
         {{#case 'users'}}
-///
+        {{{userList}}}
         {{/case}}
         
     {{/switch}}
