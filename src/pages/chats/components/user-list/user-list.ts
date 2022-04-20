@@ -54,25 +54,19 @@ export class UserList extends Block {
             cancelCaption:    'Отмена',
         });
 
-        const optionButton  = new Button({
-            content: `<span class="material-icons">add_comment</span>`,
+        const backButton  = new Button({
+            content: `<span class="material-icons">arrow_back</span>`,
             class: 'chat-list__options-button',
             events:{
-                click:(event: MouseEvent) => {
-                    optionMenu.popup({x: event.pageX, y: event.pageY})
-                        .then((value)=> {
-                            if (value) {
-                                chatDealer.doAction(value)
-                            }
-                        })
-
+                click:() => {
+                    chatDealer.reject()
                 }
             }
         });
 
 
         super({
-            optionButton:   optionButton,
+            backButton:     backButton,
             contextMenu:    contextMenu,
             popupNewChat:   popupNewChat,
             optionMenu:     optionMenu,
@@ -87,7 +81,7 @@ export class UserList extends Block {
                         if (!idStr) return;
                         const id = parseInt(idStr, 10)
                         if (isNaN(id)) return;
-                        chatDealer.userSelected(id);
+                        chatDealer.userSelect(id);
                     }
             }});
 

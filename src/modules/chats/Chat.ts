@@ -3,6 +3,8 @@ import ChatAPI from "../../api/chat-api";
 import {AVATAR_URL, storeAddresses} from "../../utils/globalVariables";
 import {isArray} from "../../utils/types";
 import {beautifulDate} from "../../utils/beautifulDate";
+import chatApi from "../../api/chat-api";
+import {User} from "./ChatDealer";
 
 type Message = {
     id: number,
@@ -51,6 +53,7 @@ export default class Chat {
     private          socket:          WebSocket | undefined;
     private          token:           string;
     private          pingPongTimer:   NodeJS.Timer;
+    public           users:           User;
 
 
 
@@ -67,11 +70,11 @@ export default class Chat {
         this.inputMessage = message;
     }
 
-    makeProps(): Record<string, string | number> {
+    async makeProps(): Promise<Record<string, string | number>> {
         const element: Record<string, string | number> = {};
         const chatData = this.chatData;
         element.id             = chatData.id;
-        element.title          = chatData.title;
+        element.title          = chatData.title; // === '[two-users-chat]';
         element.avatar         = chatData.avatar;
         element.unread_count   = chatData.unread_count;
         element.avatar_file    = chatData.avatar ? `${AVATAR_URL}${chatData.avatar}` : '';

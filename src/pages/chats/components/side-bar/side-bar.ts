@@ -23,7 +23,15 @@ export class SideBar extends Block {
         //chatDealer.doAction('new-chat');
         const searchField  = new SearchField({
             events:{
-                keyup:() => console.log('search-key up event')
+                keyup:(event: KeyboardEvent) => {
+                    chatDealer.searchInput((event.target! as HTMLInputElement).value)
+                },
+
+                keydown: (event: KeyboardEvent) => {
+                    if (event.code === 'Enter') {
+                        chatDealer.searchInput((event.target! as HTMLInputElement).value, true)
+                    }
+                }
             }
         });
 

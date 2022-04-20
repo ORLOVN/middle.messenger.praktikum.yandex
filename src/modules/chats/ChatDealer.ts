@@ -5,7 +5,7 @@ import {AVATAR_URL, storeAddresses} from "../../utils/globalVariables";
 import userApi from "../../api/user-api";
 import chatApi from "../../api/chat-api";
 
-type User = {
+export type User = {
     avatar:      string;
     avatar_file: string;
     display_name:string;
@@ -18,14 +18,19 @@ type User = {
 }
 
 class ChatDealer {
-
+    //chat handling
     private readonly chats:        Chat[];
     private          _currentChat: Chat | undefined;
     private static   __instance:   ChatDealer;
 
+    // chat reading engine
     private          _readingPosition:   number  = 0;
     private readonly _readingCount:      number  = 10;
     private          _readingEnd:        boolean = false;
+
+    //search engine
+    private searchTimer:     NodeJS.Timeout;
+    private prevSearchValue: string;
 
     constructor() {
         if (ChatDealer.__instance) {
@@ -56,8 +61,13 @@ class ChatDealer {
             } else {
                 let idList: number[] = [];
                 res.response.forEach((chat: ChatData) => {
-                    this.chats.push(new Chat(chat));
-                    idList.push(chat.id)
+                    const id = -1 + this.chats.push(new Chat(chat));
+                    idList.push(chat.id);
+                    chatApi.getChatUsers(chat.id).then((res) => {
+                        if (res.status === 200) {
+                            this.chats[id].users = res.response
+                        }
+                    })
                 })
                 return idList;
             }
@@ -87,8 +97,8 @@ class ChatDealer {
         this.updateStore();
     }
 
-    async uploadUsers() {
-        const res = await userApi.search()
+    async uploadUsers(login: string = '') {
+        const res = await userApi.search(login);
         res.response.forEach((element: User) => {
             element['avatar_file'] = element.avatar ? `${AVATAR_URL}${element.avatar}` : ''
         })
@@ -142,33 +152,60 @@ class ChatDealer {
         }
 
         if (action === 'new-chat') {
-            await this.uploadUsers();
-            store.set(storeAddresses.SideBar, {currentList: 'users'})
-            const userId = await new Promise((resolve, reject) => {
-                this.userSelected = resolve;
-                this.rejected = reject;
-            });
             try {
-                if (typeof userId !== 'number') throw 'user id is not readable';
-                const userList = store.getState(`${storeAddresses.UserList}'.list`);
+                await this.uploadUsers();
+                store.set(storeAddresses.SideBar, {currentList: 'users'})
+                const userId = await new Promise((resolve, reject) => {
+                    this.userSelect = resolve;
+                    this.reject = reject;
+                });
 
-                const chatTitle = Array.isArray(userList)
-                    ?  (user => `${user.first_name} ${user.second_name}`)(userList.find(user => user.id === userId))
-                    :   'New chat';
-                const chatIdList = await this.createNewChat(chatTitle);
+                if (typeof userId !== 'number') throw 'user id is not readable';
+                /* const userList = store.getState(`${storeAddresses.UserList}.list`);
+                 if (!Array.isArray(userList)) throw 'userList is not array';
+                 const chatTitle = (user => `${user.first_name} ${user.second_name}`)(userList.find(user => user.id === userId)); //self invoked function
+                  */
+
+                const chatIdList = await this.createNewChat('[two-users-chat]');
                 if (Array.isArray(chatIdList)){
                     await chatApi.addUsersToChat([userId], chatIdList[0])
                 }
             } catch (e) {
 
+            } finally {
+                store.set(storeAddresses.SideBar, {currentList: 'chats'})
             }
-            store.set(storeAddresses.SideBar, {currentList: 'chats'})
         }
     }
 
     // @ts-ignore
-    userSelected = (id: number) => {}
-    rejected = () => {}
+    userSelect = (id: number) => {}
+    reject = () => {}
+
+    async searchFunction(searchValue: string) {
+        const currentList = store.getState(`${storeAddresses.SideBar}`).currentList;
+        if (currentList === 'chats') {
+
+        }
+
+        if (currentList === 'users') {
+            await this.uploadUsers(searchValue);
+        }
+    }
+
+    async searchInput(searchValue: string, enterKey: boolean = false){
+        clearTimeout(this.searchTimer);
+        if (enterKey) {
+            if (this.prevSearchValue !== searchValue) {
+                this.prevSearchValue = searchValue;
+                await this.searchFunction(searchValue);
+            }
+        } else {
+            this.searchTimer = setTimeout(async ()=>{
+                await this.searchFunction(searchValue);
+            },1000);
+        }
+    }
 
     async changeAvatar(fromData: FormData) {
         if (this._currentChat) {
