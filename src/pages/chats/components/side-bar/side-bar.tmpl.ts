@@ -8,12 +8,17 @@ export default `
         {{{logoutButton}}}
     </div>
     {{#switch currentList}}
+    
         {{#case 'chats'}}
         {{{chatList}}}
         {{/case}}
         
-        {{#case 'users'}}
+        {{#case 'chat-master-1'}}
         {{{userList}}}
+        {{/case}}
+        
+        {{#case 'chat-master-2'}}
+        {{{chatProperty}}}
         {{/case}}
         
     {{/switch}}

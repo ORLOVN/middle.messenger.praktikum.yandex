@@ -53,13 +53,22 @@ export class UserList extends Block {
             okCaption:        'Ок',
             cancelCaption:    'Отмена',
         });
+        const nextButton  = new Button({
+            content: `<span class="material-icons">done</span>`,
+            class: 'user-list__next-button',
+            events:{
+                click:() => {
+                    chatDealer.chatMasterNext();
+                }
+            }
+        });
 
         const backButton  = new Button({
             content: `<span class="material-icons">arrow_back</span>`,
-            class: 'chat-list__options-button',
+            class: 'user-list__back-button',
             events:{
                 click:() => {
-                    chatDealer.reject()
+                    chatDealer.chatMasterBack();
                 }
             }
         });
@@ -67,11 +76,12 @@ export class UserList extends Block {
 
         super({
             backButton:     backButton,
+            nextButton:     nextButton,
             contextMenu:    contextMenu,
             popupNewChat:   popupNewChat,
             optionMenu:     optionMenu,
-            selectable:     true,
             list:           [],
+            selectedList:   [],
             ...props,
             events: {
                     click: (event: MouseEvent) => {

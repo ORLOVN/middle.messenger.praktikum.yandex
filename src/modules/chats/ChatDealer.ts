@@ -151,36 +151,69 @@ class ChatDealer {
             console.log(id, action)
         }
 
-        if (action === 'new-chat') {
+        if (action === 'chat-master-1') {
             try {
                 await this.uploadUsers();
-                store.set(storeAddresses.SideBar, {currentList: 'users'})
-                const userId = await new Promise((resolve, reject) => {
-                    this.userSelect = resolve;
-                    this.reject = reject;
+                store.set(storeAddresses.SideBar, {currentList: 'chat-master-1'})
+                await new Promise((resolve, reject) => {
+                    this.chatMasterNext = resolve;
+                    this.chatMasterBack = reject;
                 });
 
-                if (typeof userId !== 'number') throw 'user id is not readable';
-                /* const userList = store.getState(`${storeAddresses.UserList}.list`);
-                 if (!Array.isArray(userList)) throw 'userList is not array';
-                 const chatTitle = (user => `${user.first_name} ${user.second_name}`)(userList.find(user => user.id === userId)); //self invoked function
-                  */
+                this.doAction('chat-master-2')
+
+            } catch (e) {
+                store.set(storeAddresses.SideBar, {currentList: 'chats'})
+            }
+        }
+
+        if (action === 'chat-master-2') {
+            try {
+                store.set(storeAddresses.SideBar, {currentList: 'chat-master-2'})
+                await new Promise((resolve, reject) => {
+                    this.chatMasterNext = resolve;
+                    this.chatMasterBack = reject;
+                });
+
 
                 const chatIdList = await this.createNewChat('[two-users-chat]');
                 if (Array.isArray(chatIdList)){
                     await chatApi.addUsersToChat([userId], chatIdList[0])
                 }
-            } catch (e) {
 
-            } finally {
-                store.set(storeAddresses.SideBar, {currentList: 'chats'})
+            } catch (e) {
+                this.doAction('chat-master-1')
             }
         }
+            }
+    userSelect(id: number) {
+        const UserList = store.getState(`${storeAddresses.UserList}`);
+        if (!Array.isArray(UserList.list) || !Array.isArray(UserList.selectedList)) return;
+
+        const nextList = UserList.list.filter(e => e.id !== id);
+        if (nextList.length !== UserList.list.length) {
+            const item = UserList.list.find(e => e.id === id);
+            UserList.selectedList.push(item);
+            UserList.list = nextList;
+            store.set(storeAddresses.UserList, UserList);
+            return;
+        }
+
+        const nextSelectedList = UserList.selectedList.filter(e => e.id !== id);
+        if (nextSelectedList.length !== UserList.selectedList.length) {
+            const item = UserList.selectedList.find(e => e.id === id);
+            UserList.list.push(item);
+            UserList.selectedList = nextSelectedList;
+            store.set(storeAddresses.UserList, UserList);
+            return;
+        }
+
+
+
     }
 
-    // @ts-ignore
-    userSelect = (id: number) => {}
-    reject = () => {}
+    chatMasterNext = ({}={}) => {}
+    chatMasterBack = ({}={}) => {}
 
     async searchFunction(searchValue: string) {
         const currentList = store.getState(`${storeAddresses.SideBar}`).currentList;

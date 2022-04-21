@@ -3,7 +3,6 @@ import ChatAPI from "../../api/chat-api";
 import {AVATAR_URL, storeAddresses} from "../../utils/globalVariables";
 import {isArray} from "../../utils/types";
 import {beautifulDate} from "../../utils/beautifulDate";
-import chatApi from "../../api/chat-api";
 import {User} from "./ChatDealer";
 
 type Message = {
@@ -74,7 +73,7 @@ export default class Chat {
         const element: Record<string, string | number> = {};
         const chatData = this.chatData;
         element.id             = chatData.id;
-        element.title          = chatData.title; // === '[two-users-chat]';
+        element.title          = chatData.title;
         element.avatar         = chatData.avatar;
         element.unread_count   = chatData.unread_count;
         element.avatar_file    = chatData.avatar ? `${AVATAR_URL}${chatData.avatar}` : '';
