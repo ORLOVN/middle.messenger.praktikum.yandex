@@ -1,3 +1,6 @@
+.chat-list {
+  height: 100%;
+}
 .chat-list__list-pane {
   display: flex;
   flex-direction: column;

@@ -13,12 +13,8 @@ export default `
         {{{chatList}}}
         {{/case}}
         
-        {{#case 'chat-master-1'}}
+        {{#case 'users'}}
         {{{userList}}}
-        {{/case}}
-        
-        {{#case 'chat-master-2'}}
-        {{{chatProperty}}}
         {{/case}}
         
     {{/switch}}

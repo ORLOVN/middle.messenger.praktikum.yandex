@@ -1,2 +1,2 @@
-export {AvatarSetting as default } from './avatar-setting'
+export {ChatSetting as default } from './chat-setting'
 

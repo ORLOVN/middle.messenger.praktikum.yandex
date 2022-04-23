@@ -112,7 +112,9 @@ class ChatDealer {
         if (res.status === 200) {
             const idList = await this.uploadChats(0, 1)
             this.updateStore();
-            return idList;
+            if (!Array.isArray(idList)) return;
+            await this.addUsers(idList[0]);
+            return idList[0];
         }
     }
 
@@ -150,61 +152,106 @@ class ChatDealer {
         if (action === 'change-avatar') {
             console.log(id, action)
         }
+    }
 
-        if (action === 'chat-master-1') {
-            try {
-                await this.uploadUsers();
-                store.set(storeAddresses.SideBar, {currentList: 'chat-master-1'})
-                await new Promise((resolve, reject) => {
-                    this.chatMasterNext = resolve;
-                    this.chatMasterBack = reject;
-                });
-
-                this.doAction('chat-master-2')
-
-            } catch (e) {
-                store.set(storeAddresses.SideBar, {currentList: 'chats'})
-            }
+    async getChatUser(chatId: number) {
+        let maxIterations = 50;
+        let reachedEnd = false;
+        let offset = 0;
+        const step = 10;
+        const userList = [];
+        while ( maxIterations>0 && !reachedEnd) {
+            const res = await chatApi.getChatUsers(chatId, offset, step );
+            offset += step;
+            reachedEnd = !res.response.length;
+            res.response.forEach((element: User) => element.avatar_file = element.avatar ? `${AVATAR_URL}${element.avatar}` : '' )
+            userList.push(...res.response)
+            maxIterations--;
         }
+        return userList;
+    }
 
-        if (action === 'chat-master-2') {
-            try {
-                store.set(storeAddresses.SideBar, {currentList: 'chat-master-2'})
-                await new Promise((resolve, reject) => {
-                    this.chatMasterNext = resolve;
-                    this.chatMasterBack = reject;
-                });
+    async addUsers(_chatId: number = -1) {
+        try {
+            const chatId = _chatId !== -1 ? _chatId : this._currentChat!.getId()
+            await this.uploadUsers();
+
+            const user = store.getState(storeAddresses.User)
+            const chatUserList = (await this.getChatUser(chatId)).filter((e) => e.id !== user.id);
+            console.log(chatUserList)
+
+            store.set(storeAddresses.SideBar, {currentList: 'users'})
+            let userList = store.getState(`${storeAddresses.UserList}`);
+            if (!Array.isArray(userList.selectedList)) return;
 
 
-                const chatIdList = await this.createNewChat('[two-users-chat]');
-                if (Array.isArray(chatIdList)){
-                    await chatApi.addUsersToChat([userId], chatIdList[0])
-                }
 
-            } catch (e) {
-                this.doAction('chat-master-1')
+            userList.selectedList.push(...chatUserList);
+            store.set(storeAddresses.UserList, userList);
+
+            await new Promise((resolve, reject) => {
+                this.chatMasterDone = resolve;
+                this.chatMasterBack = reject;
+            });
+
+            userList = store.getState(`${storeAddresses.UserList}`);
+            if (!Array.isArray(userList.selectedList)) return;
+
+            const selectedList = userList.selectedList;
+            const idsToAdd: number[] = [];
+            const idsToRemove: number[] = [];
+
+            selectedList.forEach((selected) => {
+                let match = false;
+                chatUserList.forEach((existing) => {
+                    match = selected.id === existing.id ? true : match;
+                })
+                if (!match) idsToAdd.push(selected.id);
+            })
+
+            chatUserList.forEach((existing) => {
+                let match = false;
+                selectedList.forEach((selected) => {
+                    match = selected.id === existing.id ? true : match;
+                })
+                match = user.id === existing.id ? true : match;
+                if (!match) idsToRemove.push(existing.id);
+            })
+
+            if (idsToAdd.length > 0) {
+                await chatApi.addUsersToChat(idsToAdd, chatId);
             }
+
+            if (idsToRemove.length > 0) {
+                await chatApi.deleteUsersFromChat(idsToRemove, chatId);
+            }
+
+            store.set(storeAddresses.SideBar, {currentList: 'chats'})
+
+        } catch (e) {
+            store.set(storeAddresses.SideBar, {currentList: 'chats'})
         }
-            }
+    }
+
     userSelect(id: number) {
-        const UserList = store.getState(`${storeAddresses.UserList}`);
-        if (!Array.isArray(UserList.list) || !Array.isArray(UserList.selectedList)) return;
+        const userList = store.getState(`${storeAddresses.UserList}`);
+        if (!Array.isArray(userList.list) || !Array.isArray(userList.selectedList)) return;
 
-        const nextList = UserList.list.filter(e => e.id !== id);
-        if (nextList.length !== UserList.list.length) {
-            const item = UserList.list.find(e => e.id === id);
-            UserList.selectedList.push(item);
-            UserList.list = nextList;
-            store.set(storeAddresses.UserList, UserList);
+        const nextList = userList.list.filter(e => e.id !== id);
+        if (nextList.length !== userList.list.length) {
+            const item = userList.list.find(e => e.id === id);
+            userList.selectedList.push(item);
+            userList.list = nextList;
+            store.set(storeAddresses.UserList, userList);
             return;
         }
 
-        const nextSelectedList = UserList.selectedList.filter(e => e.id !== id);
-        if (nextSelectedList.length !== UserList.selectedList.length) {
-            const item = UserList.selectedList.find(e => e.id === id);
-            UserList.list.push(item);
-            UserList.selectedList = nextSelectedList;
-            store.set(storeAddresses.UserList, UserList);
+        const nextSelectedList = userList.selectedList.filter(e => e.id !== id);
+        if (nextSelectedList.length !== userList.selectedList.length) {
+            const item = userList.selectedList.find(e => e.id === id);
+            userList.list.push(item);
+            userList.selectedList = nextSelectedList;
+            store.set(storeAddresses.UserList, userList);
             return;
         }
 
@@ -212,7 +259,7 @@ class ChatDealer {
 
     }
 
-    chatMasterNext = ({}={}) => {}
+    chatMasterDone = ({}={}) => {}
     chatMasterBack = ({}={}) => {}
 
     async searchFunction(searchValue: string) {

@@ -1,4 +1,5 @@
 export default `
+<div id="chat-list">
     <ul id="chat-list" class="chat-list__list-pane">
         {{#each list}}
         <li class="chat-list__element" data-id="{{id}}" style="order:{{this.order}}">
@@ -28,10 +29,9 @@ export default `
         {{/each}} 
     {{{contextMenu}}}
     {{{optionMenu}}}
-    {{{popupNewChat}}}
     {{{optionButton}}}
     </ul>
-
-    
+    {{{popupNewChat}}}
+</div>
 `
 

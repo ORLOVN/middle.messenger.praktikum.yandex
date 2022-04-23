@@ -69,7 +69,7 @@ export default class Chat {
         this.inputMessage = message;
     }
 
-    async makeProps(): Promise<Record<string, string | number>> {
+    makeProps(): Record<string, string | number> {
         const element: Record<string, string | number> = {};
         const chatData = this.chatData;
         element.id             = chatData.id;

@@ -1,5 +1,8 @@
 import Block        from "../../../../utils/Block";
 import {PropEvents} from '../../../../utils/types'
+import InputAssy from "../../../../components/input-assy";
+import Button from "../../../../components/button";
+import chatDealer from "../../../../modules/chats/ChatDealer";
 
 export class ChatSetting extends Block {
 
@@ -8,43 +11,51 @@ export class ChatSetting extends Block {
         imgRef?: string,
         events?: PropEvents
     }) {
-        if (!props.events) {
-            props.events = {};
-        }
 
-        props.events['#avatar'] = {
-            change: (event: Event) => {
-                if (!event.target) return;
-                const formElement = ((event.target as HTMLElement).closest('#avatarSettingsForm') as HTMLFormElement);
-                if (!formElement) return;
-                formElement.requestSubmit();
+        const chatNameInput = new InputAssy({
+            name: 'chatNameInput',
+            type: 'text',
+            placeholder: 'Новый чат',
+            label: 'Введите имя чата',
+        })
+
+        const nextButton  = new Button({
+            content: `<span class="material-icons">arrow_back</span>`,
+            class: 'user-list__next-button',
+            events:{
+                click:() => {
+                    chatDealer.chatMasterNext();
+                }
             }
-        }
+        });
 
-        super({...props});
+        const backButton  = new Button({
+            content: `<span class="material-icons">arrow_back</span>`,
+            class: 'user-list__back-button',
+            events:{
+                click:() => {
+                    chatDealer.chatMasterBack();
+                }
+            }
+        });
+
+        super({
+            chatNameInput: chatNameInput,
+            nextButton: nextButton,
+            backButton: backButton,
+            ...props
+        });
 
     }
 
     render():string {
 // eslint-disable-next-line max-len
         return `
-        
-<form class="avatar-setting__pane" id="avatarSettingsForm">
-    <div class="avatar-setting__avatar" {{#if avatar_file}} style="background-image: url('{{avatar_file}}')" {{/if}}>
-        <label class="avatar-setting__avatar-input-label" for="avatar">
-        <input class="avatar-setting__avatar-input" id="avatar" type="file" name="avatar" accept="image/*">
-        </label>
-        
-        {{{avatarButton}}}
-    </div>
-    <div class="avatar-setting__caption">
-        {{#if display_name}}
-        {{display_name}}
-        {{else}}
-        {{first_name}}
-        {{/if}}
-    </div>
-</form>
+<div ="chat-setting__pane">    
+{{{chatNameInput}}}
+{{{nextButton}}}
+{{{backButton}}}
+</div>
 `;
 
     }

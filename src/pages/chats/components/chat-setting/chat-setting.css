@@ -1,11 +1,11 @@
-.avatar-setting__pane {
+.chat-setting__pane {
     display: flex;
     align-items: center;
     flex-direction: column;
 
 }
 
-.avatar-setting__avatar {
+.chat-setting__avatar {
     width: 140px;
     height: 140px;
     background-repeat: no-repeat;
@@ -17,22 +17,22 @@
 }
 
 
-.avatar-setting__caption {
+.chat-setting__caption {
     font-size: 2rem;
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.avatar-setting__avatar-input {
+.chat-setting__avatar-input {
     display: none;
 }
-.avatar-setting__avatar-input-label {
+.chat-setting__avatar-input-label {
     display: block;
     width: 100%;
     height: 100%;
 }
 
-.avatar-setting__avatar-input-label:hover {
+.chat-setting__avatar-input-label:hover {
     background-image: url("../../../../../resources/edit-icon.png");
     background-repeat: no-repeat;
     background-position: 100% 100%;

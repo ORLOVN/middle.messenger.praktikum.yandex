@@ -63,8 +63,8 @@ class ChatAPI extends BaseAPI {
             if (limit)  data.limit  = limit;
             if (name)   data.title  = name;
             if (email)  data.email  = email;
-
-            return handleResponse(http.get(`/${id}/users`,{data: JSON.stringify(data)}), 200);
+            const url = '/?'+queryStringify(data)
+            return handleResponse(http.get(`/${id}/users${url}`,{data: JSON.stringify(data)}), 200);
     }
 
     getNewMessagesCount(id: number) {
@@ -79,8 +79,8 @@ class ChatAPI extends BaseAPI {
         return handleResponse(http.put('/users', {data: JSON.stringify({users: users, chatId: chatId})}), 200)
     }
 
-    deleteUsersFromChat(usersRequest: {users: number[], chatId: number}) {
-        return handleResponse(http.delete('/users', {data: JSON.stringify(usersRequest)}), 200)
+    deleteUsersFromChat(users: number[], chatId: number) {
+        return handleResponse(http.delete('/users', {data: JSON.stringify({users: users, chatId: chatId})}), 200)
     }
 
     requestChatToken(id: number) {

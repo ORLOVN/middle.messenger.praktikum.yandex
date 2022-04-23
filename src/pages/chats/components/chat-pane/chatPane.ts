@@ -57,6 +57,10 @@ export class ChatPane extends Block {
                                 const event = new MouseEvent('click');
                                 avatarInput.dispatchEvent(event);
                             }
+
+                            if (value === 'add-users') {
+                                ChatDealer.addUsers();
+                            }
                         }
                     })
             }

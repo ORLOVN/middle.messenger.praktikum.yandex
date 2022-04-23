@@ -58,15 +58,7 @@ export class ChatList extends Block {
             content: `<span class="material-icons">add_comment</span>`,
             class: 'chat-list__options-button',
             events:{
-                click:(event: MouseEvent) => {
-                    optionMenu.popup({x: event.pageX, y: event.pageY})
-                        .then((value)=> {
-                            if (value) {
-                                chatDealer.doAction(value)
-                            }
-                        })
-
-                }
+                click:() => popupNewChat.popup().then(title => chatDealer.createNewChat(title))
             }
         });
 

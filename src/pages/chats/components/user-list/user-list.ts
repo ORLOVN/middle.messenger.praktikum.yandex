@@ -58,7 +58,7 @@ export class UserList extends Block {
             class: 'user-list__next-button',
             events:{
                 click:() => {
-                    chatDealer.chatMasterNext();
+                    chatDealer.chatMasterDone();
                 }
             }
         });
