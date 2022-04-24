@@ -92,7 +92,7 @@ export class UserList extends Block {
                         if (!idStr || !type) return;
                         const id = parseInt(idStr, 10)
                         if (isNaN(id)) return;
-                        chatDealer.userSelect(id, type);
+                        chatDealer.userSelect(id);
                     }
             }});
 

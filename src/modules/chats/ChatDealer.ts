@@ -60,15 +60,19 @@ class ChatDealer {
                 this._readingEnd = true;
             } else {
                 let idList: number[] = [];
-                res.response.forEach(async (chat: ChatData) => {
+                res.response.forEach((chat: ChatData) => {
+                    this.chats.push(new Chat(chat));
+                    idList.push(chat.id);
+                })
+
+                res.response.map( async (chat: ChatData) => {
                     const res = await chatApi.getChatUsers(chat.id);
                     if (res.status === 200) {
                         chat.users = res.response
                     }
-                    this.chats.push(new Chat(chat));
-                    idList.push(chat.id);
+                });
 
-                })
+                console.log(this.chats)
                 return idList;
             }
         }
@@ -100,15 +104,13 @@ class ChatDealer {
 
 
     async createNewChat(title: string) {
-        /*const popupInput = store.getState('chatPage.popupNewChat');
-        const title = await (popupInput.popup as () => Promise<any>)()*/
         const res = await ChatAPI.createChat(title)
         if (res.status === 200) {
-            const idList = await this.uploadChats(0, 1)
+            console.log(res);
+            await this.addUsers(res.response.id);
+            await this.uploadChats(0, 1)
             this.updateStore();
-            if (!Array.isArray(idList)) return;
-            await this.addUsers(idList[0]);
-            return idList[0];
+            return res.response.id;
         }
     }
 
@@ -248,6 +250,7 @@ class ChatDealer {
             if (idsToRemove.length > 0) {
                 await chatApi.deleteUsersFromChat(idsToRemove, chatId);
             }
+
 
             store.set(storeAddresses.SideBar, {currentList: 'chats'})
 

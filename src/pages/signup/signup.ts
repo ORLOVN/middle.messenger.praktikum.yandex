@@ -1,12 +1,11 @@
-import Block from "../../utils/Block";
+import Block    from "../../utils/Block";
 import tmpl from './signup.tmpl';
 import Button from "../../components/button";
 import InputAssembly from "../../components/input-assy";
 import TextButton from "../../components/text-button";
 import {listFromArray} from '../../utils/blockTools';
-
-import mediator from "../../utils/Mediator";
 import router from "../../utils/Router";
+import auth from "../../modules/auth";
 
 export class Signup extends Block {
     constructor() {
@@ -15,8 +14,7 @@ export class Signup extends Block {
             events: {
                 blur: (event: FocusEvent) => {
                     console.log('start')
-                    mediator.emit(
-                        'signup-input-blur',
+                    auth.signupInputBlur(
                         (event.target! as HTMLInputElement).name,
                         (event.target! as HTMLInputElement).value
                     );
@@ -109,7 +107,7 @@ export class Signup extends Block {
                     inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
-                    mediator.emit('signup-submit', values)
+                    auth.signupSubmit(values);
                 }
             }
         });

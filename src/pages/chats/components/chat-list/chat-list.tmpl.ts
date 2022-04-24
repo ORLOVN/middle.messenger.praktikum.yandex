@@ -1,5 +1,5 @@
 export default `
-<div id="chat-list">
+<div class="chat-list">
     <ul id="chat-list" class="chat-list__list-pane">
         {{#each list}}
         <li class="chat-list__element" data-id="{{id}}" style="order:{{this.order}}">
