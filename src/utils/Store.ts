@@ -1,15 +1,15 @@
-import EventBus from './EventBus';
-import {PlainObject} from './types';
-import set from './set';
-import find from './find';
+import EventBus         from './EventBus';
+import {PlainObject}    from './types';
+import set              from './set';
+import find             from './find';
 
 export enum StoreEvents {
     Updated = 'updated',
 }
 
 export class Store extends EventBus{
-    private static instance: Store;
-    private readonly state: PlainObject;
+    private static   instance:  Store;
+    private readonly state:     PlainObject;
 
     constructor() {
         if (Store.instance) {

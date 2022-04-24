@@ -1,6 +1,6 @@
-import Route from "./Route";
-import Block from "./Block";
-import mediator from "./Mediator";
+import Route    from "./Route";
+import Block    from "./Block";
+import auth     from "../modules/auth";
 
 export class Router {
   private readonly routes:        Route[];
@@ -55,7 +55,7 @@ export class Router {
     if (route) {
       route!.render();
     }
-    mediator.emit('check-user')
+    auth.checkUser();
   }
 
   go(pathname: string) {

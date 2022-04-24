@@ -3,9 +3,8 @@ import store            from "../utils/Store";
 import {PlainObject}    from "../utils/types";
 import authAPI          from "../api/auth-api";
 import router           from "../utils/Router";
-import mediator from "../utils/Mediator";
 
-const storeLocation = 'signupPage.inputList';
+const signoutPageInputs = 'signupPage.inputList';
 const signinPageInputs = 'signinPage.inputList';
 
 class Auth {
@@ -101,7 +100,7 @@ class Auth {
         Object.entries(values).forEach(([name,value]) => {
             let aux = (name === 'repassword') ? values['newpassword'] || '' : '';
             validResult = validate (name, value, aux);
-            store.set(`${storeLocation}.${name}`, { value: value, validLabel: validResult});
+            store.set(`${signoutPageInputs}.${name}`, { value: value, validLabel: validResult});
             ifProblem ||= !!validResult;
         });
 
@@ -109,7 +108,7 @@ class Auth {
             return
         }
 
-        const state: PlainObject = store.getState(storeLocation);
+        const state: PlainObject = store.getState(signoutPageInputs);
 
         const requestBody: Record<string, string>= {
             first_name:    state.first_name.value,
@@ -122,20 +121,20 @@ class Auth {
 
         const res = await authAPI.createUser(requestBody)
         if (res.status === 200) {
-            mediator.emit('check-user');
+            this.checkUser()
         }
         if (res.status === 400) {
-            store.set(`${storeLocation}.login`, {validLabel: 'Такой пользователь уже существует'});
+            store.set(`${signoutPageInputs}.login`, {validLabel: 'Такой пользователь уже существует'});
         }
     }
 
     signupInputBlur(name: string, value: string) {
         let validResult = validate (name, value, value);
-        store.set(`${storeLocation}.${name}`, { value: value, validLabel: validResult});
+        store.set(`${signoutPageInputs}.${name}`, { value: value, validLabel: validResult});
     }
 
     signupInitiated(){
-        mediator.emit('check-user');
+        this.checkUser();
     }
 }
 
