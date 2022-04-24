@@ -1,4 +1,11 @@
 
+.user-list {
+  height: 100%;
+}
+.user-list__caption {
+  font-size: 1.3rem;
+}
+
 .user-list__list-pane {
   display: flex;
   flex-direction: column;

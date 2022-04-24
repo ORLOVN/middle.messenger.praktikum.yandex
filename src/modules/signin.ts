@@ -1,9 +1,9 @@
-import mediator from '../utils/Mediator';
-import {validate} from "../utils/validtools";
-import store from '../utils/Store';
-import authAPI from "../api/auth-api";
-import router from "../utils/Router";
-import {PlainObject} from "../utils/types";
+import mediator         from '../utils/Mediator';
+import {validate}       from "../utils/validtools";
+import store            from '../utils/Store';
+import authAPI          from "../api/auth-api";
+import router           from "../utils/Router";
+import {PlainObject}    from "../utils/types";
 
 const storeLocation = 'signinPage.inputList';
 

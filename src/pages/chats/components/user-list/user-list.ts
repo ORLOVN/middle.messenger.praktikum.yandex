@@ -88,10 +88,11 @@ export class UserList extends Block {
                         const liElement = (event.target as HTMLLIElement).closest('li')
                         if (!liElement) return;
                         const idStr = liElement.getAttribute('data-id');
-                        if (!idStr) return;
+                        const type  = liElement.getAttribute('data-type');
+                        if (!idStr || !type) return;
                         const id = parseInt(idStr, 10)
                         if (isNaN(id)) return;
-                        chatDealer.userSelect(id);
+                        chatDealer.userSelect(id, type);
                     }
             }});
 

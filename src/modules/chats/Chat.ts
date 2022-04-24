@@ -1,9 +1,9 @@
-import store from "../../utils/Store";
-import ChatAPI from "../../api/chat-api";
+import store                        from "../../utils/Store";
+import ChatAPI                      from "../../api/chat-api";
 import {AVATAR_URL, storeAddresses} from "../../utils/globalVariables";
-import {isArray} from "../../utils/types";
-import {beautifulDate} from "../../utils/beautifulDate";
-import {User} from "./ChatDealer";
+import {isArray}                    from "../../utils/types";
+import {beautifulDate}              from "../../utils/beautifulDate";
+import {User}                       from "./ChatDealer";
 
 type Message = {
     id: number,
@@ -28,17 +28,11 @@ export type ChatData = {
     avatar:       string,
     unread_count: number,
     last_message: {
-        user: {
-            first_name:  string,
-            second_name: string,
-            avatar:      string,
-            email:       string,
-            login:       string,
-            phone:       string
-        },
+        user: User,
         time:    string,
         content: string;
     }
+    users: User [];
 }
 
 export default class Chat {
@@ -212,12 +206,12 @@ export default class Chat {
             })
             this.updateStoreWithMessages();
         } else {
-            console.log(messageData.type)
+            console.log(messageData)
             if (messageData.type === 'message') {
                 const index = -1 + this.messages.push({
                     id:         messageData.id,
                     time:       new Date(messageData.time),
-                    user_id:    messageData.userId,
+                    user_id:    messageData.user_id,
                     content:    messageData.content,
                     type:       messageData.type,
                 })
@@ -236,7 +230,7 @@ export default class Chat {
     updateStoreWithNewMessage(message: Message) {
         const list: Record<string, Record<string, string | number>> = {};
         list[message.id] = this.toStoreMessage(message);
-
+        console.log(message);
         const date = new Date(message.time.getTime());
         const dateInMs = date.setHours(0,0,0,0);
         if (!list[dateInMs]) {
@@ -280,8 +274,13 @@ export default class Chat {
     }
 
     toStoreMessage(message: Message) {
+        const MessageUser = this.chatData.users.find(e => e.id === message.user_id);
+        const user = store.getState(storeAddresses.User);
+
+        const author = !!MessageUser ? (MessageUser.id !== user.id ? `${MessageUser.first_name} ${MessageUser.second_name}` : '') : 'User not found'
+
         return {
-            author:     '',
+            author:     author,
             id:         message.id,
             text:       message.content,
             orderTime:  message.time.getTime()/1000,

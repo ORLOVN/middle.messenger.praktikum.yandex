@@ -49,7 +49,7 @@ export class ChatPane extends Block {
                 optionMenu.popup({x: event.pageX, y: event.pageY})
                     .then((value) => {
                         if (value) {
-                            chatDealer.doAction(this.getProps().chatId,value)
+                            chatDealer.doAction(value, this.getProps().chatId)
                             if (value === 'change-avatar') {
                                 if (!this._element) return;
                                 const avatarInput = this._element.querySelector('#avatarInput')

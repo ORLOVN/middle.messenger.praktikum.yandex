@@ -3,7 +3,7 @@ import {validate}           from "../utils/validtools";
 import store, {StoreEvents} from '../utils/Store';
 import userApi              from "../api/user-api";
 import {PlainObject}        from "../utils/types";
-import {AVATAR_URL} from "../utils/globalVariables";
+import {AVATAR_URL}         from "../utils/globalVariables";
 
 const storeLocation = 'profilePage';
 

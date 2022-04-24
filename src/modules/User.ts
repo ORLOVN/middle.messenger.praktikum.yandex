@@ -2,20 +2,22 @@ import Chat from "./chats/Chat";
 import store from "../utils/Store";
 import router from "../utils/Router";
 import authAPI from "../api/auth-api";
+import {storeAddresses} from "../utils/globalVariables";
 
-type stringNullable = string | null;
+
 type UserData = {
-    avatar:         stringNullable,
-    display_name:   stringNullable,
-    email:          stringNullable,
-    first_name:     stringNullable,
-    id:             number,
-    login:          stringNullable,
-    phone:          stringNullable,
-    second_name:    stringNullable,
+    avatar:      string;
+    avatar_file: string;
+    display_name:string;
+    email:       string;
+    first_name:  string;
+    id:          number;
+    login:       string;
+    phone:       string;
+    second_name: string;
 }
 
-class User {
+class Users {
     private userData: UserData | null;
     private static __instance: User;
 
@@ -27,6 +29,15 @@ class User {
         User.__instance = this;
 
         Object.assign(window, {user: this});
+    }
+
+    getUserData(id: number = -1) {
+        if (id === -2) {
+            return store.getState(storeAddresses.User)
+        } else {
+            return store.getState(storeAddresses.Users)
+        }
+
     }
 
     async checkUser(force: boolean = false, resolve = ({})=>{}) {

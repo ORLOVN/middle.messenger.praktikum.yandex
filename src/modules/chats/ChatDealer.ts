@@ -60,14 +60,14 @@ class ChatDealer {
                 this._readingEnd = true;
             } else {
                 let idList: number[] = [];
-                res.response.forEach((chat: ChatData) => {
-                    const id = -1 + this.chats.push(new Chat(chat));
+                res.response.forEach(async (chat: ChatData) => {
+                    const res = await chatApi.getChatUsers(chat.id);
+                    if (res.status === 200) {
+                        chat.users = res.response
+                    }
+                    this.chats.push(new Chat(chat));
                     idList.push(chat.id);
-                    chatApi.getChatUsers(chat.id).then((res) => {
-                        if (res.status === 200) {
-                            this.chats[id].users = res.response
-                        }
-                    })
+
                 })
                 return idList;
             }
@@ -97,13 +97,7 @@ class ChatDealer {
         this.updateStore();
     }
 
-    async uploadUsers(login: string = '') {
-        const res = await userApi.search(login);
-        res.response.forEach((element: User) => {
-            element['avatar_file'] = element.avatar ? `${AVATAR_URL}${element.avatar}` : ''
-        })
-        store.set(storeAddresses.UserList, {list: res.response})
-    }
+
 
     async createNewChat(title: string) {
         /*const popupInput = store.getState('chatPage.popupNewChat');
@@ -154,6 +148,35 @@ class ChatDealer {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //////// Функции для добавления и удаления пользователей из чата///
+    ///////////////////////////////////////////////////////////////////
+
+    removeSelected(listToFilter: User[], listToCompareWith: User[]) {
+        const resultList: User[] =[];
+        listToFilter.forEach((toFilterItem) => {
+            let match = false;
+            listToCompareWith.forEach((toCompareItemWith) => {
+                match = toFilterItem.id === toCompareItemWith.id ? true : match;
+            })
+            if (!match) resultList.push(toFilterItem);
+        })
+        return resultList;
+    }
+
+    async uploadUsers(login: string = '') {
+        const res = await userApi.search(login);
+        res.response.forEach((element: User) => {
+            element['avatar_file'] = element.avatar ? `${AVATAR_URL}${element.avatar}` : ''
+        })
+
+        const userList = store.getState(`${storeAddresses.UserList}`);
+        if (!Array.isArray(userList.list) || !Array.isArray(userList.selectedList)) return;
+        userList.list = this.removeSelected(res.response, userList.selectedList);
+
+        store.set(storeAddresses.UserList, userList)
+    }
+
     async getChatUser(chatId: number) {
         let maxIterations = 50;
         let reachedEnd = false;
@@ -174,20 +197,20 @@ class ChatDealer {
     async addUsers(_chatId: number = -1) {
         try {
             const chatId = _chatId !== -1 ? _chatId : this._currentChat!.getId()
-            await this.uploadUsers();
 
             const user = store.getState(storeAddresses.User)
             const chatUserList = (await this.getChatUser(chatId)).filter((e) => e.id !== user.id);
-            console.log(chatUserList)
 
-            store.set(storeAddresses.SideBar, {currentList: 'users'})
             let userList = store.getState(`${storeAddresses.UserList}`);
             if (!Array.isArray(userList.selectedList)) return;
-
-
-
+            userList.selectedList.splice(0, userList.selectedList.length)
             userList.selectedList.push(...chatUserList);
+
             store.set(storeAddresses.UserList, userList);
+
+            await this.uploadUsers();
+
+            store.set(storeAddresses.SideBar, {currentList: 'users'})
 
             await new Promise((resolve, reject) => {
                 this.chatMasterDone = resolve;
@@ -262,6 +285,10 @@ class ChatDealer {
     chatMasterDone = ({}={}) => {}
     chatMasterBack = ({}={}) => {}
 
+    ////////////////////////////////////////////////////////////////////
+    //////////Функции для работы строки поиска /////////////////////////
+    ////////////////////////////////////////////////////////////////////
+
     async searchFunction(searchValue: string) {
         const currentList = store.getState(`${storeAddresses.SideBar}`).currentList;
         if (currentList === 'chats') {
@@ -287,6 +314,9 @@ class ChatDealer {
         }
     }
 
+    ///////////////////////////////////////////////////////////////
+    /////////// Работа с аватаром ////////////////////////////////
+    /////////////////////////////////////////////////////////////
     async changeAvatar(fromData: FormData) {
         if (this._currentChat) {
             const res = await this._currentChat.changeAvatar(fromData);
@@ -297,6 +327,8 @@ class ChatDealer {
             }
         }
     }
+
+
 
     updateStore(){
         const list: Record<string, string | number>[] = [];
