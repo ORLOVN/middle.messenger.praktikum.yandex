@@ -90,6 +90,12 @@ class ChatDealer {
         return false;
     }
 
+    cleanChats() {
+        this._currentChat?.leave();
+        this.chats.splice(0, this.chats.length);
+        this.updateStore();
+    }
+
     async uploadAllChats(filter: string = '') {
         this._readingPosition = 0;
         this._readingEnd = false;

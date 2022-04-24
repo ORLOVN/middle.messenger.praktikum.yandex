@@ -156,6 +156,10 @@ export default class Block {
         if (!nextProps) {
             return;
         }
+
+        if (nextProps.display === null ||  nextProps.display === undefined) {
+            nextProps.display = true;
+        }
         const oldProps = {};
         Object.assign(oldProps, this._meta.props);
         Object.assign(this._meta.props, nextProps);

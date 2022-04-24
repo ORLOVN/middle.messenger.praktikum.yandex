@@ -3,6 +3,7 @@ import store            from "../utils/Store";
 import {PlainObject}    from "../utils/types";
 import authAPI          from "../api/auth-api";
 import router           from "../utils/Router";
+import ChatDealer from "./chats/ChatDealer";
 
 const signoutPageInputs = 'signupPage.inputList';
 const signinPageInputs = 'signinPage.inputList';
@@ -44,6 +45,7 @@ class Auth {
         })
         if (res.status === 200) {
             await this.checkUser();
+            await ChatDealer.uploadAllChats();
         }
         if (res.status === 400) {
             await this.checkUser();
@@ -121,7 +123,8 @@ class Auth {
 
         const res = await authAPI.createUser(requestBody)
         if (res.status === 200) {
-            this.checkUser()
+            await this.checkUser();
+            await ChatDealer.uploadAllChats();
         }
         if (res.status === 400) {
             store.set(`${signoutPageInputs}.login`, {validLabel: 'Такой пользователь уже существует'});

@@ -56,7 +56,9 @@ export class Store extends EventBus{
     public replace(path: string, value: unknown, mute = false) {
         const storeObject = find(this.state, path);
         if (storeObject) {
-            Object.keys(storeObject).forEach(key => delete storeObject[key]);
+            Object.keys(storeObject).forEach(
+                key => delete storeObject[key]
+            );
         }
 
         this.set(path, value, mute)

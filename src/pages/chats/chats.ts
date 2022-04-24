@@ -1,8 +1,9 @@
 import Block        from '../../utils/Block';
 import ChatPane     from "./components/chat-pane";
 import tmpl         from './chats.tmpl';
-import mediator     from "../../utils/Mediator";
 import {SideBar}    from "./components/side-bar/side-bar";
+import chatDealer   from "../../modules/chats/ChatDealer";
+import auth         from "../../modules/auth";
 
 export class Chats extends Block {
     constructor() {
@@ -15,8 +16,7 @@ export class Chats extends Block {
             sideBar:        sideBar,
             chatPane:       chatPane,
         });
-
-        mediator.emit('chatPage-initiated');
+        chatDealer.uploadAllChats();
     }
 
      render(): string {
@@ -26,6 +26,6 @@ export class Chats extends Block {
     }
 
     onShow() {
-        mediator.emit('check-user');
+        auth.checkUser();
     }
 }

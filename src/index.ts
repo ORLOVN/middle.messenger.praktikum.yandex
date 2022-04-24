@@ -1,8 +1,3 @@
-import './modules/signin.ts'
-import './modules/profile.ts'
-import './modules/chats.ts'
-import './modules/signup.ts'
-
 import Chats from './pages/chats';
 import Signup from './pages/signup';
 import Signin from './pages/signin';

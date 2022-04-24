@@ -3,11 +3,12 @@ import SearchField      from '../search-field';
 import tmpl             from './side-bar.tmpl';
 import Button           from '../../../../components/button';
 import router           from "../../../../utils/Router";
-import mediator         from "../../../../utils/Mediator";
+
 import ChatList         from "../chat-list";
 import {UserList}       from "../user-list/user-list";
 import chatDealer       from "../../../../modules/chats/ChatDealer";
 import ChatSetting      from "../chat-setting";
+import auth             from "../../../../modules/auth";
 
 enum currentList  {
     chats    = 'chats',
@@ -50,8 +51,9 @@ export class SideBar extends Block {
             content: `<span class="material-icons">logout</span>`,
             class: 'side-bar__profile-settings',
             events:{
-                click:() => {
-                    mediator.emit('signout');
+                click: async () => {
+                    await auth.signOut();
+                    chatDealer.cleanChats()
                 },
             }
         });
