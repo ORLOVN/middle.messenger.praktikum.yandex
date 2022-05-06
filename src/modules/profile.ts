@@ -30,7 +30,11 @@ class Profile {
 
         store.on(`${StoreEvents.Updated}-user`, (user) => {
             inputNameList.forEach((item) => {
-                store.set(`${storeLocation}.inputList.${item}`, {validLabel: '', editableValue: user[item], value: user[item], editing: false});
+                store.set(`${storeLocation}.inputList.${item}`, {
+                    validLabel: '',
+                    editableValue: user[item],
+                    value: user[item],
+                    editing: false});
             });
             store.set(`${storeLocation}.avatarSetting`, {
                 first_name: user.first_name,

@@ -277,7 +277,9 @@ export default class Chat {
         const MessageUser = this.chatData.users.find(e => e.id === message.user_id);
         const user = store.getState(storeAddresses.User);
 
-        const author = !!MessageUser ? (MessageUser.id !== user.id ? `${MessageUser.first_name} ${MessageUser.second_name}` : '') : 'User not found'
+        const author = !!MessageUser ?
+            (MessageUser.id !== user.id ? `${MessageUser.first_name} ${MessageUser.second_name}` : '') :
+            'User not found'
 
         return {
             author:     author,

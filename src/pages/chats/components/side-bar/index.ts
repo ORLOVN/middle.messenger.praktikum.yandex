@@ -1,2 +1,2 @@
-export { ChatList as default } from './chat-list'
+export { SideBar as default } from './side-bar'
 

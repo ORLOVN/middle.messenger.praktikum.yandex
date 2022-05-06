@@ -1,5 +1,5 @@
 import Block from '../../../../utils/Block';
-import tmpl from './chatListElement.tmpl';
+import tmpl from './user-list-element.tmpl';
 
 export class UserListElement extends Block {
     constructor(props: {

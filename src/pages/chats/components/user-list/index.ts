@@ -1,2 +1,2 @@
-export { ChatList as default } from './chat-list'
+export { UserList as default } from './user-list'
 
