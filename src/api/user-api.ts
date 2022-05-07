@@ -1,10 +1,10 @@
 import HTTP from "../utils/HTTP";
-import {BaseAPI, handleResponse} from "./base-api";
+import {handleResponse} from "./handleResponse";
 
 const http  = new HTTP('https://ya-praktikum.tech/api/v2/user');
 
 
-export class UserApi extends BaseAPI {
+export class UserApi {
     change(requestBody: Record<string, string>) {
         return handleResponse(http.put('/profile', {data: JSON.stringify(requestBody)}),200);
     }

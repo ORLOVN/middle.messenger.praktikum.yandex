@@ -1,10 +1,10 @@
 import HTTP from '../utils/HTTP'
-import { BaseAPI, handleResponse } from './base-api';
+import {handleResponse } from './handleResponse';
 import queryStringify from "../utils/queryStringify";
 
 const http = new HTTP('https://ya-praktikum.tech/api/v2/chats');
 
-class ChatAPI extends BaseAPI {
+class ChatAPI {
 
     getChats(offset: number = 0, limit: number = 10, filter: string = '*') {
         const data: Record<string, string | number> = {};

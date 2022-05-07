@@ -1,11 +1,11 @@
 import HTTP from "../utils/HTTP";
-import {BaseAPI, handleResponse} from "./base-api";
+import {handleResponse} from "./handleResponse";
 
 
 const http  = new HTTP('https://ya-praktikum.tech/api/v2/auth');
 
 
-export class AuthApi extends BaseAPI {
+export class AuthApi {
     createSession(requestBody: Record<string, string>) {
         return handleResponse(http.post('/signin', {data: JSON.stringify(requestBody)}), 200, 400, 401);
     }
