@@ -1,5 +1,5 @@
 import HTTP from '../utils/HTTP'
-import {handleResponse } from './handleResponse';
+import {handleResponse} from './handleResponse';
 import queryStringify from "../utils/queryStringify";
 
 const http = new HTTP('https://ya-praktikum.tech/api/v2/chats');
