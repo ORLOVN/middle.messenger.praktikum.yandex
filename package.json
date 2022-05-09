@@ -52,6 +52,6 @@
     "build": "parcel build src/index.html",
     "lint": "eslint . --ext .ts"
   },
-  "source": "/app-messenger/src",
+
   "version": "1.0.0"
 }
