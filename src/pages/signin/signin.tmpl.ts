@@ -11,7 +11,7 @@ export default `
         </form>
         <div class="signin__signup-link">
             {{{signupRef}}}
-        </div>
+        </div>    
 </div>
-
+{{{popupNote}}}
 `

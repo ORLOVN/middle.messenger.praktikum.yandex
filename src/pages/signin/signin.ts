@@ -1,14 +1,11 @@
-import Block from "../../utils/Block";
-import tmpl from './signin.tmpl';
-import Button from "../../components/button";
-import InputAssembly from "../../components/input-assy";
-import TextButton from "../../components/text-button";
-import {listFromArray} from "../../utils/blockTools";
-
-import Mediator from "../../utils/Mediator";
-const mediator = Mediator.getInstance();
-
-type inputData = Record<string, string>;
+import Block            from "../../utils/Block";
+import tmpl             from './signin.tmpl';
+import Button           from "../../components/button";
+import InputAssembly    from "../../components/input-assy";
+import TextButton       from "../../components/text-button";
+import {listFromArray}  from "../../utils/blockTools";
+import router           from "../../utils/Router";
+import auth             from "../../modules/auth";
 
 export class Signin extends Block {
     constructor() {
@@ -16,8 +13,7 @@ export class Signin extends Block {
         const commonProps = {
             events: {
                 blur: (event: FocusEvent) => {
-                    mediator.emit(
-                        'signin-input-blur',
+                    auth.signinInputBlur(
                         (event.target! as HTMLInputElement).name,
                         (event.target! as HTMLInputElement).value
                     );
@@ -26,42 +22,47 @@ export class Signin extends Block {
         }
         const inputsProps = [
             {
-                name:'login',
-                type:'text',
-                label:'Логин',
-                placeholder: 'mylogin999',
+                name:           'login',
+                type:           'text',
+                label:          'Логин',
+                placeholder:    'mylogin999',
             },
             {
-                name:'password',
-                type:'password',
-                label:'Пароль',
-                placeholder: 'password',
+                name:           'password',
+                type:           'password',
+                label:          'Пароль',
+                placeholder:    'password',
             }
         ];
-        const inputList = listFromArray(inputsProps, InputAssembly, commonProps);
+        const inputList = listFromArray(inputsProps, InputAssembly, commonProps, 'inputList');
 
         const submitButton = new Button({
-            content: 'Вход',
-            style: 'red',
-            type: 'submit',
-            events: {
-                click: () => console.log('profile button clicked')
+            content:    'Вход',
+            style:      'red',
+            type:       'submit',
+            events:     {
+                click: () => {}
             }
         });
 
         const signupRef = new TextButton({
-            href: '/signup',
-            content:'Нет аккаунта?',
-            style: 'white'
+            content:    'Нет аккаунта?',
+            style:      'white',
+            events:     {
+                click: () => {
+                    router.go('/sign-up');
+                }
+            }
         });
 
 
         super({
-            'inputList': inputList,
-            'submitButton' :submitButton,
-            'signupRef': signupRef,
-            eventSelector: 'form',
-            events:{
+            name:           'signinPage',
+            inputList:      inputList,
+            submitButton:   submitButton,
+            signupRef:      signupRef,
+            eventSelector:  'form',
+            events:         {
                 submit: (event: Event) => {
                     event.preventDefault();
                     const inputs = (event.target! as HTMLFormElement).querySelectorAll('input')
@@ -69,41 +70,15 @@ export class Signin extends Block {
                     inputs.forEach((input: HTMLInputElement) => {
                         values[input.name] = input.value;
                     });
-                    mediator.emit('signin-POST', values)
+                    auth.signinSubmit(values)
                 }
             }
         });
 
-        mediator.on('signin-GET', (values: inputData, validResults?: inputData) => {
-
-            Object.entries(values).forEach(([name,value]) => {
-                inputList.list[inputList.nameList[name]].setProps({value: value});
-            });
-
-            if (!validResults) {
-                return
-            }
-
-            Object.entries(validResults).forEach(([name,value]) => {
-                inputList.list[inputList.nameList[name]].setProps({validLabel: value});
-            });
-
-        });
-
-        mediator.on('signin-input-validated', (name: string, value: string, validResult: string) => {
-            if (inputList.nameList[name] !== undefined) {
-                inputList.list[inputList.nameList[name]].setProps({value: value, validLabel: validResult});
-            }
-
-        });
     }
 
     render(): string {
         return tmpl;
-    }
-
-    ChatListElementClick(id: string) {
-        console.log(`Element list item ${id} has been clicked`)
     }
 }
 

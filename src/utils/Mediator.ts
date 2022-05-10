@@ -1,10 +1,13 @@
 import EventBus from "./EventBus";
 
-export default class Mediator extends EventBus {
+export class Mediator extends EventBus {
 
     private static instance: Mediator;
 
     constructor() {
+        if (Mediator.instance) {
+            return Mediator.instance
+        }
         super();
     }
 
@@ -16,3 +19,5 @@ export default class Mediator extends EventBus {
         return Mediator.instance;
     }
 }
+
+export default new Mediator();

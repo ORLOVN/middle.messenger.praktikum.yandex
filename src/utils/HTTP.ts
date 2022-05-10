@@ -1,3 +1,4 @@
+
 export enum METHOD {
     GET = 'GET',
     POST = 'POST',
@@ -17,17 +18,40 @@ type OptionsWithoutMethod = Omit<Options, 'method'>;
 // Этот тип эквивалентен следующему:
 // type OptionsWithoutMethod = { data?: any };
 
-export class HTTPTransport {
+export default class HTTP {
+    static METHOD = METHOD;
+    private readonly _url: string;
+
+    constructor(url: string = '') {
+        this._url = url;
+    }
+
+    delete(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
+        return this.request(url, {...options, method: METHOD.DELETE});
+    };
+
     get(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
         return this.request(url, {...options, method: METHOD.GET});
     };
 
-    request(url: string, options: Options = { method: METHOD.GET }): Promise<XMLHttpRequest> {
+    post(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
+        return this.request(url, {...options, method: METHOD.POST});
+    };
+
+    put(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
+        let contentType = 'application/json';
+        if (options.data instanceof FormData) {
+            contentType = '';
+        }
+        return this.request(url, {...options, method: METHOD.PUT}, contentType);
+    };
+
+    request(url: string, options: Options = { method: METHOD.GET }, contentType: string = 'application/json'): Promise<XMLHttpRequest> {
         const {method, data} = options;
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open(method, url);
+            xhr.open(method, this._url+url);
 
             xhr.onload = function() {
                 resolve(xhr);
@@ -38,12 +62,14 @@ export class HTTPTransport {
             xhr.ontimeout = reject;
 
             xhr.setRequestHeader('Accept', 'application/json');
-            xhr.setRequestHeader('Content-Type', 'application/json');
+            if (contentType) {
+                xhr.setRequestHeader('Content-Type', contentType);
+            }
+            xhr.withCredentials = true;
 
             if (method === METHOD.GET || !data) {
                 xhr.send();
             } else {
-                console.log(data)
                 xhr.send(data);
             }
         });

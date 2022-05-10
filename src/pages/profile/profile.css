@@ -32,28 +32,15 @@
 .profile-settings__settings-pane {
   display: flex;
   align-self: center;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
 }
 
-.profile-settings__avatar-pane {
+.profile-settings__fields-pane {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.profile-settings__avatar {
-  width: 140px;
-  height: 140px;
-  background: var(--main-icon-color);
-  border-radius: 15px;
-}
-
-.profile-settings__avatar-caption {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
 .profile-settings__buttons-pane {

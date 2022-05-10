@@ -1,5 +1,4 @@
 export default `
-
 <div class="signup__back">
     <div class="signup__pane">
         <div class="signup__pane-name">Новый пользователь</div>
@@ -13,6 +12,7 @@ export default `
             {{{signinRef}}}
         </div>
     </div>
+    {{{popupNote}}}
 </div>
 
 `

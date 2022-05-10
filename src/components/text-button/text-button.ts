@@ -3,9 +3,9 @@ import Block from "../../utils/Block";
 export class TextButton extends Block {
     constructor(props: {
         content?: string,
-        style?: string,
-        href?: string,
-        events?: {
+        style?:   string,
+        href?:    string,
+        events?:  {
             click?:(event?: any) => void
         }
     }) {
