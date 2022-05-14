@@ -5,8 +5,7 @@ import MessageInput     from '../message-input';
 import Button           from '../../../../components/button';
 import {listFromArray}  from '../../../../utils/blockTools';
 import ContextMenu      from '../../../../components/context-menu';
-import chatDealer       from '../../../../modules/chats/ChatDealer';
-import ChatDealer       from '../../../../modules/chats/ChatDealer';
+import chatDealer       from '../../../../modules/chats/chatDealer';
 import                       './chatPane.css';
 
 
@@ -60,7 +59,7 @@ export class ChatPane extends Block {
                             }
 
                             if (value === 'add-users') {
-                                ChatDealer.addUsers();
+                                chatDealer.addUsers();
                             }
                         }
                     })
@@ -99,7 +98,7 @@ export class ChatPane extends Block {
                         event.preventDefault();
                         if (!event || !event.target) return;
                         const formData = new FormData((event.target as HTMLFormElement));
-                        await ChatDealer.changeAvatar(formData);
+                        await chatDealer.changeAvatar(formData);
                     }
                 }
             }

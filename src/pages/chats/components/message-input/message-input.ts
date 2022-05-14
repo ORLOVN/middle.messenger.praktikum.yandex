@@ -1,7 +1,7 @@
 import Block from       '../../../../utils/Block';
 import Input from       '../../../../components/input';
 import Button from      '../../../../components/button';
-import chatDealer from  '../../../../modules/chats/ChatDealer';
+import chatDealer from  '../../../../modules/chats/chatDealer';
 import                  './message-input.css';
 
 export class MessageInput extends Block {

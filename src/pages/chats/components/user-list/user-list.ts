@@ -1,9 +1,9 @@
 import Block            from '../../../../utils/Block';
 import tmpl             from './user-list.tmpl';
 import Button           from '../../../../components/button';
-import {ContextMenu}    from '../../../../components/context-menu/context-menu';
+import ContextMenu    from '../../../../components/context-menu';
 import PopupInput       from '../../../../components/popup-input';
-import chatDealer       from '../../../../modules/chats/ChatDealer';
+import chatDealer       from '../../../../modules/chats/chatDealer';
 import                       './user-list.css';
 
 export class UserList extends Block {

@@ -87,7 +87,6 @@ class ChatDealer {
         } else {
             return false;
         }
-        return false;
     }
 
     cleanChats() {

@@ -1,9 +1,9 @@
-import store                        from "../../utils/Store";
-import ChatAPI                      from "../../api/chat-api";
-import {AVATAR_URL, storeAddresses} from "../../utils/globalVariables";
-import {isArray}                    from "../../utils/types";
-import {beautifulDate}              from "../../utils/beautifulDate";
-import {User}                       from "./ChatDealer";
+import store                        from '../../utils/Store';
+import ChatAPI                      from '../../api/chat-api';
+import {AVATAR_URL, storeAddresses} from '../../utils/globalVariables';
+import {isArray}                    from '../../utils/types';
+import {beautifulDate}              from '../../utils/beautifulDate';
+import {User}                       from './chatDealer';
 
 type Message = {
     id: number,

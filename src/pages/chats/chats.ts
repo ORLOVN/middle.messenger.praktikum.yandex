@@ -2,7 +2,7 @@ import Block        from '../../utils/Block';
 import ChatPane     from './components/chat-pane';
 import tmpl         from './chats.tmpl';
 import SideBar      from './components/side-bar';
-import chatDealer   from '../../modules/chats/ChatDealer';
+import chatDealer   from '../../modules/chats/chatDealer';
 import auth         from '../../modules/auth';
 import                   './chats.css';
 
