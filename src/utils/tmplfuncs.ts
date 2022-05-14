@@ -1,4 +1,4 @@
-const Handlebars = require("handlebars");
+const Handlebars = require("handlebars/dist/handlebars.js");
 import {HelperOptions} from "handlebars";
 
 Handlebars.registerHelper('statusAwaiting', function (value: number) {

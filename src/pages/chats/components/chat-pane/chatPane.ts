@@ -1,12 +1,13 @@
-import Block from '../../../../utils/Block';
-import tmpl from './chatPane.tmpl';
-import Message from '../message';
-import MessageInput from "../message-input";
-import Button from "../../../../components/button";
-import {listFromArray} from "../../../../utils/blockTools";
-import ContextMenu from "../../../../components/context-menu";
-import chatDealer from "../../../../modules/chats/ChatDealer";
-import ChatDealer from "../../../../modules/chats/ChatDealer";
+import Block            from '../../../../utils/Block';
+import tmpl             from './chatPane.tmpl';
+import Message          from '../message';
+import MessageInput     from '../message-input';
+import Button           from '../../../../components/button';
+import {listFromArray}  from '../../../../utils/blockTools';
+import ContextMenu      from '../../../../components/context-menu';
+import chatDealer       from '../../../../modules/chats/ChatDealer';
+import ChatDealer       from '../../../../modules/chats/ChatDealer';
+import                       './chatPane.css';
 
 
 export class ChatPane extends Block {

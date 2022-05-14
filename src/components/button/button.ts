@@ -1,4 +1,5 @@
-import Block from "../../utils/Block";
+import Block from '../../utils/Block';
+import            './button.css'
 
 export class Button extends Block {
     constructor(props: {

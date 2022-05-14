@@ -3,8 +3,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 40px 1px auto;
-  align-items: end;
   font-size: 1.4rem;
+}
+
+.profile-item > * { /* as per autoprefixer recommendation*/
+  align-self: end
 }
 
 .profile-item__bottom-line {

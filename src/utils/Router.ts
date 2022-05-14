@@ -51,10 +51,14 @@ export class Router {
       this._currentRoute.leave();
     }
 
-    this._currentRoute = route;
     if (route) {
-      route!.render();
+      this._currentRoute = route;
+    } else {
+      this._currentRoute = this.getRoute('/404')
     }
+
+    this._currentRoute!.render();
+
     auth.checkUser();
   }
 

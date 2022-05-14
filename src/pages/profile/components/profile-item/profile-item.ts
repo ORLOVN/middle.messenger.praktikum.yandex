@@ -1,4 +1,5 @@
-import Block from "../../../../utils/Block";
+import Block from '../../../../utils/Block';
+import            './profile-item.css'
 
 export class ProfileItem extends Block {
 

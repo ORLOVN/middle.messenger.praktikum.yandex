@@ -2,13 +2,14 @@ import Block            from '../../../../utils/Block';
 import SearchField      from '../search-field';
 import tmpl             from './side-bar.tmpl';
 import Button           from '../../../../components/button';
-import router           from "../../../../utils/Router";
+import router           from '../../../../utils/Router';
 
-import ChatList         from "../chat-list";
-import {UserList}       from "../user-list/user-list";
-import chatDealer       from "../../../../modules/chats/ChatDealer";
-import ChatSetting      from "../chat-setting";
-import auth             from "../../../../modules/auth";
+import ChatList         from '../chat-list';
+import UserList         from '../user-list';
+import chatDealer       from '../../../../modules/chats/ChatDealer';
+import ChatSetting      from '../chat-setting';
+import auth             from '../../../../modules/auth';
+import                       './side-bar.css'
 
 enum currentList  {
     chats    = 'chats',

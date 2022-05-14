@@ -4,6 +4,7 @@ import Button           from '../../../../components/button';
 import {ContextMenu}    from "../../../../components/context-menu/context-menu";
 import PopupInput       from "../../../../components/popup-input";
 import chatDealer       from "../../../../modules/chats/ChatDealer";
+import                       './chat-list.css';
 
 export class ChatList extends Block {
     constructor(props:{

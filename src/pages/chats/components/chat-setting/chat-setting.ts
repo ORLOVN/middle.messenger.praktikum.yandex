@@ -1,8 +1,9 @@
-import Block        from "../../../../utils/Block";
+import Block        from '../../../../utils/Block';
 import {PropEvents} from '../../../../utils/types'
-import InputAssy from "../../../../components/input-assy";
-import Button from "../../../../components/button";
-import chatDealer from "../../../../modules/chats/ChatDealer";
+import InputAssy    from '../../../../components/input-assy';
+import Button       from '../../../../components/button';
+import chatDealer   from '../../../../modules/chats/ChatDealer';
+import                   './chat-setting.css';
 
 export class ChatSetting extends Block {
 
