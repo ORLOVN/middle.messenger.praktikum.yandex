@@ -187,7 +187,6 @@ export default class Chat {
         }
     }
     handleMessage(event: MessageEvent) {
-        console.log(event.type);
         const messageData = JSON.parse(event.data);
         if (isArray(messageData)) {
             messageData.forEach((message: {
@@ -206,7 +205,6 @@ export default class Chat {
             })
             this.updateStoreWithMessages();
         } else {
-            console.log(messageData)
             if (messageData.type === 'message') {
                 const index = -1 + this.messages.push({
                     id:         messageData.id,
@@ -230,7 +228,6 @@ export default class Chat {
     updateStoreWithNewMessage(message: Message) {
         const list: Record<string, Record<string, string | number>> = {};
         list[message.id] = this.toStoreMessage(message);
-        console.log(message);
         const date = new Date(message.time.getTime());
         const dateInMs = date.setHours(0,0,0,0);
         if (!list[dateInMs]) {
@@ -239,7 +236,6 @@ export default class Chat {
                 orderTime:      dateInMs/1000,
             }
         }
-        console.log('hello here')
         store.set(storeAddresses.MessageList, list);
         store.invoke(`${storeAddresses.MessageList}.${message.id}.scroll`);
         store.invoke(`${storeAddresses.MessageInput}.focus`);

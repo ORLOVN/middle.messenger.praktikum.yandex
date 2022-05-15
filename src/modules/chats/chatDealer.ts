@@ -71,8 +71,6 @@ class ChatDealer {
                         chat.users = res.response
                     }
                 });
-
-                console.log(this.chats)
                 return idList;
             }
         }
@@ -111,7 +109,6 @@ class ChatDealer {
     async createNewChat(title: string) {
         const res = await ChatAPI.createChat(title)
         if (res.status === 200) {
-            console.log(res);
             await this.addUsers(res.response.id);
             await this.uploadChats(0, 1)
             this.updateStore();

@@ -54,7 +54,6 @@ class Profile {
             inputList = (name === 'password' || name === 'repassword' || name === 'newpassword') ? 'passwordInputList' : 'inputList';
             store.set(`${storeLocation}.${inputList}.${name}`, { editableValue: value, validLabel: validResult, editing: true });
             ifProblem ||= !!validResult;
-            console.log(validResult)
         });
 
         if (ifProblem) {

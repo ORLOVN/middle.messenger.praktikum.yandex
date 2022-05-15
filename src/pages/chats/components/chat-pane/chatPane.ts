@@ -69,7 +69,6 @@ export class ChatPane extends Block {
         const commonProps = {
             events: {
                 click: () => {
-                    console.log(`message clicked`);
                 }
             }
         };

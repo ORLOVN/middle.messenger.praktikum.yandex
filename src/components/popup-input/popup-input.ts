@@ -33,7 +33,6 @@ export class PopupInput extends Block {
             events:         {
                 keyup: (event: Event) => {
                     this.inputValue = (event.target as HTMLInputElement).value
-                    console.log(this.inputValue);
                 }
             }
         });
