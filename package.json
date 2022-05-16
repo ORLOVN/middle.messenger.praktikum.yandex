@@ -59,9 +59,14 @@
     "start": "node server.js",
     "dev": "webpack serve --open --config webpack.dev.config.js",
     "build": "webpack --config webpack.prod.config.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts && npx stylelint \"**/*.css\""
   },
 
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm lint"
+    }
+  },
 
   "source": "/app-messenger/src",
   "version": "1.0.0"
