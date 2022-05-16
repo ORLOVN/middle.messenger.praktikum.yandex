@@ -5,15 +5,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: './src/index.ts',
-  devtool: 'inline-source-map',
-  devServer: {
-    historyApiFallback: true,
-    static: path.resolve(__dirname, './dist'),
-    open: true,
-    compress: true,
-    hot: true,
-    port: 8080,
-  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'chat-app.bundle.js'

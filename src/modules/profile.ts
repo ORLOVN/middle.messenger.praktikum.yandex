@@ -39,7 +39,7 @@ class Profile {
             store.set(`${storeLocation}.avatarSetting`, {
                 first_name: user.first_name,
                 display_name: user.display_name,
-                avatar_file: `${AVATAR_URL}${user.avatar}`,
+                avatar_file: user.avatar ? `${AVATAR_URL}${user.avatar}` : '',
             });
         });
     }
