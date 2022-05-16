@@ -36,7 +36,7 @@ module.exports = {
             },
           },
         ],
-        exclude: /(node_modules)/
+        exclude: /(node_modules)|(\w*\.test\.ts)/g
       },
       {
         test: /\.css$/i,

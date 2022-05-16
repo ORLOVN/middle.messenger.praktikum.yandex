@@ -1,3 +1,4 @@
+import                   'regenerator-runtime/runtime';
 import Chats        from './pages/chats';
 import Signup       from './pages/signup';
 import Signin       from './pages/signin';

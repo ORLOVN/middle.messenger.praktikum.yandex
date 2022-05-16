@@ -1,5 +1,5 @@
 /node_modules/*
 /dist/*
 !/dist/_redirects
-/test/*
 package-lock.json
+/prod/*
