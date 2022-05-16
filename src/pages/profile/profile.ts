@@ -6,7 +6,8 @@ import TextButton       from '../../components/text-button';
 import {listFromArray}  from '../../utils/blockTools';
 import router           from '../../utils/Router';
 import AvatarSetting    from './components/avatar-setting';
-import profile          from "../../modules/profile";
+import profile          from '../../modules/profile';
+import                       './profile.css';
 
 export class Profile extends Block {
     constructor() {

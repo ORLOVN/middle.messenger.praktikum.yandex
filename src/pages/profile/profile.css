@@ -1,14 +1,17 @@
 .profile-settings__back-pane {
   display: grid;
   grid-template-columns: 40px auto;
-  align-items: center;
-  justify-items: center;
   width: 99vw;
   min-height: 100%;
   height: fit-content;
   margin-left: 1vw;
   background: var(--main-pane-bg-color);
   box-shadow: var(--main-shadow-level1);
+}
+
+.profile-settings__back-pane > * { /* as per autoprefixer recommendation */
+  align-self: center;
+  justify-self: center;
 }
 
 .profile-settings__back-button {
@@ -52,9 +55,12 @@
   min-width: 524px;
   display: grid;
   grid-template-rows: 40px 1px;
-  align-items: end;
   font-size: 1.4rem;
   font-weight: bold;
+}
+
+.profile-settings__button > * { /* as per autoprefixer recommendation */
+  align-self: end
 }
 
 .profile-settings__buttons-pane .profile-settings__bottom-line {

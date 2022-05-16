@@ -1,5 +1,6 @@
-import Block from "../../utils/Block";
-import {PlainObject} from "../../utils/types";
+import Block            from '../../utils/Block';
+import {PlainObject}    from '../../utils/types';
+import                       './notification.css';
 
 export class Notification extends Block {
     constructor(props: {

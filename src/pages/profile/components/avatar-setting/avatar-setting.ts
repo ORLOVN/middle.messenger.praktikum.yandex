@@ -1,5 +1,8 @@
-import Block        from "../../../../utils/Block";
-import {PropEvents} from '../../../../utils/types'
+import Block            from '../../../../utils/Block';
+import {PropEvents}     from '../../../../utils/types';
+import                       './avatar-setting.css';
+
+
 export class AvatarSetting extends Block {
 
     constructor(props: {

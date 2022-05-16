@@ -10,9 +10,12 @@
 .chat-pane {
   display: grid;
   grid-template-rows: 84px auto;
-  justify-items: center;
   height: 100%;
   overflow: hidden;
+}
+
+.chat-pane > * {
+  justify-self: center /* following to autoprefixer recommendations*/
 }
 
 .chat-pane__header {
@@ -71,7 +74,6 @@
   grid-template-rows: auto 60px;
   width: 100%;
   height: 100%;
-  align-content: end;
   overflow-y: hidden;
 }
 
@@ -125,12 +127,15 @@
 .chat-pane__new-message-pane {
   display: grid;
   grid-template-columns: 40px auto 20px;
-  align-items: center;
-  justify-items: center;
   margin-bottom: 10px;
   background-color: var(--chat-pane-newmsg-bg-color);
   box-shadow: var(--main-shadow-level1);
   border-radius: 15px 15px 0;
+}
+
+.chat-pane__new-message-pane > * { /*following to autoprefixer recommendations*/
+  align-self: center;
+  justify-self: center
 }
 
 .chat-pane__new-message-pane:hover {

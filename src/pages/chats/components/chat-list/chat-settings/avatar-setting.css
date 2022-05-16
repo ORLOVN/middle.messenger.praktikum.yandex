@@ -12,7 +12,7 @@
     background-size: cover;
     background-color: var(--from-input-bg-hover-color);
     background-position: center;
-    background-image: url("../../../../../resources/portrait.png");
+    background-image: url("../resources/portrait.png");
     border-radius: 15px;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .avatar-setting__avatar-input-label:hover {
-    background-image: url("../../../../../resources/edit-icon.png");
+    background-image: url("../resources/edit-icon.png");
     background-repeat: no-repeat;
     background-position: 100% 100%;
     background-color: var(--main-hover-over-color);

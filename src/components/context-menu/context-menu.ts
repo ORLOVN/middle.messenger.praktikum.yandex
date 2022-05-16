@@ -1,4 +1,5 @@
-import Block from "../../utils/Block";
+import Block from '../../utils/Block';
+import            './context-menu.css'
 
 export class ContextMenu extends Block {
     constructor(props: {

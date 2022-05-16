@@ -1,7 +1,8 @@
-import Block            from "../../utils/Block";
-import {PlainObject}    from "../../utils/types";
-import Button           from "../button";
-import InputAssy        from "../input-assy";
+import Block            from '../../utils/Block';
+import {PlainObject}    from '../../utils/types';
+import Button           from '../button';
+import InputAssy        from '../input-assy';
+import                       './popup-input.css'
 
 
 export class PopupInput extends Block {
@@ -32,7 +33,6 @@ export class PopupInput extends Block {
             events:         {
                 keyup: (event: Event) => {
                     this.inputValue = (event.target as HTMLInputElement).value
-                    console.log(this.inputValue);
                 }
             }
         });

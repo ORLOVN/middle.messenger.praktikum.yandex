@@ -4,28 +4,53 @@
     "url": "https://github.com/ORLOVN/messenger-app/issues"
   },
   "dependencies": {
-    "body-parser": "1.19.1",
-    "handlebars": "4.7.7"
+    "@babel/cli": "^7.17.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-typescript": "^7.16.7",
+    "body-parser": "^1.19.1",
+    "handlebars": "^4.7.7",
+    "unused-files-webpack-plugin": "^3.4.0"
   },
   "description": "messenger application prepared according to Yandex-practicum task",
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
-    "@types/chai": "4.3.1",
-    "@types/mocha": "9.1.1",
-    "@typescript-eslint/eslint-plugin": "5.11.0",
-    "@typescript-eslint/parser": "5.11.0",
-    "chai": "4.3.6",
-    "eslint": "8.14.0",
-    "eslint-config-airbnb": "19.0.4",
-    "express": "4.17.2",
-    "mocha": "10.0.0",
-    "parcel": "2.1.0",
-    "path": "0.12.7",
-    "stylelint": "14.6.1",
-    "stylelint-config-standard": "25.0.0",
-    "ts-node": "10.4.0",
-    "typescript": "4.5.5",
-    "uuid": "8.3.2"
+    "@babel/core": "^7.17.10",
+    "@babel/register": "^7.17.7",
+    "@testing-library/dom": "^8.13.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@types/chai": "^4.3.1",
+    "@types/jest": "^27.5.1",
+    "@types/mocha": "^9.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "autoprefixer": "^10.4.2",
+    "chai": "^4.3.6",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.1",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "express": "^4.17.2",
+    "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.5.1",
+    "jsdom": "^19.0.0",
+    "mocha": "^10.0.0",
+    "path": "^0.12.7",
+    "postcss": "^8.4.13",
+    "postcss-loader": "^6.2.1",
+    "postcss-modules": "^4.3.0",
+    "style-loader": "^3.3.1",
+    "stylelint": "^14.6.1",
+    "stylelint-config-standard": "^25.0.0",
+    "ts-loader": "^9.3.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5",
+    "uuid": "^8.3.2",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0",
+    "webpack-merge": "^5.8.0"
   },
   "engines": {
     "node": ">=12"
@@ -43,11 +68,26 @@
     "url": "git+https://github.com/ORLOVN/messenger-app.git"
   },
   "scripts": {
-    "start": "parcel build src/index.html && node server.js",
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html",
-    "lint": "eslint . --ext .ts"
+    "start": "node server.js",
+    "dev": "webpack serve --open --config webpack.dev.config.js",
+    "build": "webpack --config webpack.prod.config.js",
+    "lint": "eslint . --ext .ts && npx stylelint \"**/*.css\"",
+    "test": "jest"
   },
-
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm lint && npm test"
+    }
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.ts"
+    ],
+    "moduleNameMapper": {
+      "\\.(css)$": "identity-obj-proxy"
+    }
+  },
+  "source": "/app-messenger/src",
   "version": "1.0.0"
 }
