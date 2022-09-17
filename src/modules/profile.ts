@@ -1,9 +1,9 @@
-import {validate}           from "../utils/validtools";
+import {validate}           from '../utils/validtools';
 import store, {StoreEvents} from '../utils/Store';
-import userApi              from "../api/user-api";
-import {PlainObject}        from "../utils/types";
-import {AVATAR_URL}         from "../utils/globalVariables";
-import auth from "./auth";
+import userApi              from '../api/user-api';
+import {PlainObject}        from '../utils/types';
+import {AVATAR_URL}         from '../utils/globalVariables';
+import auth                 from './auth';
 
 const storeLocation = 'profilePage';
 
@@ -39,7 +39,7 @@ class Profile {
             store.set(`${storeLocation}.avatarSetting`, {
                 first_name: user.first_name,
                 display_name: user.display_name,
-                avatar_file: `${AVATAR_URL}${user.avatar}`,
+                avatar_file: user.avatar ? `${AVATAR_URL}${user.avatar}` : '',
             });
         });
     }
@@ -54,7 +54,6 @@ class Profile {
             inputList = (name === 'password' || name === 'repassword' || name === 'newpassword') ? 'passwordInputList' : 'inputList';
             store.set(`${storeLocation}.${inputList}.${name}`, { editableValue: value, validLabel: validResult, editing: true });
             ifProblem ||= !!validResult;
-            console.log(validResult)
         });
 
         if (ifProblem) {

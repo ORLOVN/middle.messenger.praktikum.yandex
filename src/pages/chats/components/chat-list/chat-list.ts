@@ -1,9 +1,10 @@
 import Block            from '../../../../utils/Block';
 import tmpl             from './chat-list.tmpl';
 import Button           from '../../../../components/button';
-import {ContextMenu}    from "../../../../components/context-menu/context-menu";
-import PopupInput       from "../../../../components/popup-input";
-import chatDealer       from "../../../../modules/chats/ChatDealer";
+import {ContextMenu}    from '../../../../components/context-menu/context-menu';
+import PopupInput       from '../../../../components/popup-input';
+import chatDealer       from '../../../../modules/chats/chatDealer';
+import                       './chat-list.css';
 
 export class ChatList extends Block {
     constructor(props:{

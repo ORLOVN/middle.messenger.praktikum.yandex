@@ -1,4 +1,5 @@
-import Block from "../../utils/Block";
+import Block from '../../utils/Block';
+import            './input-assy.css'
 
 export class InputAssy extends Block {
 

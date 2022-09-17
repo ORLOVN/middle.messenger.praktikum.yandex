@@ -1,11 +1,12 @@
-import Block            from "../../utils/Block";
+import Block            from '../../utils/Block';
 import tmpl             from './signup.tmpl';
-import Button           from "../../components/button";
-import InputAssembly    from "../../components/input-assy";
-import TextButton       from "../../components/text-button";
+import Button           from '../../components/button';
+import InputAssembly    from '../../components/input-assy';
+import TextButton       from '../../components/text-button';
 import {listFromArray}  from '../../utils/blockTools';
-import router           from "../../utils/Router";
-import auth             from "../../modules/auth";
+import router           from '../../utils/Router';
+import auth             from '../../modules/auth';
+import                       './signup.css'
 
 export class Signup extends Block {
     constructor() {

@@ -1,4 +1,6 @@
 import Block from '../../../../utils/Block';
+import            './message.css';
+
 export class Message extends Block {
 
     constructor(props: {

@@ -3,7 +3,7 @@ export default `
 <div class="chat-pane">
 <form style="display: none" id="avatarForm">
     <input id="avatarInput" type="file" name="avatar" accept="image/*">
-    <input id="avatarInput" type="text" name="chatId" value="{{chatId}}">   
+    <input id="avatarInputId" type="text" name="chatId" value="{{chatId}}">   
 </form>
 
     <div class="chat-pane__header">
