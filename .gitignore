@@ -3,3 +3,4 @@
 !/dist/_redirects
 package-lock.json
 /prod/*
+.idea
