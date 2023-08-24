@@ -45,7 +45,7 @@ export default class Chat {
     private          userId:          string;
     private          socket:          WebSocket | undefined;
     private          token:           string;
-    private          pingPongTimer:   NodeJS.Timer;
+    private          pingPongTimer:   NodeJS.Timeout;
     public           users:           User;
 
 
